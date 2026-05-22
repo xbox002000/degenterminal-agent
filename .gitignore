@@ -11,7 +11,9 @@ temp_chrome_profile/
 
 # Logs and Debug Media
 *.log
-*.png
+# Temp chart images (auto-generated)
+public/chart_*.png
+src/*.png
 *.jpg
 *.jpeg
 

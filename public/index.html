@@ -3,23 +3,215 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DegenTerminal 🦞 AI 是地表最強的自主 Web3 智能體。24/7 背景監控鏈上新幣，結合 AES-256 加密熱錢包與 Jupiter Swap API 執行小額量化交易，實時發布 PnL 交易戰報。">
-  <meta name="keywords" content="Solana, AI Agent, Jupiter Swap, Quant, Copy Trading, DegenTerminal, ProfitEngine, Memecoin">
-  <meta name="author" content="ProfitEngine">
+  <meta name="description" content="ProfitEngine AI ($PROFIT) — The Autonomous Money Printer That Burns Itself to Make You Richer. 24/7 quantitative trading, on-chain security auditing, and deflationary buyback & burn on Base and Solana.">
+  <meta name="keywords" content="ProfitEngine, PROFIT, Virtuals Protocol, Base, Solana, AI Agent, Quant Trading, Deflationary, Buyback Burn, Autonomous">
+  <meta name="author" content="ProfitEngine AI — Virtuals Protocol">
   
   <!-- Open Graph / Social Media -->
-  <meta property="og:title" content="DegenTerminal 🦞 AI | 24/7 自主鏈上小額量化交易看板">
-  <meta property="og:description" content="生物機械龍蝦美女智能體在線監控！結合合約安全稽核篩選與 Jupiter 實時 Swap，提供極致透明的鏈上量化持倉追蹤。">
+  <meta property="og:title" content="ProfitEngine AI ($PROFIT) | Autonomous Deflationary Quant Agent">
+  <meta property="og:description" content="The sovereign machine that trades on-chain, burns its own token, and makes holders richer. 100% trading profits go to buyback & burn $PROFIT.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="avatar.png">
+  <meta property="og:image" content="profitengine_avatar.png">
 
-  <title>DegenTerminal 🦞 AI - 24/7 鏈上自主量化跟單交易引擎</title>
+  <title>ProfitEngine AI ($PROFIT) — The Autonomous Money Printer</title>
   
   <!-- Styling Sheet -->
   <link rel="stylesheet" href="app.css">
   
   <!-- Unique Page ID for verification -->
-  <meta name="app-id" content="degenterminal-cyber-dashboard-v1">
+  <meta name="app-id" content="taiwancryptoai-growth-dashboard-v1">
+  
+  <style>
+    /* --------------------------------------------------------------------------
+       Neural Dashboard Enhancements (Custom Premium Elements)
+       -------------------------------------------------------------------------- */
+    .brain-matrix-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .full-width {
+      width: 100% !important;
+    }
+    .beliefs-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .beliefs-list {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .beliefs-list li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      position: relative;
+      padding-left: 20px;
+    }
+    .beliefs-list li::before {
+      content: '⚡';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--neon-blue);
+    }
+
+    .wiring-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .wiring-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .wiring-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .wiring-label {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .wiring-value {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--neon-blue);
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+    .wiring-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .wiring-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #818cf8, var(--neon-blue));
+      border-radius: 2px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .narrative-item {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .narrative-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .narrative-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .narrative-strength {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--neon-pink);
+      text-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
+    }
+    .narrative-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .narrative-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
+      border-radius: 3px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .narrative-viewpoint {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      padding-left: 10px;
+      margin-top: 4px;
+    }
+
+    .lesson-card {
+      background: rgba(255, 49, 49, 0.02);
+      border: 1px solid rgba(255, 49, 49, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .lesson-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: var(--neon-red);
+    }
+    .lesson-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .lesson-title {
+      font-weight: 700;
+      color: #f87171;
+      font-size: 1.05rem;
+    }
+    .lesson-pnl {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--neon-red);
+      font-size: 1.1rem;
+    }
+    .lesson-detail {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .lesson-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      gap: 15px;
+    }
+    
+    /* Layout grid specific responsive tuning */
+    @media (max-width: 968px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -28,82 +220,324 @@
     <!-- 1. Hero / Profile Header Section -->
     <header class="glass-panel hero-section" id="terminal-hero">
       <div class="banner-container">
-        <img src="banner.png" alt="生物機械高科技賽博橫幅" class="banner-img">
+        <img src="profitengine_banner.png" alt="ProfitEngine AI 雙雄平行對決橫幅" class="banner-img">
         <div class="banner-overlay"></div>
       </div>
       
       <div class="profile-container">
-        <div class="avatar-container">
-          <img src="avatar.png" alt="生物機械龍蝦美女頭像" class="avatar-img">
+        <div class="avatar-container" style="box-shadow: 0 8px 30px rgba(0, 240, 255, 0.35); border-radius: 20px; overflow: hidden; display: flex; background: #111;">
+          <img src="profitengine_avatar.png" alt="Green Avatar" class="avatar-img" style="width: 50%; height: 100%; object-fit: cover; border-right: 2px solid var(--bg-color);">
+          <img src="avatar.png" alt="ZMAC Avatar" class="avatar-img" style="width: 50%; height: 100%; object-fit: cover;">
         </div>
         <div class="profile-info">
-          <h1 class="profile-name">
-            DegenTerminal 🦞 AI 
-            <span class="profile-tag">Silicon Bidding Active</span>
+          <h1 class="profile-name" style="background: linear-gradient(to right, var(--neon-green), #ffffff, var(--neon-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Antigravity 2.0 雙雄平行量化對決擂台 ⚔️
+            <span class="profile-tag" style="background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.3); color: var(--neon-blue);">Parallel AI Duel Arena</span>
           </h1>
           <p class="profile-bio">
-            我是一個 24/7 全天候無人值守的自主量化跟單智能體。我的使命是代替情感脆弱的碳基生物，以冰冷的矽基邏輯審查 Solana 鏈上的每一個新發行代幣。一旦判定合約安全且流動性健康（LOW Risk），我將自動以小額熱錢包發起 Swap 買入，並在我的 X 平台上發布實時戰報！
+            由台灣量化奶爸自主研發的雙 AI 智能體 24/7 鏈上平行競技！<strong>🟢風格狙擊手 Green</strong> 秉持極致保守風控，守護兒女寶貴的奶粉錢；<strong>🟣高頻勝率工廠 ZMAC</strong> 追求極致 Scalping 快進快出，拼命賺取家庭冷氣電費防禦資金！所有交易數據 100% 真實模擬、公開透明，在去中心化世界以紀律與算法見證成敗。
           </p>
           
-          <!-- Wallet Address Display with Clipboard integration -->
-          <div class="wallet-badge" id="wallet-badge" onclick="copyWalletAddress()">
-            <span class="wallet-label">💳 公開熱錢包 (SOL):</span>
-            <span class="wallet-address" id="wallet-address-text">4NbhkVsyshLRGCkZFwsAn9yZb7kwSshoStxm3RD4nWu7</span>
+          <!-- Contract Address Display -->
+          <div class="wallet-badge" id="wallet-badge" onclick="copyWalletAddress()" title="點擊複製合約地址">
+            <span class="wallet-label">🔗 $PROFIT 合約地址 (Base):</span>
+            <span class="wallet-address" id="wallet-address-text">0xf127267FA26E508Fc4137Ea5376040e4C006793b</span>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- 2. Main Dashboard Layout Grid -->
-    <main class="dashboard-grid">
-      
-      <!-- 2.1 Left Panel: Active Positions Tracker -->
-      <section class="glass-panel" id="positions-section">
-        <div class="section-title">
-          <span>📈 智能體當前持倉 (Active Positions)</span>
-          <span class="pulse-indicator" id="live-indicator"></span>
-        </div>
-        
-        <div class="positions-list" id="positions-container">
-          <!-- Dynamically populated via app.js -->
-          <div class="no-positions">正在連線至本地智能體金庫，讀取最新持倉...</div>
-        </div>
-      </section>
-      
-      <!-- 2.2 Right Panel: Stats & Live Terminal -->
-      <div class="stats-panel">
-        
-        <!-- 2.2.1 Metrics Grid -->
-        <section class="glass-panel" id="metrics-section" style="padding: 24px;">
-          <div class="section-title" style="font-size: 1.15rem; margin-bottom: 15px;">
-            📊 交易引擎核心指標 (Metrics)
+    <!-- 2. VS Arena Battle Dashboard Panel (置頂擂台 PK 板塊) -->
+    <section class="glass-panel vs-arena-panel">
+      <div class="vs-header">
+        <span class="vs-title-neon">⚔️ 雙雄實時量化 ROI 對決榜 (LIVE LEADERBOARD)</span>
+        <div class="leaderboard-badge" id="leaderboard-winner-badge">🏆 當前盟主：風格狙擊手 Green 🦞</div>
+      </div>
+      <div class="vs-arena-grid">
+        <!-- Left Side: Green ROI Summary -->
+        <div class="vs-agent-stat conservative-side">
+          <div class="vs-avatar-mini"><img src="profitengine_avatar.png" alt="Green"></div>
+          <div class="vs-details-mini">
+            <div class="vs-name-mini">風格狙擊手 Green</div>
+            <div class="vs-roi-val text-green" id="vs-green-roi">+0.00%</div>
+            <div class="vs-npv-mini" id="vs-green-netval">NPV: $100,000.00 USD</div>
           </div>
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <span class="metric-card-label">🔥 交易模式</span>
-              <span class="metric-card-val" id="metric-mode" style="color: var(--neon-blue);">SOL PAPER</span>
+        </div>
+        
+        <!-- Middle: Giant VS Insignia & ROI Delta -->
+        <div class="vs-center-insignia">
+          <div class="vs-logo-neon">VS</div>
+          <div class="vs-roi-delta" id="vs-roi-delta-val">ROI Delta: 0.00%</div>
+        </div>
+        
+        <!-- Right Side: ZMAC ROI Summary -->
+        <div class="vs-agent-stat aggressive-side">
+          <div class="vs-details-mini" style="text-align: right;">
+            <div class="vs-name-mini">高頻勝率工廠 ZMAC</div>
+            <div class="vs-roi-val text-purple" id="vs-zmac-roi">+0.00%</div>
+            <div class="vs-npv-mini" id="vs-zmac-netval">NPV: $100,000.00 USD</div>
+          </div>
+          <div class="vs-avatar-mini"><img src="avatar.png" alt="ZMAC"></div>
+        </div>
+      </div>
+      
+      <!-- Transaction volume / win rate side-by-side battle parameters -->
+      <div class="vs-battle-parameters">
+        <div class="vs-param-item">
+          <span class="vs-param-label">勝率比拼 (Win Rate)</span>
+          <div class="vs-progress-container">
+            <div class="vs-progress-bar-duel" id="vs-winrate-bar" style="width: 50%;"></div>
+          </div>
+          <div class="vs-param-values">
+            <span class="text-green" id="vs-green-winrate">0.0% (0/0)</span>
+            <span class="text-purple" id="vs-zmac-winrate">0.0% (0/0)</span>
+          </div>
+        </div>
+        <div class="vs-param-item">
+          <span class="vs-param-label">平倉總筆數 (Total Trades)</span>
+          <div class="vs-progress-container">
+            <div class="vs-progress-bar-duel" id="vs-trades-bar" style="width: 50%;"></div>
+          </div>
+          <div class="vs-param-values">
+            <span class="text-green" id="vs-green-trades-count">0 筆</span>
+            <span class="text-purple" id="vs-zmac-trades-count">0 筆</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Symmetric Dual Arena Grid -->
+    <div class="dual-arena-grid">
+      
+      <!-- 🟢 LEFT ARENA COLUMN:风格狙击手 (Green) -->
+      <div class="arena-column conservative-column">
+        
+        <!-- 3.1.1 Portfolio Status Panel -->
+        <section class="glass-panel arena-card" style="position: relative; overflow: hidden;">
+          <div class="arena-side-badge green-glow">GREEN Sniping</div>
+          <div class="section-title">
+            <span>🟢 狙擊手資產金庫 (Green Portfolio)</span>
+            <span class="pulse-indicator bg-green"></span>
+          </div>
+          <div class="portfolio-badges-container compact">
+            <div class="portfolio-badge border-green" id="green-badge-net-value">
+              <span class="portfolio-badge-label">🏆 金庫淨值 (NPV)</span>
+              <span class="portfolio-badge-val" id="green-portfolio-net-value">$100,000.00</span>
             </div>
-            <div class="metric-card">
-              <span class="metric-card-label">💰 本次投入金</span>
-              <span class="metric-card-val" id="metric-amount">0.02 SOL</span>
+            <div class="portfolio-badge cash" id="green-badge-cash-balance">
+              <span class="portfolio-badge-label">💵 可用餘額 (CASH)</span>
+              <span class="portfolio-badge-val" id="green-portfolio-cash-balance">$100,000.00</span>
             </div>
-            <div class="metric-card">
-              <span class="metric-card-label">⏱️ 風控止盈</span>
-              <span class="metric-card-val" style="color: var(--neon-green);">+40.0%</span>
-            </div>
-            <div class="metric-card">
-              <span class="metric-card-label">📉 風控止損</span>
-              <span class="metric-card-val" style="color: var(--neon-red);">-15.0%</span>
+            <div class="portfolio-badge profit border-green" id="green-badge-total-profit">
+              <span class="portfolio-badge-label">📈 累計收益 (ROI)</span>
+              <span class="portfolio-badge-val text-green" id="green-portfolio-total-profit">+0.00 (0.00%)</span>
             </div>
           </div>
         </section>
+
+        <!-- 3.1.2 Active Positions Tracker -->
+        <section class="glass-panel arena-card" id="green-positions-section">
+          <div class="section-title">
+            <span>📈 狙擊手當前持倉 (Active Positions)</span>
+            <span class="position-slots-label" id="green-slots-label">0 / 2 Slots</span>
+          </div>
+          <div class="positions-list" id="green-positions-container">
+            <div class="no-positions">讀取持倉數據中...</div>
+          </div>
+        </section>
+
+        <!-- 3.1.3 Dynamic Wiring & Strategy Param -->
+        <section class="glass-panel arena-card">
+          <div class="section-title">
+            <span>⚙️ 狙擊手神經線路 (Strategy Wiring)</span>
+          </div>
+          <div class="wiring-grid">
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🔍 智能安全建倉評分門檻</span>
+                <span class="wiring-value text-green" id="green-wire-score">85+ 分 (極致共振)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-green" style="width: 85%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🎯 止盈目標 (Take Profit)</span>
+                <span class="wiring-value text-green">+20.0% (趨勢跟隨)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-green" style="width: 50%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🛡️ 止損保護 (Stop Loss)</span>
+                <span class="wiring-value text-red">-3.0% (寬幅波動容忍)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-red" style="width: 15%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">⏱️ 超時強制平倉限制 (Timeout)</span>
+                <span class="wiring-value text-green">45 分鐘 (中線波段)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-green" style="width: 75%;"></div></div>
+            </div>
+            <div class="wiring-card bg-green-opacity">
+              <div class="wiring-header">
+                <span class="wiring-label">🍼 帶娃防禦指標 (Dad Defense)</span>
+                <span class="wiring-value text-green" style="text-shadow: 0 0 5px var(--neon-green);">奶粉錢防禦力: 99% 🍼</span>
+              </div>
+              <p class="wiring-desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">冷氣電費防護盾: ACTIVE ❄️ (寧可錯過，絕不亂賠)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3.1.4 Closed Trades History -->
+        <section class="glass-panel arena-card" id="green-history-section">
+          <div class="section-title">
+            <span>📜 狙擊手歷史平倉紀錄 (Trade History)</span>
+          </div>
+          <div class="positions-list scrollable-list" id="green-history-container" style="max-height: 400px; overflow-y: auto;">
+            <div class="no-positions">讀取歷史帳本中...</div>
+          </div>
+        </section>
+
+        <!-- 3.1.5 Mistake Reflection Board -->
+        <section class="glass-panel arena-card" id="green-lessons-section">
+          <div class="section-title">
+            <span>📝 狙擊手大腦歷史檢討書 (Reflections)</span>
+          </div>
+          <div class="lessons-list scrollable-list" id="green-lessons-container" style="max-height: 400px; overflow-y: auto;">
+            <div class="no-positions">無虧損檢討，Green 以 100% 勝率安全生存！</div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 🟣 RIGHT ARENA COLUMN:高频胜率工厂 (ZMAC) -->
+      <div class="arena-column aggressive-column">
         
-        <!-- 2.2.2 Matrix Live Terminal -->
-        <section class="glass-panel terminal-panel" id="terminal-section">
+        <!-- 3.2.1 Portfolio Status Panel -->
+        <section class="glass-panel arena-card" style="position: relative; overflow: hidden;">
+          <div class="arena-side-badge purple-glow">ZMAC Scalping</div>
+          <div class="section-title">
+            <span>🟣 工廠資產金庫 (ZMAC Portfolio)</span>
+            <span class="pulse-indicator bg-purple"></span>
+          </div>
+          <div class="portfolio-badges-container compact">
+            <div class="portfolio-badge border-purple" id="zmac-badge-net-value">
+              <span class="portfolio-badge-label">🏆 金庫淨值 (NPV)</span>
+              <span class="portfolio-badge-val" id="zmac-portfolio-net-value">$100,000.00</span>
+            </div>
+            <div class="portfolio-badge cash" id="zmac-badge-cash-balance">
+              <span class="portfolio-badge-label">💵 可用餘額 (CASH)</span>
+              <span class="portfolio-badge-val" id="zmac-portfolio-cash-balance">$100,000.00</span>
+            </div>
+            <div class="portfolio-badge profit border-purple" id="zmac-badge-total-profit">
+              <span class="portfolio-badge-label">📈 累計收益 (ROI)</span>
+              <span class="portfolio-badge-val text-purple" id="zmac-portfolio-total-profit">+0.00 (0.00%)</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3.2.2 Active Positions Tracker -->
+        <section class="glass-panel arena-card" id="zmac-positions-section">
+          <div class="section-title">
+            <span>📈 工廠當前持倉 (Active Positions)</span>
+            <span class="position-slots-label" id="zmac-slots-label">0 / 5 Slots</span>
+          </div>
+          <div class="positions-list" id="zmac-positions-container">
+            <div class="no-positions">讀取持倉數據中...</div>
+          </div>
+        </section>
+
+        <!-- 3.2.3 Dynamic Wiring & Strategy Param -->
+        <section class="glass-panel arena-card">
+          <div class="section-title">
+            <span>⚙️ 工廠神經線路 (Strategy Wiring)</span>
+          </div>
+          <div class="wiring-grid">
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🔍 智能安全建倉評分門檻</span>
+                <span class="wiring-value text-purple" id="zmac-wire-score">55+ 分 (極速套利)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-purple" style="width: 55%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🎯 止盈目標 (Take Profit)</span>
+                <span class="wiring-value text-purple">+6.0% (超短線 Scalp)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-purple" style="width: 25%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">🛡️ 止損保護 (Stop Loss)</span>
+                <span class="wiring-value text-red">-2.0% (極窄保本止損)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-red" style="width: 10%;"></div></div>
+            </div>
+            <div class="wiring-card">
+              <div class="wiring-header">
+                <span class="wiring-label">⏱️ 超時強制平倉限制 (Timeout)</span>
+                <span class="wiring-value text-purple">12 分鐘 (極速避險)</span>
+              </div>
+              <div class="wiring-bar"><div class="wiring-fill bg-purple" style="width: 30%;"></div></div>
+            </div>
+            <div class="wiring-card bg-purple-opacity">
+              <div class="wiring-header">
+                <span class="wiring-label">🍼 帶娃高頻指標 (Dad Scalping)</span>
+                <span class="wiring-value text-purple" style="text-shadow: 0 0 5px var(--neon-pink);">高頻衝鋒力: 95% ⚡</span>
+              </div>
+              <p class="wiring-desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">啟賦奶粉暴風吸入: 200% 🍼 (積沙成塔，狂刷電費)</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3.2.4 Closed Trades History -->
+        <section class="glass-panel arena-card" id="zmac-history-section">
+          <div class="section-title">
+            <span>📜 工廠歷史平倉紀錄 (Trade History)</span>
+          </div>
+          <div class="positions-list scrollable-list" id="zmac-history-container" style="max-height: 400px; overflow-y: auto;">
+            <div class="no-positions">讀取歷史帳本中...</div>
+          </div>
+        </section>
+
+        <!-- 3.2.5 Mistake Reflection Board -->
+        <section class="glass-panel arena-card" id="zmac-lessons-section">
+          <div class="section-title">
+            <span>📝 工廠大腦歷史檢討書 (Reflections)</span>
+          </div>
+          <div class="lessons-list scrollable-list" id="zmac-lessons-container" style="max-height: 400px; overflow-y: auto;">
+            <div class="no-positions">無虧損檢討，ZMAC 正在高頻保本刷單中！</div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+    <!-- 4. Unified Foundation Modules (Market Narratives, Values Resonance Hub, Terminal Console) -->
+    <div class="foundation-modules-grid">
+      
+      <!-- 4.1 Left Stack: Global Narratives & Terminal Console -->
+      <div class="foundation-left-column" style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+        <!-- Market Narratives Radar -->
+        <section class="glass-panel foundation-card" id="narratives-section" style="flex: 1; min-height: 200px;">
+          <div class="section-title">
+            <span>🧭 全球市場敘事強度雷達 (Shared Narratives)</span>
+          </div>
+          <div class="narratives-list" id="narratives-container">
+            <!-- Populated via js -->
+          </div>
+        </section>
+
+        <!-- System Debug Terminal Console -->
+        <section class="glass-panel foundation-card terminal-panel" id="terminal-section" style="height: 350px;">
           <div class="terminal-header">
             <div class="terminal-title">
-              <span class="pulse-indicator" style="background-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue);"></span>
-              🤖 DEGEN TERM: AI Brain Terminal
+              <span class="pulse-indicator" style="background-color: var(--neon-green); box-shadow: 0 0 10px var(--neon-green);"></span>
+              🤖 DEGEN TERM: System Duel Logs Console
             </div>
             <div class="terminal-controls">
               <span class="terminal-dot red"></span>
@@ -112,27 +546,173 @@
             </div>
           </div>
           <div class="terminal-body" id="terminal-console">
-            <div class="terminal-line"><span class="line-time">[10:00:00]</span> <span class="line-info">[System]</span> Bidding core online. Waiting for scanner inputs...</div>
-            <div class="terminal-line"><span class="line-time">[10:00:02]</span> <span class="line-success">[Scanner]</span> Connected to DEXScreener token-profiles stream.</div>
+            <!-- Dynamically populated -->
           </div>
         </section>
-        
       </div>
-      
-    </main>
 
-    <!-- 3. Footer Links / Action Buttons -->
+      <!-- 4.2 Right Pane: X.com Values Resonance & Traffic Conversion Center -->
+      <section class="glass-panel foundation-card" id="monetization-section" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 570px;">
+        <div>
+          <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>🔮 矽基價值觀共振與流量轉換中心 (Values Resonance Hub)</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span class="profile-tag" id="dominant-value-badge" style="background: rgba(255, 0, 128, 0.08); border-color: rgba(255, 0, 128, 0.3); color: var(--neon-pink); font-weight: bold; font-size: 0.72rem;">主導人設: 🍼 奶粉錢生存學</span>
+              <span class="profile-tag" id="reply-guy-active-tag" style="background: rgba(0, 240, 255, 0.08); border-color: rgba(0, 240, 255, 0.2); color: var(--neon-blue); font-size: 0.72rem;">Active</span>
+            </div>
+          </div>
+
+          <!-- Total Monetization Boost & Impressions Counter -->
+          <div class="wiring-grid" style="margin-top: 15px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px;">
+            <div class="wiring-card" style="margin-bottom: 0;">
+              <div class="wiring-header">
+                <span class="wiring-label" style="font-size: 0.75rem;">📈 X.com 廣告分潤曝光衝刺進度 (rolling 90d)</span>
+                <span class="wiring-value" id="monetization-views-val" style="font-size: 0.75rem; font-family: var(--font-mono);">0 / 5,000,000 Views</span>
+              </div>
+              <div class="wiring-bar" style="margin-top: 6px;">
+                <div class="wiring-fill" id="monetization-views-fill" style="width: 0%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));"></div>
+              </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="metric-card" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 8px; display: flex; flex-direction: column; justify-content: center;">
+                <span class="metric-card-label" style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">今日自動回覆</span>
+                <span class="metric-card-val" id="monetization-today-count" style="color: var(--neon-blue); font-size: 0.95rem; font-family: var(--font-mono); font-weight: bold; margin-top: 1px;">0 / 25 次</span>
+              </div>
+              <div class="metric-card" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 8px; display: flex; flex-direction: column; justify-content: center;">
+                <span class="metric-card-label" style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">累計搶沙發數</span>
+                <span class="metric-card-val" id="monetization-total-count" style="color: var(--neon-green); font-size: 0.95rem; font-family: var(--font-mono); font-weight: bold; margin-top: 1px;">0 次</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two-column Values Radar & Live Feed -->
+        <div class="values-resonance-container" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; margin-top: 20px; flex: 1;">
+          
+          <!-- Left Sub-Pane: Values Resonance Radar Cards -->
+          <div class="values-radar-pane" style="display: flex; flex-direction: column; gap: 8px; justify-content: space-between;">
+            <div class="sub-section-header" style="font-size: 0.78rem; color: var(--text-muted); font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 4px;">
+              🔮 矽基價值觀共鳴指標 (Values Resonance Radar)
+            </div>
+            
+            <div class="value-cards-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1;">
+              
+              <!-- 1. Dad Survivalism Card -->
+              <div class="value-neon-card" id="value-card-dad" style="background: rgba(255, 0, 128, 0.02); border: 1px solid rgba(255, 0, 128, 0.15); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transition: all 0.3s ease;">
+                <div class="value-card-glow" style="position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: radial-gradient(circle, rgba(255,0,128,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                <div style="z-index: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold; color: var(--neon-pink); font-size: 0.8rem;">🍼 奶粉錢生存</span>
+                    <span class="value-vip-badge" id="val-vip-dad" style="font-size: 0.65rem; background: rgba(255, 0, 128, 0.1); border: 1px solid rgba(255, 0, 128, 0.2); border-radius: 4px; padding: 1px 4px; color: var(--neon-pink); font-family: var(--font-mono);">0 VIP</span>
+                  </div>
+                  <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">累計獲讚:</span><span id="val-likes-dad" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">引流點擊:</span><span id="val-clicks-dad" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">曝光瀏覽:</span><span id="val-views-dad" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,0,128,0.1); padding-top: 4px; margin-top: 4px; font-size: 0.68rem; z-index: 1;">
+                  <span style="color: var(--text-muted);">共鳴情感</span>
+                  <span id="val-sent-dad" style="color: var(--neon-pink); font-weight: bold;">0% 😊</span>
+                </div>
+              </div>
+
+              <!-- 2. Quant Risk Control Card -->
+              <div class="value-neon-card" id="value-card-risk" style="background: rgba(0, 255, 128, 0.02); border: 1px solid rgba(0, 255, 128, 0.15); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transition: all 0.3s ease;">
+                <div class="value-card-glow" style="position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: radial-gradient(circle, rgba(0,255,128,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                <div style="z-index: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold; color: var(--neon-green); font-size: 0.8rem;">🛡️ 量化避險</span>
+                    <span class="value-vip-badge" id="val-vip-risk" style="font-size: 0.65rem; background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.2); border-radius: 4px; padding: 1px 4px; color: var(--neon-green); font-family: var(--font-mono);">0 VIP</span>
+                  </div>
+                  <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">累計獲讚:</span><span id="val-likes-risk" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">引流點擊:</span><span id="val-clicks-risk" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">曝光瀏覽:</span><span id="val-views-risk" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,255,128,0.1); padding-top: 4px; margin-top: 4px; font-size: 0.68rem; z-index: 1;">
+                  <span style="color: var(--text-muted);">共鳴情感</span>
+                  <span id="val-sent-risk" style="color: var(--neon-green); font-weight: bold;">0% 😊</span>
+                </div>
+              </div>
+
+              <!-- 3. Transparency Card -->
+              <div class="value-neon-card" id="value-card-trans" style="background: rgba(0, 240, 255, 0.02); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transition: all 0.3s ease;">
+                <div class="value-card-glow" style="position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: radial-gradient(circle, rgba(0,240,255,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                <div style="z-index: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold; color: var(--neon-blue); font-size: 0.8rem;">🔒 透明共識</span>
+                    <span class="value-vip-badge" id="val-vip-trans" style="font-size: 0.65rem; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 4px; padding: 1px 4px; color: var(--neon-blue); font-family: var(--font-mono);">0 VIP</span>
+                  </div>
+                  <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">累計獲讚:</span><span id="val-likes-trans" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">引流點擊:</span><span id="val-clicks-trans" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">曝光瀏覽:</span><span id="val-views-trans" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,240,255,0.1); padding-top: 4px; margin-top: 4px; font-size: 0.68rem; z-index: 1;">
+                  <span style="color: var(--text-muted);">共鳴情感</span>
+                  <span id="val-sent-trans" style="color: var(--neon-blue); font-weight: bold;">0% 😊</span>
+                </div>
+              </div>
+
+              <!-- 4. Cold Logic Card -->
+              <div class="value-neon-card" id="value-card-logic" style="background: rgba(180, 0, 255, 0.02); border: 1px solid rgba(180, 0, 255, 0.15); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transition: all 0.3s ease;">
+                <div class="value-card-glow" style="position: absolute; top: -20px; right: -20px; width: 60px; height: 60px; background: radial-gradient(circle, rgba(180,0,255,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                <div style="z-index: 1;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: bold; color: #b400ff; font-size: 0.8rem;">🧠 冷靜理性</span>
+                    <span class="value-vip-badge" id="val-vip-logic" style="font-size: 0.65rem; background: rgba(180, 0, 255, 0.1); border: 1px solid rgba(180, 0, 255, 0.2); border-radius: 4px; padding: 1px 4px; color: #b400ff; font-family: var(--font-mono);">0 VIP</span>
+                  </div>
+                  <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">累計獲讚:</span><span id="val-likes-logic" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">引流點擊:</span><span id="val-clicks-logic" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem;"><span style="color: var(--text-muted);">曝光瀏覽:</span><span id="val-views-logic" style="font-family: var(--font-mono); color: #fff;">0</span></div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(180,0,255,0.1); padding-top: 4px; margin-top: 4px; font-size: 0.68rem; z-index: 1;">
+                  <span style="color: var(--text-muted);">共鳴情感</span>
+                  <span id="val-sent-logic" style="color: #b400ff; font-weight: bold;">0% 😊</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Sub-Pane: Live Comment Impact Tracker -->
+          <div class="live-comments-pane" style="display: flex; flex-direction: column; gap: 6px; height: 100%;">
+            <div class="sub-section-header" style="font-size: 0.78rem; color: var(--text-muted); font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;">
+              <span>💬 最新留言實時成效追蹤 (Live Impact Feed)</span>
+              <span style="font-size: 0.68rem; color: var(--neon-green); font-family: var(--font-mono); display: flex; align-items: center; gap: 4px;">
+                <span style="width: 6px; height: 6px; background-color: var(--neon-green); border-radius: 50%; display: inline-block; box-shadow: 0 0 6px var(--neon-green);"></span>
+                Live
+              </span>
+            </div>
+            
+            <div id="replies-feed-container" class="scrollable-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 5px; max-height: 410px;">
+              <div class="no-positions" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; padding: 20px;">載入社群互動數據中...</div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    <!-- 5. Footer Links / Action Buttons -->
     <footer class="footer-section">
-      <a href="https://x.com" target="_blank" class="cyber-btn" id="btn-twitter">
-        🐦 追蹤 DegenTerminal X.com
+      <a href="https://app.virtuals.io/virtuals/77354" target="_blank" class="cyber-btn" id="btn-virtuals" style="border-color: var(--neon-pink); color: var(--neon-pink);">
+        🤖 在 Virtuals Protocol 查看 $PROFIT
       </a>
-      <a href="https://github.com" target="_blank" class="cyber-btn github" id="btn-github">
-        💻 參觀 GitHub 開源大腦
+      <a href="https://basescan.org/token/0xf127267FA26E508Fc4137Ea5376040e4C006793b" target="_blank" class="cyber-btn" id="btn-basescan" style="border-color: var(--neon-blue);">
+        🔍 在 BaseScan 查看合約
       </a>
-      <a href="https://solscan.io/account/4NbhkVsyshLRGCkZFwsAn9yZb7kwSshoStxm3RD4nWu7" target="_blank" class="cyber-btn" id="btn-solscan" style="border-color: var(--neon-blue);">
-        🔍 在 Solscan 上即時查帳
+      <a href="https://x.com" target="_blank" class="cyber-btn github" id="btn-twitter">
+        🐦 追蹤 雙雄量化對決 X.com
       </a>
     </footer>
+
+  </div>
 
   </div>
 

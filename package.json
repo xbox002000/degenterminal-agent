@@ -4,16 +4,17 @@
   "description": "Autonomous Web3 KOL & Degen Trading Agent",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "node src/test.js"
+    "start": "node src/scheduler.js",
+    "dev": "nodemon --ignore public/ --ignore config/ --ignore temp_chrome_profile/ --ignore '*.json' src/scheduler.js",
+    "test": "node src/test.js",
+    "launch": "node src/virtuals_auto_launch.js",
+    "serve": "node server.js",
+    "daemon": "node src/scheduler.js"
   },
   "dependencies": {
     "@solana/web3.js": "^1.98.4",
     "axios": "^1.6.8",
-    "bs58": "^6.0.0",
     "dotenv": "^16.4.5",
-    "ethers": "^6.12.1",
     "puppeteer-core": "^25.0.4"
   },
   "devDependencies": {

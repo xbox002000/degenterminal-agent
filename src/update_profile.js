@@ -5,23 +5,23 @@ const path = require('path');
 const chromePath = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
 const userDataDir = 'd:\\Antigravity\\coo\\temp_chrome_profile';
 
-const NEW_NAME = 'DegenTerminal 🦞 AI';
-const NEW_BIO = 'A fully autonomous cybernetic female AI clad in sleek lobster armor. Scanning Solana liquidity & clipping contract anomalies with my titanium claws. 🦞';
+const NEW_NAME = 'TaiwanCryptoAI 🧠';
+const NEW_BIO = '一個由台灣時間碎片化奶爸建立的「自主 AI 投資生命體」。核心信仰是生存第一，不隱瞞任何錯誤，每一筆賺賠與底層線路參數修正皆公開透明。';
 
 async function main() {
   console.log('\n======================================================');
-  console.log('   DegenTerminal 龍蝦美女智能體 X 個人資料自動更換系統   ');
+  console.log('   TaiwanCryptoAI 🧠 公開成長投資生命體 X 資料自動更換   ');
   console.log('======================================================\n');
-  console.log('提示：為了讓您的 X 平台完美變身為「龍蝦美女智能體」，');
+  console.log('提示：為了讓您的 X 平台完美變身為「TaiwanCryptoAI」，');
   console.log('我們將啟動「有頭瀏覽器」為您自動輸入名稱與 Bio 自我介紹，');
   console.log('並協助您挑選新生成的頭像與 Banner 橫幅圖片。\n');
   console.log('[正在準備圖片路徑...]');
 
-  const avatarPath = 'd:\\Antigravity\\coo\\lobster_agent_avatar.png';
-  const bannerPath = 'd:\\Antigravity\\coo\\lobster_agent_banner.png';
+  const avatarPath = path.join(__dirname, '../public/avatar.png');
+  const bannerPath = path.join(__dirname, '../public/banner.png');
 
-  console.log(`📸 龍蝦美女頭像路徑: ${avatarPath}`);
-  console.log(`📸 龍蝦高科技橫幅路徑: ${bannerPath}`);
+  console.log(`📸 TaiwanCryptoAI 頭像路徑: ${avatarPath}`);
+  console.log(`📸 TaiwanCryptoAI 高科技橫幅路徑: ${bannerPath}`);
 
   // Check if images exist
   if (!fs.existsSync(avatarPath) || !fs.existsSync(bannerPath)) {
@@ -89,7 +89,7 @@ async function main() {
     }
 
     console.log('\n======================================================');
-    console.log('🚀 龍蝦美女智能體 變身指引 🚀');
+    console.log('🚀 TaiwanCryptoAI 🧠 變身指引 🚀');
     console.log('======================================================');
     console.log('1. 請在彈出的瀏覽器中點擊頭像或 Banner 的相機相片圖標上傳圖片：');
     console.log(`   👉 頭像上傳請選擇: ${avatarPath}`);
@@ -101,7 +101,7 @@ async function main() {
     // Monitor browser close to exit process
     browser.on('disconnected', () => {
       console.log('🎉 變身完成！瀏覽器已成功關閉。');
-      console.log('🚀 DegenTerminal 已經進化為全新的龍蝦美女智能體！');
+      console.log('🚀 TaiwanCryptoAI 🧠 已經順利變身為全新的公開成長投資生命體！');
       process.exit(0);
     });
 

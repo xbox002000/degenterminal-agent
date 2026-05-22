@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Local Configuration & Sensitive Wallet Data
+config/wallet.enc
+
+# Local Browser Sessions & Temporary Profiles
+temp_chrome_profile/
+.gemini/
+
+# Logs and Debug Media
+*.log
+*.png
+*.jpg
+*.jpeg
+
+# Environment Variables
+.env
+.env.local
+
+# OS Metadata
+.DS_Store
+Thumbs.db

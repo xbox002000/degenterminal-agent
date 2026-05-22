@@ -1,0 +1,150 @@
+{
+  "metrics": {
+    "mode": "LIVE",
+    "amount": "1.24"
+  },
+  "positions": [
+    {
+      "symbol": "ABKIP2",
+      "name": "Token-AbKiP2",
+      "buyTime": 1779416595981,
+      "pnlPercent": "0.00",
+      "buyPriceSol": 0.02,
+      "amountOut": 20000000
+    }
+  ],
+  "logs": [
+    {
+      "time": "10:23:15",
+      "tag": "System",
+      "type": "INFO",
+      "message": "Starting autonomous strategy loop (Live Mode: false)..."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "INFO",
+      "message": "Starting autonomous portfolio monitoring..."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "INFO",
+      "message": "Monitoring $ABKIP2 | Hold time: 22m"
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "WARNING",
+      "message": "Market API offline for $ABKIP2. Checking timeout."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "WARNING",
+      "message": "Triggered liquidation for $ABKIP2 (Reason: TAKE_PROFIT)"
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "SUCCESS",
+      "message": "Swap out succeeded! PnL: 42.00%. Tx: paper_mo"
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Scanner",
+      "type": "INFO",
+      "message": "Scanning blockchain profiles on Solana and Base..."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Scanner",
+      "type": "SUCCESS",
+      "message": "Audited 29 tokens. Sorting risk indices..."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Scanner",
+      "type": "SUCCESS",
+      "message": "Prime LOW-RISK target identified: $ABKIP2"
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "INFO",
+      "message": "Initiating automated bidding for 0.02 SOL on $ABKIP2..."
+    },
+    {
+      "time": "10:23:15",
+      "tag": "Trader",
+      "type": "SUCCESS",
+      "message": "Bidded 0.02 SOL on $ABKIP2 successfully! Tx: paper_mo"
+    },
+    {
+      "time": "10:23:22",
+      "tag": "System",
+      "type": "INFO",
+      "message": "Starting autonomous strategy loop (Live Mode: true)..."
+    },
+    {
+      "time": "10:23:22",
+      "tag": "Trader",
+      "type": "INFO",
+      "message": "Starting autonomous portfolio monitoring..."
+    },
+    {
+      "time": "10:23:22",
+      "tag": "Trader",
+      "type": "INFO",
+      "message": "Monitoring $ABKIP2 | Hold time: 0m"
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Trader",
+      "type": "WARNING",
+      "message": "Market API offline for $ABKIP2. Checking timeout."
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Scanner",
+      "type": "INFO",
+      "message": "Scanning blockchain profiles on Solana and Base..."
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Scanner",
+      "type": "SUCCESS",
+      "message": "Audited 29 tokens. Sorting risk indices..."
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Scanner",
+      "type": "SUCCESS",
+      "message": "Prime LOW-RISK target identified: $ABKIP2"
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Trader",
+      "type": "WARNING",
+      "message": "Target $ABKIP2 already in portfolio. Skipping duplicate bid."
+    },
+    {
+      "time": "10:23:23",
+      "tag": "Twitter",
+      "type": "INFO",
+      "message": "Publishing standard safety audit report to X.com..."
+    },
+    {
+      "time": "10:23:51",
+      "tag": "Twitter",
+      "type": "SUCCESS",
+      "message": "Standard audit report published successfully!"
+    },
+    {
+      "time": "10:23:51",
+      "tag": "System",
+      "type": "SUCCESS",
+      "message": "Autonomous strategy loop completed. Hibernating."
+    }
+  ]
+}

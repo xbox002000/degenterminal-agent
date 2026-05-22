@@ -1,0 +1,12 @@
+[
+  {
+    "address": "AbKiP2Jc6nM7937jTDfqoJC1bsg5FQ24Buk2iqRFpump",
+    "symbol": "ABKIP2",
+    "name": "Token-AbKiP2",
+    "buyPriceSol": 0.02,
+    "rawAmountOut": 20000000,
+    "buyTime": 1779416595981,
+    "mode": "PAPER",
+    "lastPnlPercent": "0.00"
+  }
+]

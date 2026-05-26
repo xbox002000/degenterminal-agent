@@ -47,7 +47,7 @@ const config = {
 
   // Binance Mock Trading (Testnet) Settings
   BINANCE_TRADE_ENABLED: true,
-  BINANCE_TRADE_DRY_RUN: false,                     // true = evaluate only, no orders
+  BINANCE_TRADE_DRY_RUN: true,                     // true = evaluate only, no orders
   BINANCE_TRADE_MIN_INTERVAL_MIN: 120,              // 2 hours
   BINANCE_TRADE_MAX_INTERVAL_MIN: 180,              // 3 hours
   BINANCE_TRADE_SYMBOLS: ['BTC', 'ETH', 'SOL', 'BNB'],

@@ -68,9 +68,12 @@ class PortfolioManager {
           try {
             const yieldPath = path.join(__dirname, `../../config/yield_state_${this.mode}.json`);
             if (fs.existsSync(yieldPath)) {
+              const config = require('../config');
+              const approxSolPrice = config.lastKnownSolPrice || 170;
               const yieldData = JSON.parse(fs.readFileSync(yieldPath, 'utf8'));
               const totalStakedSOL = (yieldData.jitoSolBalance || 0) + (yieldData.kaminoBalance || 0) + (yieldData.driftBalance || 0);
-              totalYieldLockedUSD = totalStakedSOL * 170;
+              const principalStakedSOL = Math.max(0, totalStakedSOL - (yieldData.totalAccruedYieldSol || 0));
+              totalYieldLockedUSD = principalStakedSOL * approxSolPrice;
             }
           } catch (e) {}
 

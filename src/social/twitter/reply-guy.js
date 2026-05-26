@@ -352,7 +352,7 @@ class XReplyGuy {
       if (llmReply) {
         // External link suppression prevention: 50% chance to append hard link, 50% chance to guide to Bio
         if (Math.random() > 0.5) {
-          const dashboardUrl = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal.vercel.app';
+          const dashboardUrl = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal-agent.pages.dev';
           llmReply.text = `${llmReply.text}\n📊 Live tracker: ${dashboardUrl}`;
         } else {
           llmReply.text = `${llmReply.text}\n📊 (check my Bio for 24/7 Live tracker)`;

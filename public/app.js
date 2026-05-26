@@ -190,15 +190,20 @@ function updateAgentSide(prefix, agent) {
   // 1. Update Portfolio Cards
   const netValEl = document.getElementById(`${prefix}-portfolio-net-value`);
   const cashValEl = document.getElementById(`${prefix}-portfolio-cash-balance`);
+  const cashLabelEl = document.querySelector(`#${prefix}-badge-cash-balance .portfolio-badge-label`);
+  const yieldValEl = document.getElementById(`${prefix}-portfolio-yield-locked`);
+  const badgeContainer = document.querySelector(`#${prefix}-badge-net-value`)?.parentElement;
   const profitValEl = document.getElementById(`${prefix}-portfolio-total-profit`);
   
   const balance = vp.balanceUSD || 100000.00;
   const netValue = vp.netValueUSD || balance;
-  const profit = vp.totalProfitUSD || 0.00;
   const initial = vp.initialBalanceUSD || 100000.00;
+  const yieldFarming = agent.yieldFarming || {};
+  const lockedYield = yieldFarming.totalYieldUSD || 0;
   
-  const profitPercent = (profit / initial) * 100;
-  const profitSign = profit >= 0 ? '+' : '';
+  const totalNetProfit = netValue - initial;
+  const profitPercent = (totalNetProfit / initial) * 100;
+  const profitSign = totalNetProfit >= 0 ? '+' : '';
   
   if (netValEl) {
     netValEl.innerText = `$${netValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
@@ -206,9 +211,25 @@ function updateAgentSide(prefix, agent) {
   if (cashValEl) {
     cashValEl.innerText = `$${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
   }
+  if (cashLabelEl) {
+    cashLabelEl.innerText = '可交易現金 (CASH)';
+  }
+  if (yieldValEl) {
+    yieldValEl.innerText = `$${lockedYield.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+  }
+  if (badgeContainer) {
+    let lockNoteEl = document.getElementById(`${prefix}-portfolio-lock-note`);
+    if (!lockNoteEl) {
+      lockNoteEl = document.createElement('div');
+      lockNoteEl.id = `${prefix}-portfolio-lock-note`;
+      lockNoteEl.className = 'portfolio-lock-note';
+      badgeContainer.insertAdjacentElement('afterend', lockNoteEl);
+    }
+    lockNoteEl.innerHTML = `NPV = \u53ef\u4ea4\u6613\u73fe\u91d1 + Active Position \u5e02\u503c + Yield \u9396\u5009\u3002Yield \u8cc7\u91d1\u6703\u8a08\u5165\u7e3d\u6de8\u503c\uff0c\u4f46\u65b0\u4ea4\u6613\u9700\u8981\u901a\u904e\u8cc7\u91d1\u53ec\u56de\u6aa2\u67e5\u624d\u6703\u8b8a\u6210 CASH\u3002`;
+  }
   if (profitValEl) {
-    profitValEl.innerText = `${profitSign}$${profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${profitSign}${profitPercent.toFixed(2)}%)`;
-    profitValEl.className = `portfolio-badge-val ${profit >= 0 ? themeClass : 'text-red'}`;
+    profitValEl.innerText = `${profitSign}$${totalNetProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} (${profitSign}${profitPercent.toFixed(2)}%)`;
+    profitValEl.className = `portfolio-badge-val ${totalNetProfit >= 0 ? themeClass : 'text-red'}`;
   }
   
   // 2. Update Active Positions & Timeouts
@@ -228,11 +249,21 @@ function updateAgentSide(prefix, agent) {
   const posContainer = document.getElementById(`${prefix}-positions-container`);
   if (posContainer) {
     if (positions.length === 0) {
+      const lockedText = lockedYield > 0
+        ? `\u76ee\u524d\u7d04 $${lockedYield.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} \u8a18\u5728 Yield \u9396\u5009\uff0c\u6703\u8a08\u5165 NPV\uff0c\u4f46\u4e0d\u7b97 active position\u3002`
+        : '\u76ee\u524d\u6c92\u6709 Yield \u9396\u5009\u8cc7\u91d1\uff0c\u7b49\u5f85\u4e0b\u4e00\u6b21\u5408\u683c\u5efa\u5009\u3002';
+      const strategyText = isGreen
+        ? 'Green \u53ea\u5728\u9ad8\u5206 Solana \u6a19\u7684\u9054\u6a19\u6642\u958b\u5009\uff1b\u4fdd\u5b88\u6a21\u5f0f\u9580\u6abb\u8f03\u9ad8\u3002'
+        : 'ZMAC \u6703\u7b49\u5f85\u9ad8\u983b\u4ea4\u6613\u8ff4\u5708\u89f8\u767c\uff1b\u77ed\u7dda\u5009\u4f4d\u53ef\u80fd\u5728 12 \u5206\u9418 timeout \u5f8c\u81ea\u52d5\u5e73\u5009\u3002';
       posContainer.innerHTML = `
         <div class="no-positions" style="padding: 30px 10px;">
-          🪐 目前無持有倉位。<br>
-          <span style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; display: inline-block;">
-            ${isGreen ? '🟢 Green 正在等待大於 85 分的超強 Confluence 訊號...' : '🟣 ZMAC 在背景每 2 分鐘極速高頻掃描，尋找建倉套利套件...'}
+          \u76ee\u524d\u6c92\u6709 Active Position<br>
+          <span class="position-empty-detail">
+            ${lockedText}<br>
+            \u96f7\u9054\u986f\u793a EXECUTE \u4ee3\u8868\u8a0a\u865f\u901a\u904e\uff0c\u771f\u6b63\u4e0b\u55ae\u4ecd\u8981\u7b49\u4ea4\u6613\u8ff4\u5708\u3001\u5009\u4f4d\u4e0a\u9650\u3001FNG \u98a8\u63a7\u8207\u8cc7\u91d1\u53ec\u56de\u6aa2\u67e5\u3002
+          </span>
+          <span class="position-empty-detail">
+            ${strategyText}
           </span>
         </div>
       `;
@@ -986,6 +1017,9 @@ function updateBinanceTerminal(binance) {
 /**
  * Update the 5-Pillar scorecard Smart Money Radar
  */
+/**
+ * Update the 5-Pillar scorecard Smart Money Radar
+ */
 function updateSmartMoneyRadar(audit) {
   const targetTitleEl = document.getElementById('radar-target-title');
   const totalScoreEl = document.getElementById('radar-total-score');
@@ -997,13 +1031,14 @@ function updateSmartMoneyRadar(audit) {
   }
   
   if (totalScoreEl) {
-    totalScoreEl.innerText = `${audit.passedPillars} / 5 分`;
+    // Show actual continuous weighted score instead of binary / 5 分
+    totalScoreEl.innerText = `${audit.passedPillars.toFixed(1)} / 6.0 分`;
     totalScoreEl.style.color = audit.success ? 'var(--neon-green)' : 'var(--neon-red)';
   }
   
   if (radarBadgeEl) {
     if (audit.success) {
-      radarBadgeEl.innerText = audit.passedPillars === 5 ? 'Elite Confluence' : 'Approved Signal';
+      radarBadgeEl.innerText = audit.passedPillars >= 10.0 ? 'Elite Confluence' : 'Approved Signal';
       radarBadgeEl.style.color = 'var(--neon-green)';
       radarBadgeEl.style.borderColor = 'rgba(57, 255, 20, 0.3)';
       radarBadgeEl.style.background = 'rgba(57, 255, 20, 0.08)';
@@ -1039,9 +1074,24 @@ function updateSmartMoneyRadar(audit) {
     
     Object.keys(details).forEach(key => {
       const p = details[key];
-      const passed = p.score === 1;
-      const statusText = passed ? 'PASSED ✅' : 'FAILED ❌';
-      const statusColor = passed ? 'var(--neon-green)' : 'var(--neon-red)';
+      // A pillar is active/passed if it captured positive/negative sentiment weights
+      const isBull = p.score > 0;
+      const isBear = p.bearishScore > 0;
+      const passed = isBull || isBear;
+      
+      let statusText = 'FAILED ❌';
+      let statusColor = 'var(--neon-red)';
+      if (isBull && isBear) {
+        statusText = `🔄 DOUBLE: +${p.score} / -${p.bearishScore}`;
+        statusColor = 'var(--neon-blue)';
+      } else if (isBull) {
+        statusText = `BULL: +${p.score} ✅`;
+        statusColor = 'var(--neon-green)';
+      } else if (isBear) {
+        statusText = `BEAR: -${p.bearishScore} 🔴`;
+        statusColor = 'var(--neon-pink)';
+      }
+      
       const summaryText = p.text.length > 180 ? p.text.slice(0, 180) + '...' : p.text;
       
       html += `
@@ -1060,4 +1110,3 @@ function updateSmartMoneyRadar(audit) {
     pillarsContainer.innerHTML = html;
   }
 }
-

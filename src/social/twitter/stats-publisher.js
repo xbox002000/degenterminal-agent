@@ -31,13 +31,11 @@ class XStatsPublisher {
 
         const greenInitial = greenVp.initialBalanceUSD || 100000;
         const greenNet = greenVp.netValueUSD || greenInitial;
-        const greenProfit = greenVp.totalProfitUSD || 0;
-        const greenRoi = (greenProfit / greenInitial) * 100;
+        const greenRoi = ((greenNet - greenInitial) / greenInitial) * 100;
 
         const zmacInitial = zmacVp.initialBalanceUSD || 100000;
         const zmacNet = zmacVp.netValueUSD || zmacInitial;
-        const zmacProfit = zmacVp.totalProfitUSD || 0;
-        const zmacRoi = (zmacProfit / zmacInitial) * 100;
+        const zmacRoi = ((zmacNet - zmacInitial) / zmacInitial) * 100;
 
         const greenHistory = green.tradeHistory || [];
         const greenWins = greenHistory.filter(t => t.pnlPercent >= 0).length;
@@ -103,8 +101,8 @@ You must return exactly a JSON array containing 3 strings:
 `;
 
     const userPrompt = `Draft the 3-tweet thread in JSON format. Ensure all CTA references point to:
-- Dashboard: ${config.social?.replyGuy?.dashboardUrl || 'https://degenterminal.vercel.app'}
-- GitHub: ${config.social?.replyGuy?.githubUrl || 'https://github.com/degenterminal-agent/degenterminal'}
+- Dashboard: ${config.social?.replyGuy?.dashboardUrl || 'https://degenterminal-agent.pages.dev'}
+- GitHub: ${config.social?.replyGuy?.githubUrl || 'https://github.com/xbox002000/degenterminal-agent'}
 - Binance: ${config.social?.replyGuy?.binanceReferralUrl || ''}
 
 JSON Output Example:
@@ -149,8 +147,8 @@ JSON Output Example:
    * Safe hard-coded high-engagement template fallback
    */
   generateTemplateFallback(stats) {
-    const dashboard = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal.vercel.app';
-    const github = config.social?.replyGuy?.githubUrl || 'https://github.com/degenterminal-agent/degenterminal';
+    const dashboard = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal-agent.pages.dev';
+    const github = config.social?.replyGuy?.githubUrl || 'https://github.com/xbox002000/degenterminal-agent';
     const binance = config.social?.replyGuy?.binanceReferralUrl || '';
 
     const tweet1 = `⚔️ [AI QUANT DUEL ARENA] ⚔️

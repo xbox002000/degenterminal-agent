@@ -176,17 +176,23 @@ const config = {
 
 // --- Dynamic SOL Price Fetch (live from DexScreener, 5min cache) ---
 let _solPriceCache = { price: 170, timestamp: 0 };
+config.lastKnownSolPrice = 170;
 config.getSolPrice = async function () {
-  if (Date.now() - _solPriceCache.timestamp < 300000) return _solPriceCache.price;
+  if (Date.now() - _solPriceCache.timestamp < 300000) {
+    config.lastKnownSolPrice = _solPriceCache.price;
+    return _solPriceCache.price;
+  }
   try {
     const resp = await axios.get('https://api.dexscreener.com/latest/dex/pairs/solana/So11111111111111111111111111111111111111112', { timeout: 5000 });
     if (resp.data && resp.data.pair && resp.data.pair.priceUsd) {
       _solPriceCache = { price: parseFloat(resp.data.pair.priceUsd), timestamp: Date.now() };
+      config.lastKnownSolPrice = _solPriceCache.price;
       console.log(`[SOL Price] Updated: $${_solPriceCache.price}`);
     }
   } catch (e) {
     console.warn(`[SOL Price] Fetch failed: ${e.message}, using cached/fallback: $${_solPriceCache.price}`);
   }
+  config.lastKnownSolPrice = _solPriceCache.price;
   return _solPriceCache.price;
 };
 

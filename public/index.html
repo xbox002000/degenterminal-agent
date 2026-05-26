@@ -409,9 +409,13 @@
               <span class="portfolio-badge-label">🏆 金庫淨值 (NPV)</span>
               <span class="portfolio-badge-val" id="green-portfolio-net-value">$100,000.00</span>
             </div>
-            <div class="portfolio-badge cash" id="green-badge-cash-balance">
-              <span class="portfolio-badge-label">💵 可用餘額 (CASH)</span>
+            <div class="portfolio-badge cash" id="green-badge-cash-balance" title="可立即用於新交易的虛擬美元現金；已投入收益池的資金不包含在這裡。">
+              <span class="portfolio-badge-label">可交易現金 (CASH)</span>
               <span class="portfolio-badge-val" id="green-portfolio-cash-balance">$100,000.00</span>
+            </div>
+            <div class="portfolio-badge yield-lock" id="green-badge-yield-locked" title="目前記在 JitoSOL / Kamino / Drift 等收益池的虛擬鎖倉資產，會計入 NPV，但不是立即可下單現金。">
+              <span class="portfolio-badge-label">Yield 鎖倉</span>
+              <span class="portfolio-badge-val" id="green-portfolio-yield-locked">$0.00</span>
             </div>
             <div class="portfolio-badge profit border-green" id="green-badge-total-profit">
               <span class="portfolio-badge-label">📈 累計收益 (ROI)</span>
@@ -512,9 +516,13 @@
               <span class="portfolio-badge-label">🏆 金庫淨值 (NPV)</span>
               <span class="portfolio-badge-val" id="zmac-portfolio-net-value">$100,000.00</span>
             </div>
-            <div class="portfolio-badge cash" id="zmac-badge-cash-balance">
-              <span class="portfolio-badge-label">💵 可用餘額 (CASH)</span>
+            <div class="portfolio-badge cash" id="zmac-badge-cash-balance" title="可立即用於新交易的虛擬美元現金；已投入收益池的資金不包含在這裡。">
+              <span class="portfolio-badge-label">可交易現金 (CASH)</span>
               <span class="portfolio-badge-val" id="zmac-portfolio-cash-balance">$100,000.00</span>
+            </div>
+            <div class="portfolio-badge yield-lock" id="zmac-badge-yield-locked" title="目前記在 JitoSOL / Kamino / Drift 等收益池的虛擬鎖倉資產，會計入 NPV，但不是立即可下單現金。">
+              <span class="portfolio-badge-label">Yield 鎖倉</span>
+              <span class="portfolio-badge-val" id="zmac-portfolio-yield-locked">$0.00</span>
             </div>
             <div class="portfolio-badge profit border-purple" id="zmac-badge-total-profit">
               <span class="portfolio-badge-label">📈 累計收益 (ROI)</span>
@@ -1014,10 +1022,10 @@
       try {
         const greenRoi = document.getElementById("vs-green-roi").innerText;
         const zmacRoi = document.getElementById("vs-zmac-roi").innerText;
-        const text = encodeURIComponent(`⚔️ DegenTerminal AI 雙雄實時戰況！\n🟢 風格狙擊手 Green ROI: ${greenRoi}\n🟣 高頻勝率工廠 ZMAC ROI: ${zmacRoi}\n24/7 實盤在線對決中！一鍵部署你自己的交易大腦：\n👉 https://degenterminal.vercel.app #AIAgent #Solana #量化交易`);
+        const text = encodeURIComponent(`⚔️ DegenTerminal AI 雙雄實時戰況！\n🟢 風格狙擊手 Green ROI: ${greenRoi}\n🟣 高頻勝率工廠 ZMAC ROI: ${zmacRoi}\n24/7 實盤在線對決中！即時數據看板與一鍵部署：\n👉 https://degenterminal-agent.pages.dev #AIAgent #Solana #量化交易`);
         window.open(`https://x.com/intent/tweet?text=${text}`, '_blank');
       } catch (e) {
-        window.open(`https://x.com/intent/tweet?text=${encodeURIComponent('DegenTerminal 24/7 AI 交易雙雄平行對決實時看板，完全開源一鍵部署！')}`, '_blank');
+        window.open(`https://x.com/intent/tweet?text=${encodeURIComponent('DegenTerminal 24/7 AI 交易雙雄平行對決實時看板，完全開源與 GitHub 連動自動部署！👉 https://degenterminal-agent.pages.dev')}`, '_blank');
       }
     }
     

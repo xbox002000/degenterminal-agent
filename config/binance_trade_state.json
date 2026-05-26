@@ -1,0 +1,87 @@
+{
+  "stats": {
+    "totalTrades": 2,
+    "winningTrades": 0,
+    "losingTrades": 0,
+    "totalSpotPnL": 0,
+    "totalFuturesPnL": 0,
+    "dailyTradeCount": 0,
+    "lastTradeDate": "2026-05-26",
+    "weeklyTradeCount": 2,
+    "lastWeekStart": "2026-05-23"
+  },
+  "openPositions": [
+    {
+      "symbol": "BTC",
+      "time": "2026-05-25T04:23:13.957Z",
+      "status": "open",
+      "type": "LIVE",
+      "spotOrderId": 9797701,
+      "futuresOrderId": 13191200427,
+      "stopOrderId": null,
+      "spotUsdt": 500,
+      "futuresUsdt": 500,
+      "leverage": 5,
+      "entryPrice": 0,
+      "stopLoss": 0,
+      "takeProfit": 0,
+      "pillarsPassed": 5,
+      "pillarScores": {
+        "smartMoneyConfirm": 1,
+        "multiWalletResonance": 1,
+        "entityIdentification": 1,
+        "exchangeNetFlow": 1,
+        "marketCycle": 1
+      },
+      "pillarsDetail": "1. 聰明錢歷史高勝率確認; 2. 多錢包同時間段共振; 3. Arkham 機構實體識別 (排除散戶); 4. 交易所淨流向稽核 (流出至冷錢包); 5. Glassnode 宏觀週期階段 (大盤累積期)",
+      "spotMode": "PAPER_MOCK",
+      "futuresMode": "LIVE_TESTNET"
+    },
+    {
+      "symbol": "BTC",
+      "time": "2026-05-25T06:07:13.786Z",
+      "status": "open",
+      "type": "LIVE",
+      "spotOrderId": 1302671,
+      "futuresOrderId": 13191577977,
+      "stopOrderId": null,
+      "spotUsdt": 500,
+      "futuresUsdt": 500,
+      "leverage": 5,
+      "entryPrice": 0,
+      "stopLoss": 0,
+      "takeProfit": 0,
+      "pillarsPassed": 5,
+      "pillarScores": {
+        "smartMoneyConfirm": 1,
+        "multiWalletResonance": 1,
+        "entityIdentification": 1,
+        "exchangeNetFlow": 1,
+        "marketCycle": 1
+      },
+      "pillarsDetail": "1. 聰明錢歷史高勝率確認; 2. 多錢包同時間段共振; 3. Arkham 機構實體識別 (排除散戶); 4. 交易所淨流向稽核 (流出至冷錢包); 5. Glassnode 宏觀週期階段 (大盤累積期)",
+      "spotMode": "PAPER_MOCK",
+      "futuresMode": "LIVE_TESTNET"
+    }
+  ],
+  "closedTrades": [],
+  "blacklist": {
+    "BTC": {
+      "cooldownUntil": null,
+      "consecutiveLosses": 0
+    },
+    "ETH": {
+      "cooldownUntil": null,
+      "consecutiveLosses": 0
+    },
+    "SOL": {
+      "cooldownUntil": null,
+      "consecutiveLosses": 0
+    },
+    "BNB": {
+      "cooldownUntil": null,
+      "consecutiveLosses": 0
+    }
+  },
+  "dryRun": false
+}

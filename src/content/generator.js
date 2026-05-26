@@ -81,7 +81,7 @@ class ContentGenerator {
    * @param {object} context Dynamic data payload (auditedTokens, marketTrends, etc.)
    * @returns {string} Sanitized output text ready for publishing
    */
-  generateContent(type, context = {}) {
+  async generateContent(type, context = {}) {
     const day = brain.memory.day_count || 1;
     const balance = context.balance !== undefined ? context.balance : (brain.virtualPortfolio?.balanceUSD || 100000);
     const auditFeed = context.auditedTokens || [];
@@ -95,7 +95,7 @@ class ContentGenerator {
         balance,
         auditFeed
       };
-      return this.generateWithLlm(type, llmContext);
+      return await this.generateWithLlm(type, llmContext);
     }
 
     // Fallback: template generation

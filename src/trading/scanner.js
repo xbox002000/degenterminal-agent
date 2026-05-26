@@ -73,7 +73,12 @@ class OnChainScanner {
         headers: { 'User-Agent': 'Mozilla/5.0' },
         timeout: 10000
       });
-      const pairs = response.data && response.data.pairs ? response.data.pairs : [];
+      let pairs = [];
+      if (Array.isArray(response.data)) {
+        pairs = response.data;
+      } else if (response.data && response.data.pairs) {
+        pairs = response.data.pairs;
+      }
       if (pairs.length === 0) return null;
       // Return the pair with the highest liquidity
       return pairs.sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0))[0];
@@ -345,7 +350,7 @@ class OnChainScanner {
       }
     } else {
       isHardRejected = true;
-      rejectReason = 'Missing Pair Data';
+      rejectReason = 'Missing Pair Data | ';
     }
 
     if (isHardRejected) {

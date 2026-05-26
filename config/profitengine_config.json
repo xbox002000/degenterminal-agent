@@ -1,0 +1,25 @@
+{
+  "agentName": "ProfitEngine AI",
+  "ticker": "$PROFIT",
+  "virtualsId": "77354",
+  "virtualsUrl": "https://app.virtuals.io/virtuals/77354",
+  "contractAddress": "0xf127267FA26E508Fc4137Ea5376040e4C006793b",
+  "network": "base",
+  "launchDate": "2026-05-22",
+  "launchTimestamp": 1748010000,
+  "characterFile": "profitengine.character.json",
+  "avatarFile": "profitengine_avatar.png",
+  "bannerFile": "profitengine_banner.png",
+  "socialLinks": {
+    "twitter": "",
+    "website": ""
+  },
+  "tokenomics": {
+    "totalSupply": "1000000000",
+    "taxPercent": 1,
+    "liquidityLockYears": 10,
+    "fairLaunch": true,
+    "preMine": false,
+    "teamAllocation": false
+  }
+}

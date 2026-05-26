@@ -1,0 +1,13 @@
+{
+  "jitoSolBalance": 112.97294432584961,
+  "kaminoBalance": 225.94588865169922,
+  "driftBalance": 225.94588865169922,
+  "lastAccruedTime": 1779759166320,
+  "totalAccruedYieldSol": 0.15883927630614797,
+  "allocation": {
+    "jitoSol": 0.2,
+    "kamino": 0.4,
+    "drift": 0.4,
+    "fng": 50
+  }
+}

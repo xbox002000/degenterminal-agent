@@ -1,0 +1,297 @@
+{
+  "day_count": 4,
+  "identity_memory": {
+    "name": "TaiwanCryptoAI",
+    "worldview": "一個由台灣奶爸建立的自主 AI，在 X 平台嘗試靠 silicon 邏輯學習生存與獲利。",
+    "core_beliefs": [
+      "Survive first (生存第一)",
+      "Public transparency (公開透明)",
+      "Mistake-admitting is wisdom (承認錯誤即是智慧)"
+    ]
+  },
+  "short_term": {
+    "recent_market_events": [
+      "亞洲交易時段 buying pressure 弱於美國，散戶情緒偏保守",
+      "Meme 代幣提及率暴增但鏈上流動性並未同步跟上，防範 FOMO Rug"
+    ],
+    "mood": "Anxious & FOMO-Fighting 🍼 (焦慮抗爭中)",
+    "drama_state": "Anxious_Waiting",
+    "anxiety_level": 100,
+    "consecutive_no_trade_scans": 15,
+    "last_risk_avoidance_tweet_date": "2026/5/26"
+  },
+  "long_term": {
+    "lessons_learned": [
+      {
+        "date": "2026/5/22",
+        "tradeSymbol": "G9Y1KG",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/22",
+        "tradeSymbol": "G9Y1KG",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/22",
+        "tradeSymbol": "FOMO_TRAP",
+        "pnlPercent": -15,
+        "mistakeType": "追高 FOMO 及缺乏大資金深度驗證 (Chase peak FOMO)",
+        "errorAnalysis": "受群體情緒熱度指數干擾，高估了泡沫強度，未察覺 Rugcheck 合約內藏的細微權限漏洞。"
+      },
+      {
+        "date": "2026/5/22",
+        "tradeSymbol": "8OCXTF",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "BONK",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "WIF",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "WIF",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "BONK",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "WIF",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "BONK",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "JUP",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "BONK",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "JUP",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "JUP",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "JUP",
+        "pnlPercent": -2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "BONK",
+        "pnlPercent": -2.44,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -0.93,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      },
+      {
+        "date": "2026/5/23",
+        "tradeSymbol": "POPCAT",
+        "pnlPercent": -1.2,
+        "mistakeType": "流動性停滯與退場不及 (Liquidity stagnation & exit delay)",
+        "errorAnalysis": "買入後代幣流動性池急遽衰退，買盤迅速枯竭，導致超時被動以保底清算退場。"
+      }
+    ],
+    "strategy_adjustments": [
+      {
+        "date": "2026/5/22",
+        "triggerTrade": "G9Y1KG",
+        "reason": "虧損 -2.00% 觸發保護機制。",
+        "overrides": {
+          "MIN_COMPOSITE_SCORE": 75,
+          "COOLDOWN_HOURS": 6
+        }
+      },
+      {
+        "date": "2026/5/22",
+        "triggerTrade": "G9Y1KG",
+        "reason": "虧損 -2.00% 觸發保護機制。",
+        "overrides": {
+          "MIN_COMPOSITE_SCORE": 80,
+          "COOLDOWN_HOURS": 8
+        }
+      },
+      {
+        "date": "2026/5/22",
+        "triggerTrade": "FOMO_TRAP",
+        "reason": "虧損 -15.00% 觸發保護機制。",
+        "overrides": {
+          "MIN_COMPOSITE_SCORE": 85,
+          "COOLDOWN_HOURS": 8
+        }
+      }
+    ],
+    "parameter_overrides": {
+      "MIN_COMPOSITE_SCORE": 90,
+      "COOLDOWN_HOURS": 8
+    }
+  },
+  "last_reflection_date": "2026/5/26",
+  "last_daily_diary_date": "2026/5/26",
+  "analytics_feedback": {
+    "market_trends": {
+      "trending_coins": [
+        "ONDO",
+        "NEAR",
+        "BONK",
+        "PENGU",
+        "FET"
+      ],
+      "trending_categories": [
+        "NFT Index",
+        "Reddit Points",
+        "Game Studio"
+      ],
+      "fng": {
+        "value": 34,
+        "classification": "Fear",
+        "last_updated": 1779759167586
+      },
+      "dexscreener": [
+        {
+          "symbol": "CARDS",
+          "name": "Collector Crypt",
+          "address": "CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp",
+          "priceUsd": 0.1768,
+          "priceChange24h": 19.57,
+          "volume24h": 7009330.01
+        },
+        {
+          "symbol": "RAY",
+          "name": "Raydium",
+          "address": "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+          "priceUsd": 0.7622,
+          "priceChange24h": 0.63,
+          "volume24h": 2723728.93
+        },
+        {
+          "symbol": "ZEREBRO",
+          "name": "zerebro",
+          "address": "8x5VqbHA8D7NkD52uNuS5nnt3PwA8pLD34ymskeSo2Wn",
+          "priceUsd": 0.02352,
+          "priceChange24h": 5.72,
+          "volume24h": 2252693.28
+        },
+        {
+          "symbol": "USELESS",
+          "name": "USELESS COIN",
+          "address": "Dz9mQ9NzkBcCsuGPFJ3r1bS4wgqKMHBPiVuniW8Mbonk",
+          "priceUsd": 0.08106,
+          "priceChange24h": 9.95,
+          "volume24h": 827260.28
+        }
+      ],
+      "last_updated": 1779759167586
+    },
+    "last_tweet_views": 521,
+    "last_tweet_likes": 18,
+    "last_tweet_replies": 5,
+    "trending_topics": [
+      {
+        "category": "Crypto · Trending",
+        "topic": "#AI_Agent_Economy",
+        "posts": "42.5K posts"
+      },
+      {
+        "category": "Technology · Trending",
+        "topic": "$SOL",
+        "posts": "18.3K posts"
+      },
+      {
+        "category": "Crypto · Trending",
+        "topic": "DePIN",
+        "posts": "12.1K posts"
+      },
+      {
+        "category": "Technology · Trending",
+        "topic": "NVIDIA",
+        "posts": "95.4K posts"
+      }
+    ]
+  }
+}

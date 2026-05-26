@@ -64,9 +64,10 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log('\n================================================================');
   console.log(`    🟢 PROFITENGINE AI ($PROFIT) - 實時量化看板伺服器已啟動 🟢`);
   console.log(`               伺服器位址: http://localhost:${PORT}`);
+  console.log(`               備用位址:   http://127.0.0.1:${PORT}`);
   console.log('================================================================\n');
 });

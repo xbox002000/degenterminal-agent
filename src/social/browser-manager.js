@@ -16,6 +16,13 @@ let browser = null;
 let healthCheckTimer = null;
 let initInProgress = null;
 
+function checkConnected(b) {
+  if (!b) return false;
+  if (typeof b.isConnected === 'function') return b.isConnected();
+  if (typeof b.connected === 'boolean') return b.connected;
+  return !!b.process();
+}
+
 // Simple semaphore for MAX_CONCURRENT_OPERATIONS
 const maxConcurrent = config.MAX_CONCURRENT_OPERATIONS || 1;
 let activeCount = 0;
@@ -54,7 +61,10 @@ async function startBrowser() {
       '--profile-directory=Default',
       '--disable-gpu',
       '--no-sandbox',
-      '--disable-setuid-sandbox'
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--disable-infobars',
+      '--excludeSwitches=enable-automation'
     ],
     timeout: config.BROWSER_LAUNCH_TIMEOUT || 45000
   });
@@ -63,7 +73,7 @@ async function startBrowser() {
 }
 
 async function init() {
-  if (browser && browser.isConnected()) return browser;
+  if (browser && checkConnected(browser)) return browser;
   if (initInProgress) return initInProgress;
 
   initInProgress = (async () => {
@@ -87,7 +97,7 @@ function startHealthCheck() {
   if (healthCheckTimer) clearInterval(healthCheckTimer);
   healthCheckTimer = setInterval(async () => {
     try {
-      if (!browser || !browser.isConnected()) throw new Error('disconnected');
+      if (!browser || !checkConnected(browser)) throw new Error('disconnected');
       await browser.pages();
     } catch (err) {
       console.warn(`[BrowserManager] Health check (${err.message}), restarting...`);
@@ -107,9 +117,32 @@ async function restart() {
 async function execute(fn) {
   await acquireLock();
   let page = null;
+  
+  const setupStealth = async (p) => {
+    // Override navigator.webdriver
+    await p.evaluateOnNewDocument(() => {
+      Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+      Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en', 'ja'] });
+      Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });
+    });
+    // Add custom helper for natural scrolling
+    p.simulateHumanScroll = async function() {
+      try {
+        await p.evaluate(async () => {
+          const distance = 100 + Math.random() * 150;
+          window.scrollBy(0, distance);
+          await new Promise(r => setTimeout(r, 400 + Math.random() * 500));
+          window.scrollBy(0, -distance / 3);
+          await new Promise(r => setTimeout(r, 300 + Math.random() * 300));
+        });
+      } catch (_) {}
+    };
+  };
+
   try {
     const b = await init();
     page = await b.newPage();
+    await setupStealth(page);
     return await fn(page);
   } catch (err) {
     // Fallback: standalone launch with separate profile
@@ -121,11 +154,20 @@ async function execute(fn) {
       executablePath: chromePath,
       headless: 'new',
       defaultViewport: null,
-      args: [`--user-data-dir=${fbDir}`, '--profile-directory=Default', '--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        `--user-data-dir=${fbDir}`, 
+        '--profile-directory=Default', 
+        '--no-sandbox', 
+        '--disable-setuid-sandbox',
+        '--disable-blink-features=AutomationControlled',
+        '--disable-infobars',
+        '--excludeSwitches=enable-automation'
+      ],
       timeout: 30000
     });
     try {
       const fbPage = await fbBrowser.newPage();
+      await setupStealth(fbPage);
       return await fn(fbPage);
     } finally {
       await fbBrowser.close();

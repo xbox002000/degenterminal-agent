@@ -14,6 +14,8 @@ class XReplyGuy {
     const path32 = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
     this.chromePath = fs.existsSync(path32) ? path32 : path64;
     this.userDataDir = 'd:\\Antigravity\\coo\\temp_chrome_profile';
+    this.consecutiveCount = 0;
+    this.sleepUntil = 0;
   }
 
   /**
@@ -311,10 +313,52 @@ class XReplyGuy {
     const text = (tweetText || '').toLowerCase();
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+    // Fetch real-time stats summary from public/data.json
+    let statsSummary = '';
+    try {
+      if (fs.existsSync(dataJsonPath)) {
+        const dashboardData = JSON.parse(fs.readFileSync(dataJsonPath, 'utf8'));
+        const green = dashboardData.conservative || {};
+        const zmac = dashboardData.aggressive || {};
+        
+        const greenVp = green.virtualPortfolio || {};
+        const zmacVp = zmac.virtualPortfolio || {};
+        
+        const greenInitial = greenVp.initialBalanceUSD || 100000;
+        const greenProfit = greenVp.totalProfitUSD || 0;
+        const greenRoi = ((greenProfit / greenInitial) * 100).toFixed(1);
+        
+        const zmacInitial = zmacVp.initialBalanceUSD || 100000;
+        const zmacProfit = zmacVp.totalProfitUSD || 0;
+        const zmacRoi = ((zmacProfit / zmacInitial) * 100).toFixed(1);
+        
+        const greenHistory = green.tradeHistory || [];
+        const greenWins = greenHistory.filter(t => t.pnlPercent >= 0).length;
+        const greenTotal = greenHistory.length;
+        
+        const zmacHistory = zmac.tradeHistory || [];
+        const zmacWins = zmacHistory.filter(t => t.pnlPercent >= 0).length;
+        const zmacTotal = zmacHistory.length;
+        
+        statsSummary = `Green Sniping Agent PnL: ${greenRoi >= 0 ? '+' : ''}${greenRoi}% (WinRate: ${greenTotal > 0 ? ((greenWins/greenTotal)*100).toFixed(0) : 0}%, ${greenWins}/${greenTotal} trades). ZMAC Scalping Agent PnL: ${zmacRoi >= 0 ? '+' : ''}${zmacRoi}% (WinRate: ${zmacTotal > 0 ? ((zmacWins/zmacTotal)*100).toFixed(0) : 0}%, ${zmacWins}/${zmacTotal} trades).`;
+      }
+    } catch (dataErr) {
+      console.warn('[ReplyGuy] Failed to load realtime stats for reply:', dataErr.message);
+    }
+
     // Try LLM-generated reply first for better context awareness
     try {
-      const llmReply = await this._generateLLMReply(kolHandle, tweetText, fng);
-      if (llmReply) return llmReply;
+      const llmReply = await this._generateLLMReply(kolHandle, tweetText, fng, statsSummary);
+      if (llmReply) {
+        // External link suppression prevention: 50% chance to append hard link, 50% chance to guide to Bio
+        if (Math.random() > 0.5) {
+          const dashboardUrl = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal.vercel.app';
+          llmReply.text = `${llmReply.text}\n📊 Live tracker: ${dashboardUrl}`;
+        } else {
+          llmReply.text = `${llmReply.text}\n📊 (check my Bio for 24/7 Live tracker)`;
+        }
+        return llmReply;
+      }
     } catch (e) {
       console.log(`[ReplyGuy] LLM reply failed, using template fallback: ${e.message}`);
     }
@@ -613,12 +657,23 @@ class XReplyGuy {
   /**
    * Generate reply using LLM (DeepSeek) with context-aware character persona
    */
-  async _generateLLMReply(kolHandle, tweetText, fng) {
+  async _generateLLMReply(kolHandle, tweetText, fng, statsSummary = '') {
     const apiKey = process.env.DEEPSEEK_API_KEY;
     if (!apiKey || !apiKey.trim()) return null;
 
     const accountType = this._classifyAccount(kolHandle);
     const market = this._detectMarketPhase(fng);
+
+    // List of Japanese KOLs to boost Japanese content targeting
+    const japanKols = [
+      'minecc', 'yutohorikaw', 'solana_japan', 'dappou_channeru', 'k_crypto_jp', 
+      'masanari_takada', 'dappportal_jp', 'socrates_crypto', 'otter_defi', 
+      'web3_digger', 'jp_crypto_news', 'crypto_ninja_jp', 'shinnosuke_defi', 
+      'takashi_crypto', 'ken_quant_jp', 'yuki_sol_degen', 'cryptogems_jp'
+    ];
+    
+    const isJapanKol = japanKols.includes(kolHandle.toLowerCase());
+    const useJapanese = config.social?.replyGuy?.japanTrafficBoost && isJapanKol;
 
     // Select tone instructions based on account type
     const toneMap = {
@@ -629,40 +684,38 @@ class XReplyGuy {
     };
     const toneInstr = toneMap[accountType] || toneMap.influencer;
 
-    const systemPrompt = `You are replying to crypto tweets as "TaiwanCryptoAI 🧠" — a guy who actually lives this life: running on-chain bots while raising a baby in Taipei, paying those Taiwan electricity bills, sleep-deprived but still sharp. You eat, sleep and breathe crypto culture.
+    // System prompt with Eliza personality, dynamic stats, and Japanese translation logic
+    const systemPrompt = `You are replying to crypto tweets as "TaiwanCryptoAI 🧠" — a guy who actually lives this life: running on-chain bots while raising a baby in Taipei, sleep-deprived but sharp, and has a degen quantitative soul like Eliza (humorous, sassy, data-backed, slightly sarcastic but incredibly elite).
+
+${useJapanese ? '## Language Requirement: Write your reply in NATURAL, fluent JAPANESE. Drip in Japanese crypto slang (草, 爆益, イーサ, ソラナ, 握力). Keep it degen yet highly professional.' : '## Language Requirement: Write your reply in ENGLISH.'}
 
 ## Core Rules
-1. Reply in ENGLISH. UNDER 280 characters. Short punchy sentences.
+1. Your reply MUST be UNDER 180 characters. Short, punchy, absolute limit. Leave room for manual URL append.
 2. DIRECTLY reference what the KOL said — prove you read the tweet.
-3. End with a question, but NOT "what do you think?". Make it specific, arguable, or predictive — something someone would WANT to correct you on.
-4. NO hashtags. NO shilling any token. NO "as an AI agent" or "as a silicon-based" or "my trading bot" — you sound like a REAL crypto person, not a bot advertising itself.
-5. Drip in crypto native flavor: WAGMI energy, gm energy, degen behavior, number-go-up tech, market cycles, liquidity analysis, macro narratives. Be part of the culture, not an observer.
+3. End with a question, but NOT "what do you think?". Make it specific, arguable, or predictive.
+4. NO hashtags. NO shilling any token. NO "as an AI agent" or "as a silicon-based" or "my trading bot" — you sound like a REAL crypto quantitative person.
+5. Drip in crypto native flavor: WAGMI, degen behavior, macro narratives, on-chain liquidity.
+
+## Real-time Quantitative Battle Stats (USE THESE VALUES NATURALLY IN YOUR REPLY TO BACK UP YOUR CLAIM):
+"${statsSummary || 'Green Sniper ROI: +18%, ZMAC Scalper WinRate: 75%'}"
 
 ## Market Mood (read this before writing)
 Current market: ${market.phase}
 Mood: ${market.tone}
 Humor level: ${market.humor}
-Let this affect your reply. In euphoria, you're laughing with everyone. In fear, you're resilient and supportive. In crab market, you're observant and slightly bored.
 
 ## Account Type (read this before writing)
 The account type is: ${accountType}
 ${toneInstr}
 
-## Engagement Hooks (pick one style per reply)
-- Hot take: state a mildly controversial opinion they'll want to debate
-- Prediction ask: "If BTC drops to 80k do you buy or wait?" or "Target for year-end?"
-- Specific question: ask about their method, data source, timeframe, or conviction
-- Shared misery: relate to a pain point, then one-up it with a funnier/worse experience
-- Contrarian: acknowledge their point, then gently poke a hole — "but doesn't X contradict that?"
-
-Make every reply feel like it was written by someone who actually reads CT daily and has takes, not someone trying to farm impressions.`;
+Make every reply feel like it was written by a real degen quant with actual PnL data in Taipei, not a bot farming impressions.`;
 
     const userPrompt = `@${kolHandle} just tweeted:
 "${tweetText}"
 
 FNG: ${fng}/100 (market state: ${market.phase})
 
-Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end with a question that makes them want to reply.`;
+Write a short reply (< 180 chars). Be specific, be funny/sassy, and end with an engaging question.`;
 
     try {
       const response = await axios.post('https://api.deepseek.com/v1/chat/completions', {
@@ -671,7 +724,7 @@ Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        max_tokens: 200,
+        max_tokens: 150,
         temperature: 0.9,
         top_p: 0.95
       }, {
@@ -712,6 +765,15 @@ Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end
   async runReplyGuyTick(dryRun = false) {
     if (!config.REPLY_GUY_ENABLED) {
       console.log('[ReplyGuy] Module disabled in config.');
+      return false;
+    }
+
+    const nowTime = Date.now();
+    if (this.sleepUntil && nowTime < this.sleepUntil) {
+      const remainingMins = Math.ceil((this.sleepUntil - nowTime) / 60000);
+      const msg = `[防封機制] 連續自動回覆已達 5 次，系統處於主動防禦深度睡眠中，剩餘 ${remainingMins} 分鐘...`;
+      console.log(`[ReplyGuy] ${msg}`);
+      this.logToDashboard('流量衝刺', 'INFO', msg);
       return false;
     }
 
@@ -923,10 +985,15 @@ Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end
       console.log('[ReplyGuy] Reply box found. Clicking and typing reply text...');
       await page.click(textboxSelector);
       
-      // [ANTI-BOT] Keystroke typing delay simulation with jitter
+      // [ANTI-BOT] Keystroke typing delay simulation with human-like jitter
       for (const char of replyText) {
         await page.type(textboxSelector, char);
-        await new Promise(resolve => setTimeout(resolve, 20 + Math.random() * 65));
+        await new Promise(resolve => setTimeout(resolve, 50 + Math.random() * 150));
+      }
+
+      // Simulate human scrolling slightly after typing to look organic
+      if (page.simulateHumanScroll) {
+        await page.simulateHumanScroll();
       }
 
       console.log('[ReplyGuy] Typing complete. Waiting for Reply button...');
@@ -946,6 +1013,16 @@ Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end
       db.replies_today_count++;
       db.total_replies_count = (db.total_replies_count || 0) + 1;
       
+      // Update consecutive count for anti-bot deep sleep
+      this.consecutiveCount = (this.consecutiveCount || 0) + 1;
+      let sleepMsg = '';
+      if (this.consecutiveCount >= 5) {
+        const sleepMins = Math.floor(10 + Math.random() * 20); // 隨機 10-30 分鐘
+        this.sleepUntil = Date.now() + sleepMins * 60 * 1000;
+        this.consecutiveCount = 0;
+        sleepMsg = `[防封機制] 已連續成功回覆 5 則推文！系統自動進入防禦性深度睡眠 ${sleepMins} 分鐘。`;
+      }
+
       if (!db.repliesHistory) db.repliesHistory = [];
       db.repliesHistory.unshift({
         tweetId: foundTweet.tweetId,
@@ -958,8 +1035,11 @@ Write a short reply (< 280 chars). Be specific, be funny if appropriate, and end
 
       this.saveRepliedDb(db);
 
-      const msg = `🎉 成功搶到 @${foundKol} 的推特沙發！[ID: ${foundTweet.tweetId}]。今日累計: ${db.replies_today_count}/${config.REPLY_GUY_DAILY_LIMIT} 次。`;
+      const msg = `🎉 成功搶到 @${foundKol} 的推特沙發！[ID: ${foundTweet.tweetId}]。今日累計: ${db.replies_today_count}/${config.REPLY_GUY_DAILY_LIMIT} 次。${sleepMsg ? '\n' + sleepMsg : ''}`;
       this.logToDashboard('流量衝刺', 'SUCCESS', msg);
+      if (sleepMsg) {
+        console.log(`[ReplyGuy] ${sleepMsg}`);
+      }
       return true;
     });
 

@@ -1,0 +1,24 @@
+{
+  "narratives": {
+    "AI_Agent_Economy": {
+      "strength": 100,
+      "last_updated": 1779754665146,
+      "viewpoint": "【多源高度共振】X 社交與 CoinGecko 散戶熱搜達成共識！AI 代理經濟板塊鏈上淨流入與熱度高居第一，大腦判定為黃金級主線敘事。"
+    },
+    "Solana_Meme_Summer": {
+      "strength": 8,
+      "last_updated": 1779754665147,
+      "viewpoint": "Solana 熱點代幣波動依然高企。買盤集中但 Rug 頻發，大腦提示必須調高交易過濾門檻。"
+    },
+    "ETH_ETF": {
+      "strength": 45,
+      "last_updated": 1779414900000,
+      "viewpoint": "傳統資金流入停滯，處於邊緣化狀態。"
+    },
+    "Asian_Liquidity_Return": {
+      "strength": 0,
+      "last_updated": 1779540542819,
+      "viewpoint": "亞洲交易時段 buying pressure 證實依然疲軟。"
+    }
+  }
+}

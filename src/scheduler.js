@@ -54,6 +54,21 @@ async function startScheduler() {
     
     console.log(`\n⚡ [${new Date().toLocaleTimeString()}] 雙線快速行情監控與看板刷新中...`);
     try {
+      const conHistoryPath = conservativeAgent.getTradeHistoryPath();
+      const aggHistoryPath = aggressiveAgent.getTradeHistoryPath();
+      
+      const getHistoryLen = (filePath) => {
+        try {
+          if (fs.existsSync(filePath)) {
+            return JSON.parse(fs.readFileSync(filePath, 'utf8')).length;
+          }
+        } catch (e) {}
+        return 0;
+      };
+
+      const prevConHistoryLen = getHistoryLen(conHistoryPath);
+      const prevAggHistoryLen = getHistoryLen(aggHistoryPath);
+
       // 1. Monitor & Sell for Conservative Sniper
       const conPositions = conservativeAgent.loadPositions();
       await conservativeAgent.checkPositionsAndSell(true);
@@ -68,6 +83,22 @@ async function startScheduler() {
         await aggressiveAgent.updateWebDashboard([]);
       }
 
+      // Check if new trade closed to trigger instant viral thread
+      const nextConHistoryLen = getHistoryLen(conHistoryPath);
+      const nextAggHistoryLen = getHistoryLen(aggHistoryPath);
+
+      if (nextConHistoryLen > prevConHistoryLen || nextAggHistoryLen > prevAggHistoryLen) {
+        console.log(`\n🎉 [Instant Stats Trigger] New closed trade detected! Publishing multi-lingual stats Thread...`);
+        setTimeout(async () => {
+          try {
+            const statsPublisher = require('./social/twitter/stats-publisher');
+            await statsPublisher.publishStatsThread(false);
+          } catch (pubErr) {
+            console.error('[Instant Stats] Instant stats Thread publish failed:', pubErr.message);
+          }
+        }, 3000);
+      }
+ 
       // 3. Check Binance open positions for TP/SL/max-hold
       await checkAndCloseBinancePositions(conservativeAgent);
     } catch (err) {
@@ -147,6 +178,20 @@ async function startScheduler() {
   };
 
   /**
+   * Multi-lingual Thread Stats Publisher Loop
+   */
+  const statsPublishLoop = async () => {
+    if (isShuttingDown) return;
+    console.log(`\n📊 [${new Date().toLocaleTimeString()}] 啟動雙雄實時多語言戰報 Thread 發布輪詢...`);
+    try {
+      const statsPublisher = require('./social/twitter/stats-publisher');
+      await statsPublisher.publishStatsThread(false);
+    } catch (err) {
+      console.error(`[Stats Publish Loop] Error:`, err.message);
+    }
+  };
+
+  /**
    * Binance Square & Cross-Platform Content Writing Loop
    */
   const binancePublishLoop = async () => {
@@ -179,7 +224,7 @@ async function startScheduler() {
       };
 
       // 2. Generate customized content
-      const generatedContent = contentGenerator.generateContent(chosenType, context);
+      const generatedContent = await contentGenerator.generateContent(chosenType, context);
 
       // 2.5 Generate an Aria portrait to attach to the Square article
       let articleImagePath = null;
@@ -225,6 +270,25 @@ async function startScheduler() {
   // Start reply guy dynamic timeout recursion if enabled
   let replyGuyTimeout;
   let binancePublishTimeout;
+  let statsPublishTimeout;
+  
+  const scheduleNextStatsPublish = () => {
+    if (isShuttingDown) return;
+    
+    const minMins = 240; // 4 hours
+    const maxMins = 360; // 6 hours
+    const randomMins = minMins + Math.random() * (maxMins - minMins);
+    const delayMs = Math.floor(randomMins * MS_IN_MINUTE);
+    
+    console.log(`📊 [ANTI-BOT] Next mult-lingual stats Thread publish interval calibrated to: ${randomMins.toFixed(2)} minutes.`);
+    
+    statsPublishTimeout = setTimeout(async () => {
+      if (!isShuttingDown) {
+        await statsPublishLoop();
+        scheduleNextStatsPublish();
+      }
+    }, delayMs);
+  };
   
   const scheduleNextReplyGuy = () => {
     if (isShuttingDown) return;
@@ -317,6 +381,15 @@ async function startScheduler() {
     }, 10 * MS_IN_MINUTE);
   }
 
+  // Start multi-lingual Thread stats publishing loop (first run in 15 mins)
+  console.log(`📊 多語言實時對決戰報與 Thread 發布系統已開啟！預設每 4-6 小時隨機發布一次。`);
+  setTimeout(async () => {
+    if (!isShuttingDown) {
+      await statsPublishLoop();
+      scheduleNextStatsPublish();
+    }
+  }, 15 * MS_IN_MINUTE);
+
   // Graceful shutdown
   const shutdown = (signal) => {
     console.log(`\n🛑 [Scheduler] 收到 ${signal} 信號，正在優雅退出...`);
@@ -325,6 +398,7 @@ async function startScheduler() {
     if (replyGuyTimeout) clearTimeout(replyGuyTimeout);
     if (binancePublishTimeout) clearTimeout(binancePublishTimeout);
     if (binanceTradeTimeout) clearTimeout(binanceTradeTimeout);
+    if (statsPublishTimeout) clearTimeout(statsPublishTimeout);
     browserManager.shutdown();
     
     console.log('\n📊 [對決終場分析結算]');

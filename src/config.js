@@ -31,9 +31,15 @@ const config = {
   REPLY_GUY_ENABLED: true,
   REPLY_GUY_MIN_INTERVAL_MIN: 15,
   REPLY_GUY_MAX_INTERVAL_MIN: 28, 
-  REPLY_GUY_DAILY_LIMIT: 28,      
-  REPLY_GUY_DELAY_MIN_SEC: 30,    
-  REPLY_GUY_DELAY_MAX_SEC: 90,
+  REPLY_GUY_DAILY_LIMIT: 45,      
+  REPLY_GUY_DELAY_MIN_SEC: 20,    
+  REPLY_GUY_DELAY_MAX_SEC: 80,
+
+  // High-Conversion CTA & Growth URLs
+  GITHUB_URL: 'https://github.com/xbox002000/degenterminal-agent',
+  BINANCE_REFERRAL_URL: 'https://www.binance.com/zh-TC/join?ref=YOUR_REFERRAL_CODE',
+  DASHBOARD_URL: 'https://degenterminal-agent.pages.dev',
+  JAPAN_TRAFFIC_BOOST: true,
 
   // Binance Square Publishing (Anti-Bot Interval & Write-to-Earn Settings)
   BINANCE_PUBLISH_MIN_INTERVAL_MIN: 240, // 4 hours
@@ -77,6 +83,8 @@ const config = {
     'inversebrah',       // 流量放大器
     'phantom',           // Phantom錢包
     'JupiterExchange',   // Jupiter官方
+    'solana',            // Solana官方
+    'solana_devs',       // Solana開發者社區
     
     // --- Tier 2: 數據與生態要角 ---
     'pumpdotfun',
@@ -85,6 +93,12 @@ const config = {
     'hey_ansem',
     'HsakaTrades',
     'ZachXBT',
+    'CryptoCobain',      // 殿堂級 Crypto 樹洞
+    'SolanaSensations',  // 生態熱點追蹤
+    'solana_daily',      // Solana 日報
+    'BaseDailyCN',       // Base生態中文大V
+    'base',              // Base官方
+    'jito_labs',         // Jito官方
     
     // --- Tier 3: 宏觀與傳統巨頭 ---
     'elonmusk',
@@ -92,7 +106,41 @@ const config = {
     'cz_binance',
     'CryptoHayes',
     'saylor',
-    'brian_armstrong'
+    'brian_armstrong',
+    'CoinbaseAssets',
+    'binance',
+    'Bybit_Official',
+    'okx',
+
+    // --- Tier 4: 日本活躍 Crypto / Degen KOL ---
+    'mineCC',            // 日本大V
+    'yutohorikaw',       // 日本 Degen
+    'solana_japan',      // Solana 日本社群
+    'dappou_channeru',   // 日本熱門 Crypto 社群
+    'K_Crypto_JP',       // 日本量化
+    'masanari_takada',   // 日本生態領袖
+    'dappportal_jp',     // 日本 Web3 平台
+    'Socrates_Crypto',   // 日本知名 Degen
+    'otter_defi',        // 日本 DeFi 專家
+    'web3_digger',       // 日本鏈上挖掘者
+    'JP_Crypto_News',    // 日本區塊鏈新聞
+    'crypto_ninja_jp',   // 日本忍考社群
+    'shinnosuke_defi',   // 日本 DeFi 先鋒
+    'takashi_crypto',    // 日本量化交易者
+    'ken_quant_jp',      // 日本 AI/量化
+    'yuki_sol_degen',    // 日本 Solana 獵手
+
+    // --- Tier 5: 中文與歐美活躍 Degen ---
+    'sanyi_crypto',      // 三姨
+    'tianya_crypto',     // 天涯
+    'CryptoShitpost',    // 迷因收割機
+    'DegenNews_',        // Degen新聞聚合
+    'bastille_crypto',   // 鏈上捕手
+    'CryptoGems_JP',     // 日本 Gem 推薦
+    'SolanaMemePrince',  // 迷因王子
+    'MemeCoinDegen',     // 迷因大師
+    'DegenAlgos',        // 算法 Degen
+    'CryptoQuant_CN'     // 量化分析中文
   ],
 
   // --- 🟢 Conservative Sniper Mode (Green) ---
@@ -164,7 +212,11 @@ config.social = {
     dailyLimit: config.REPLY_GUY_DAILY_LIMIT,
     delayMinSec: config.REPLY_GUY_DELAY_MIN_SEC,
     delayMaxSec: config.REPLY_GUY_DELAY_MAX_SEC,
-    targetKols: config.REPLY_GUY_TARGET_KOLS
+    targetKols: config.REPLY_GUY_TARGET_KOLS,
+    githubUrl: config.GITHUB_URL,
+    binanceReferralUrl: config.BINANCE_REFERRAL_URL,
+    dashboardUrl: config.DASHBOARD_URL,
+    japanTrafficBoost: config.JAPAN_TRAFFIC_BOOST
   },
   binanceSquare: {
     minInterval: config.BINANCE_PUBLISH_MIN_INTERVAL_MIN,

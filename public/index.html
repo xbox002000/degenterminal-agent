@@ -352,7 +352,7 @@
         </div>
         
         <!-- Balance cards row -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="binance-balance-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
           <div style="background: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 12px 18px; display: flex; flex-direction: column; gap: 6px;">
             <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-main);">💵 現貨帳戶可用餘額 (Spot Balance)</span>
             <span style="font-family: var(--font-mono); font-size: 1.3rem; font-weight: bold; color: #fff;" id="binance-spot-balance">$10,000.00 USDT</span>
@@ -667,7 +667,7 @@
               </div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="reply-stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
               <div class="metric-card" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 8px; display: flex; flex-direction: column; justify-content: center;">
                 <span class="metric-card-label" style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">今日自動回覆</span>
                 <span class="metric-card-val" id="monetization-today-count" style="color: var(--neon-blue); font-size: 0.95rem; font-family: var(--font-mono); font-weight: bold; margin-top: 1px;">0 / 25 次</span>
@@ -693,7 +693,7 @@
                   <span class="engine-apy-badge" id="jitosol-apy-badge" style="font-size: 0.65rem; background: rgba(0, 255, 128, 0.1); border: 1px solid rgba(0, 255, 128, 0.2); border-radius: 4px; padding: 1px 6px; color: var(--neon-green); font-family: var(--font-mono); font-weight: bold;">~7.5% APY</span>
                 </div>
                 
-                <div style="margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="sub-balance-grid" style="margin-top: 6px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                   <div>
                     <span style="font-size: 0.62rem; color: var(--text-muted); display: block;">理財總餘額</span>
                     <span id="jitosol-balance-val" style="font-family: var(--font-mono); color: #fff; font-size: 0.82rem; font-weight: bold;">0.0000 SOL</span>
@@ -753,7 +753,7 @@
                   <span class="engine-commission-badge" style="font-size: 0.65rem; background: rgba(240, 185, 11, 0.1); border: 1px solid rgba(240, 185, 11, 0.2); border-radius: 4px; padding: 1px 6px; color: #f0b90b; font-family: var(--font-mono); font-weight: bold;">UP TO 50% 返傭</span>
                 </div>
                 
-                <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="sub-balance-grid" style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                   <div>
                     <span style="font-size: 0.65rem; color: var(--text-muted); display: block;">已發布文章</span>
                     <span id="binance-published-count" style="font-family: var(--font-mono); color: #fff; font-size: 0.88rem; font-weight: bold;">0 篇</span>

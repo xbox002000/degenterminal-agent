@@ -1195,3 +1195,252 @@ body::after {
   box-shadow: 0 0 15px rgba(240, 185, 11, 0.12), inset 0 0 10px rgba(240, 185, 11, 0.02) !important;
   transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   Mobile-Responsive Optimization Override (320px - 1024px Viewports)
+   ========================================================================== */
+
+/* 1. 平版 / 中等螢幕斷點 (< 1024px) */
+@media (max-width: 1024px) {
+  /* 5柱雷達與幣安現貨終端垂直堆疊 */
+  .q-terminal-panel {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+/* 2. 行動端 / 手機斷點 (< 768px) */
+@media (max-width: 768px) {
+  /* 縮小全局與卡片邊距，釋放最大閱讀寬度 */
+  .app-container {
+    padding: 15px 10px !important;
+    width: 100% !important;
+    gap: 15px !important;
+  }
+  
+  .glass-panel {
+    padding: 15px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Banner 與頭部 Hero 改為垂直置中排版 */
+  .banner-container {
+    height: 120px !important;
+  }
+  
+  .profile-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 15px !important;
+    padding: 0 15px 20px 15px !important;
+    margin-top: -50px !important;
+  }
+  
+  .avatar-container {
+    width: 100px !important;
+    height: 100px !important;
+    border-width: 3px !important;
+  }
+  
+  .profile-info {
+    width: 100% !important;
+    padding-bottom: 0 !important;
+  }
+  
+  .profile-name {
+    font-size: 1.4rem !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .profile-tag {
+    font-size: 0.78rem !important;
+    width: fit-content;
+  }
+  
+  .profile-bio {
+    font-size: 0.92rem !important;
+    margin-top: 10px !important;
+  }
+  
+  .wallet-badge {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    padding: 10px !important;
+    font-size: 0.78rem !important;
+    border-radius: 8px !important;
+  }
+
+  .deploy-action-badge {
+    width: 100% !important;
+    justify-content: center !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* VS 擂台垂直對決堆疊 */
+  .vs-header {
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+  
+  .vs-title-neon {
+    font-size: 0.95rem !important;
+    text-align: center !important;
+  }
+  
+  .leaderboard-badge {
+    font-size: 0.78rem !important;
+    padding: 4px 8px !important;
+  }
+
+  .vs-arena-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+    padding-bottom: 15px !important;
+  }
+
+  .vs-agent-stat {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .vs-agent-stat.aggressive-side .vs-details-mini {
+    text-align: center !important;
+  }
+
+  .vs-agent-stat.conservative-side .vs-details-mini {
+    text-align: center !important;
+  }
+
+  .vs-roi-val {
+    font-size: 1.5rem !important;
+  }
+
+  .vs-center-insignia {
+    padding: 10px 0 !important;
+  }
+
+  .vs-logo-neon {
+    font-size: 1.8rem !important;
+  }
+
+  /* 幣安餘額卡片改為垂直堆疊 */
+  .binance-balance-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* 流量轉換與價值觀雷達堆疊 */
+  .values-resonance-container {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .value-cards-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* 雙引擎卡片垂直堆疊 */
+  .engines-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .reply-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* 底部導覽按鈕改為滿寬垂直堆疊 */
+  .footer-section {
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  
+  .cyber-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    font-size: 0.88rem !important;
+  }
+}
+
+/* 3. 超窄螢幕斷點 (< 480px) */
+@media (max-width: 480px) {
+  /* 金庫精簡指標改為 2x2 緊湊格柵排版 */
+  .portfolio-badges-container.compact {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .portfolio-badges-container.compact .portfolio-badge {
+    min-width: 0 !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+    flex: none !important;
+  }
+
+  .portfolio-badge-label {
+    font-size: 0.65rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .portfolio-badge-val {
+    font-size: 0.95rem !important;
+  }
+
+  /* 價值觀卡片改為單行 */
+  .value-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* 行動端表格防爆防破溢出保護 (橫向滾動) */
+  #binance-positions-list,
+  #binance-orders-list {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  #binance-positions-list table,
+  #binance-orders-list table {
+    min-width: 460px !important; /* 強制表格保有最小完整展示寬度 */
+  }
+
+  /* 隱藏橫向滾動頁籤條的醜陋捲軸 */
+  .gallery-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* 寫實畫廊行動端改為精準雙列卡片，節省垂直空間 */
+  #gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  
+  #gallery-grid .gallery-card {
+    height: 180px !important;
+  }
+  
+  .gallery-tabs {
+    gap: 6px !important;
+  }
+  
+  .gallery-tab-btn {
+    padding: 5px 10px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* 持倉資訊字體精簡 */
+  .position-details {
+    font-size: 0.75rem !important;
+  }
+}

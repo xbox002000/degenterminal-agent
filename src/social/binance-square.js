@@ -126,9 +126,10 @@ class BinanceSquareClient {
 
     if (title) {
       body.title = title;
-      if (coverPath && fs.existsSync(coverPath)) {
+      const actualCoverPath = coverPath || imagePath;
+      if (actualCoverPath && fs.existsSync(actualCoverPath)) {
         try {
-          const coverUrl = await this.uploadImage(coverPath);
+          const coverUrl = await this.uploadImage(actualCoverPath);
           body.cover = coverUrl;
         } catch (imgErr) {
           console.warn('[BinanceSquare] ⚠️ Cover image upload failed, publishing without cover:', imgErr.message);

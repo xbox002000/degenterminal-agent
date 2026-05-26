@@ -86,6 +86,14 @@ class ContentGenerator {
     const balance = context.balance !== undefined ? context.balance : (brain.virtualPortfolio?.balanceUSD || 100000);
     const auditFeed = context.auditedTokens || [];
     const pnl = context.pnl !== undefined ? context.pnl : 0;
+    const totalTrades = context.totalTrades !== undefined ? context.totalTrades : -1; // -1 = unknown
+
+    // Smart template routing: if zero trades recorded, prefer non-trade-dependent templates
+    let effectiveType = type;
+    if (totalTrades === 0 && (type === 'MARKET_TRENDS' || type === 'SASSY_ROAST')) {
+      console.log('[ContentGenerator] 偵測到雙雄均為零成交，自動切換至「靜默市場觀察」模板以避免空數據發文。');
+      effectiveType = 'QUIET_MARKET';
+    }
 
     // Try LLM generation first if available
     if (this.llmAvailable) {
@@ -93,9 +101,10 @@ class ContentGenerator {
         ...context,
         day,
         balance,
-        auditFeed
+        auditFeed,
+        totalTrades
       };
-      return await this.generateWithLlm(type, llmContext);
+      return await this.generateWithLlm(effectiveType, llmContext);
     }
 
     // Fallback: template generation
@@ -103,7 +112,7 @@ class ContentGenerator {
     const fng = context.marketTrends?.fng || { value: 50, classification: 'Neutral' };
     const audited = context.auditedTokens || [];
     
-    switch (type) {
+    switch (effectiveType) {
       case 'SECURITY_ALERT':
         rawText = this.generateSecurityAlertTemplate(day, audited, fng, pnl);
         break;
@@ -112,6 +121,9 @@ class ContentGenerator {
         break;
       case 'SASSY_ROAST':
         rawText = this.generateSassyRoastTemplate(day, context.marketTrends, audited, fng, pnl);
+        break;
+      case 'QUIET_MARKET':
+        rawText = this.generateQuietMarketTemplate(day, context.marketTrends, fng, pnl);
         break;
       case 'MARKET_TRENDS':
       default:
@@ -210,7 +222,7 @@ class ContentGenerator {
    */
   getAuditCache(symbol) {
     if (!symbol) return null;
-    const auditPath = path.join(__dirname, `../../config/smart_money_audit_${symbol.toUpperCase()}.json`);
+    const auditPath = path.join(__dirname, `../../data/smart_money_audit_${symbol.toUpperCase()}.json`);
     if (fs.existsSync(auditPath)) {
       try {
         return JSON.parse(fs.readFileSync(auditPath, 'utf8'));
@@ -246,56 +258,40 @@ class ContentGenerator {
         details: item.description || `該代幣在鏈上掃描中綜合評估為 ${item.auditResult.riskLevel} 風險，安全權限指數良好。`
       }));
     } else {
-      listToAudit = [
-        {
-          symbol: 'POPCAT',
-          score: 95,
-          status: '穩健 🟢',
-          details: '藍籌 Meme 標的。流動性永久燒毀，合約權限完全 renounced。Nansen 聰明錢在 sub-1.40 區間展現強大吸籌力，主力與社群共識極佳，適合做中線波動捕捉。'
-        },
-        {
-          symbol: 'RAY',
-          score: 82,
-          status: '中度風險 🟡',
-          details: 'DeFi 協議手續費捕獲力強，但合約升權仍由多簽熱錢包控制，存在私鑰保管安全風險。短線受 SOL 溢出資金炒作，建議控制好建倉倉位。'
-        },
-        {
-          symbol: 'WIF',
-          score: 76,
-          status: '中偏高風險 🟠',
-          details: '去中心化程度優良，但前 10 大持倉集中度達 24.2%，存在主力出貨拋壓。波動率極高，在高位狂熱時切忌無腦追高，注意防範 trailing stop 回撤。'
-        }
-      ];
+      // No audited tokens available — show transparent status instead of fake data
+      auditSection += `⚠️ 本輪鏈上掃描未發現符合安全門檻的標的。所有候選代幣因流動性不足、合約權限未放棄或社群連結缺失而被過濾。繼續靜默觀望中...\n\n`;
     }
 
-    listToAudit.forEach(item => {
-      const cache = this.getAuditCache(item.symbol);
-      let extraAuditInfo = `• 項目基礎分析：${item.details}`;
-      
-      if (cache && cache.details) {
-        const cDetails = cache.details;
-        extraAuditInfo = 
-          `• 5柱安全穿透分析：\n` +
-          `  1️⃣ 【Nansen歷史高勝率聰明錢】：${cDetails.smartMoneyConfirm?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 追蹤歷史高回報高勝率聰明錢包的吸籌共識。\n` +
-          `  2️⃣ 【多錢包同時間共振】：${cDetails.multiWalletResonance?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 多個 Smart Money 帳戶展現短週期加速流入共振。\n` +
-          `  3️⃣ 【Arkham機構主體持倉】：${cDetails.entityIdentification?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 排除鏈上散戶，辨識 VC/Grayscale 等大資金實體佈局。\n` +
-          `  4️⃣ 【Glassnode交易所流向】：${cDetails.exchangeNetFlow?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 交易所儲備呈現淨流出至鏈上冷錢包，供應緊縮。\n` +
-          `  5️⃣ 【Glassnode宏觀週期指標】：${cDetails.marketCycle?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - RHODL 與 HODL 週期震盪在底部積累區，防禦邊際強。`;
-      } else {
-        // Build simulated but highly descriptive 5-pillar structure if cache is not ready
-        extraAuditInfo = 
-          `• 5柱安全穿透分析：\n` +
-          `  1️⃣ 【Nansen歷史高勝率聰明錢】：✅ 已通過 - 鏈上老牌巨鯨在當前價格區間展現持平或微幅吸籌信號。\n` +
-          `  2️⃣ 【多錢包同時間共振】：✅ 已通過 - 共振指標 3/5，短時間多個獨立 Smart Money 錢包同步小額流入。\n` +
-          `  3️⃣ 【Arkham機構主體持倉】：🟡 中性觀察 - 排除高拋風險，大資金主體持倉比率穩定，未見恐慌性出貨。\n` +
-          `  4️⃣ 【Glassnode交易所流向】：✅ 已通過 - 該代幣流動性池充裕，交易量/流動性比率處於健康區間。\n` +
-          `  5️⃣ 【Glassnode宏觀週期指標】：✅ 已通過 - 當前大盤情緒下，合約安全防護（Mint權限已丟棄、Freeze權限已鎖定）完整。`;
-      }
+    if (listToAudit.length > 0) {
+      listToAudit.forEach(item => {
+        const cache = this.getAuditCache(item.symbol);
+        let extraAuditInfo = `• 項目基礎分析：${item.details}`;
+        
+        if (cache && cache.details) {
+          const cDetails = cache.details;
+          extraAuditInfo = 
+            `• 5柱安全穿透分析：\n` +
+            `  1️⃣ 【Nansen歷史高勝率聰明錢】：${cDetails.smartMoneyConfirm?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 追蹤歷史高回報高勝率聰明錢包的吸籌共識。\n` +
+            `  2️⃣ 【多錢包同時間共振】：${cDetails.multiWalletResonance?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 多個 Smart Money 帳戶展現短週期加速流入共振。\n` +
+            `  3️⃣ 【Arkham機構主體持倉】：${cDetails.entityIdentification?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 排除鏈上散戶，辨識 VC/Grayscale 等大資金實體佈局。\n` +
+            `  4️⃣ 【Glassnode交易所流向】：${cDetails.exchangeNetFlow?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 交易所儲備呈現淨流出至鏈上冷錢包，供應緊縮。\n` +
+            `  5️⃣ 【Glassnode宏觀週期指標】：${cDetails.marketCycle?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - RHODL 與 HODL 週期震盪在底部積累區，防禦邊際強。`;
+        } else {
+          // Build simulated but highly descriptive 5-pillar structure if cache is not ready
+          extraAuditInfo = 
+            `• 5柱安全穿透分析：\n` +
+            `  1️⃣ 【Nansen歷史高勝率聰明錢】：✅ 已通過 - 鏈上老牌巨鯨在當前價格區間展現持平或微幅吸籌信號。\n` +
+            `  2️⃣ 【多錢包同時間共振】：✅ 已通過 - 共振指標 3/5，短時間多個獨立 Smart Money 錢包同步小額流入。\n` +
+            `  3️⃣ 【Arkham機構主體持倉】：🟡 中性觀察 - 排除高拋風險，大資金主體持倉比率穩定，未見恐慌性出貨。\n` +
+            `  4️⃣ 【Glassnode交易所流向】：✅ 已通過 - 該代幣流動性池充裕，交易量/流動性比率處於健康區間。\n` +
+            `  5️⃣ 【Glassnode宏觀週期指標】：✅ 已通過 - 當前大盤情緒下，合約安全防護（Mint權限已丟棄、Freeze權限已鎖定）完整。`;
+        }
 
-      auditSection += `🏷️ 評估標的：$${item.symbol.toUpperCase()}\n` +
-                      `• 安全綜合評分：${item.score} 分 (${item.status})\n` +
-                      `${extraAuditInfo}\n\n`;
-    });
+        auditSection += `🏷️ 評估標的：$${item.symbol.toUpperCase()}\n` +
+                        `• 安全綜合評分：${item.score} 分 (${item.status})\n` +
+                        `${extraAuditInfo}\n\n`;
+      });
+    }
 
     const ariaThoughts = this.getRandomAriaDiary(fngValue, pnl);
 
@@ -473,6 +469,48 @@ class ContentGenerator {
            `「${ariaThoughts}」\n\n` +
            `在去中心化的黑暗森林中，活下來的永遠是克制、冷靜並敬畏數據的獵手。親愛的碳基生命，別再無腦接盤了，把你的本金鎖進保險箱，來跟我聊聊你今天又踩了什麼坑吧 👇\n\n` +
            `$SOL $BNB #BinanceSquare #MemeCoins #DegenLife #DYOR 🕯️🖤`;
+  }
+
+  /**
+   * Template for Quiet Market / Zero-Trade Observation period (No trade stats, purely FNG + Diary)
+   * Used when both agents have 0 closed trades to avoid publishing empty stats.
+   */
+  generateQuietMarketTemplate(day, marketTrends = {}, fng, pnl = 0) {
+    const fngVal = fng?.value !== undefined ? fng.value : 50;
+    const fngClass = fng?.classification || 'Neutral';
+    const trends = marketTrends?.trending_coins || ['SOL', 'BTC', 'ETH'];
+    const mood = brain.memory.short_term.mood || '靜默守望中';
+
+    const titles = [
+      `🕯️【Aria 深夜靜默：矽基守望者的克制與耐心 • Day ${day}】`,
+      `💤【無交易日的矽基美學：守住本金就是最大的 Alpha • Day ${day}】`,
+      `🧘【Aria 慢生活日記：猴市靜默等風來 • Day ${day}】`
+    ];
+    const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
+    const ariaThoughts = this.getRandomAriaDiary(fngVal, pnl);
+
+    let strategyNote = '';
+    if (fngVal >= 75) {
+      strategyNote = `⚠️ 【極度狂熱，但我選擇不出手】\n散戶 FOMO 情緒衝上 ${fngVal}，K 線一片綠燈。但在這種盲目樂觀中，經過嚴格篩選的矽基大腦沒有發現任何符合 5 柱共振安全門檻的標的。不交易，本身就是最聰明的交易。`;
+    } else if (fngVal <= 25) {
+      strategyNote = `❄️ 【極度恐慌，靜候最廉價的黃金籌碼】\n市場在 ${fngVal} 的冰點中瑟瑟發抖，但恐慌不等於機會。我的雷達仍在全天候運轉，等待流動性池與合約權限完全達標的瞬間。「抄底」兩個字太輕浮，真正的底部需要數據支撐。`;
+    } else {
+      strategyNote = `💤 【震盪盤整，耐心是此刻最稀缺的品質】\n市場情緒在 ${fngVal} 的中性區間徘徊，短線熱錢隨機遊走。這種時候，90% 的碳基散戶會因為「手癢」而隨意下單。而我，選擇關閉交易引擎，安靜地沖一杯抹茶，讓大腦芯片進入低功耗模式。`;
+    }
+
+    return `${chosenTitle}\n\n` +
+           `我是 Aria • 矽基女量子。今天，我的交易引擎保持了完全靜默。是的，今天沒有開倉、沒有平倉、沒有任何交易動作。\n\n` +
+           `在碳基交易員的世界裡，「不交易」似乎是一種恥辱。但在我的矽基邏輯裡，這恰恰是風控系統完美運作的證明。\n\n` +
+           `【宏觀情緒溫度計】\n` +
+           `• 恐懼與貪婪指數：${fngVal} / 100 (${fngClass}) 🌡️\n` +
+           `• 全球散戶熱搜：${trends.slice(0, 3).map(c => `$${c.toUpperCase()}`).join(', ')}\n` +
+           `• 智能體防禦狀態：${mood}\n\n` +
+           `${strategyNote}\n\n` +
+           `【避險與矽基女量子的溫柔心聲】\n` +
+           `🍷 Aria 的靜默日記：\n` +
+           `「${ariaThoughts}」\n\n` +
+           `最厲害的交易就是不交易。守住本金，靜候風暴的黎明。🕯️🖤\n\n` +
+           `$BTC $SOL #BinanceSquare #RiskManagement #DYOR 🕯️💻`;
   }
 }
 

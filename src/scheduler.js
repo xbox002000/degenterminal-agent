@@ -101,6 +101,7 @@ async function startScheduler() {
  
       // 3. Check Binance open positions for TP/SL/max-hold
       await checkAndCloseBinancePositions(conservativeAgent);
+      await checkAndCloseBinancePositions(aggressiveAgent);
     } catch (err) {
       console.error(`[Fast Monitor] Error:`, err.message);
     }
@@ -207,6 +208,22 @@ async function startScheduler() {
       // 1. Ingest dynamic data context from agents
       const marketTrends = conservativeAgent.brain?.memory?.analytics_feedback?.market_trends || {};
       const auditedTokens = conservativeAgent.scanner?.lastAuditedTokens || [];
+
+      // Compute total trades across both agents for smart template routing
+      let totalTrades = 0;
+      try {
+        const conHistoryPath = conservativeAgent.getTradeHistoryPath();
+        const aggHistoryPath = aggressiveAgent.getTradeHistoryPath();
+        if (fs.existsSync(conHistoryPath)) {
+          totalTrades += JSON.parse(fs.readFileSync(conHistoryPath, 'utf8')).length;
+        }
+        if (fs.existsSync(aggHistoryPath)) {
+          totalTrades += JSON.parse(fs.readFileSync(aggHistoryPath, 'utf8')).length;
+        }
+      } catch (histErr) {
+        console.warn('[BinancePublishLoop] Failed to read trade history for template routing:', histErr.message);
+        totalTrades = -1; // unknown, don't suppress
+      }
       
       // Cycle through template types
       const types = ['MARKET_TRENDS', 'SECURITY_ALERT', 'LAUNCHPOOL_CAMPAIGN'];
@@ -220,7 +237,8 @@ async function startScheduler() {
         marketTrends,
         auditedTokens,
         campaignName,
-        balance: conservativeAgent.virtualPortfolio ? conservativeAgent.virtualPortfolio.balanceUSD : 100000
+        balance: conservativeAgent.virtualPortfolio ? conservativeAgent.virtualPortfolio.balanceUSD : 100000,
+        totalTrades
       };
 
       // 2. Generate customized content
@@ -365,17 +383,19 @@ async function startScheduler() {
     binanceTradeTimeout = setTimeout(async () => {
       if (!isShuttingDown) {
         await binanceMockTradeLoop(conservativeAgent);
+        await binanceMockTradeLoop(aggressiveAgent);
         scheduleNextBinanceTrade();
       }
     }, delayMs);
   };
 
   if (config.BINANCE_TRADE_ENABLED !== false && binanceTrader.isConfigured()) {
-    console.log(`💰 幣安 Testnet 模擬交易實戰終端已開啟！每 ${config.BINANCE_TRADE_MIN_INTERVAL_MIN || 120}-${config.BINANCE_TRADE_MAX_INTERVAL_MIN || 180} 分鐘隨機執行 5 柱策略評估與下單。`);
+    console.log(`💰 幣安 Testnet 模擬交易實戰終端已開啟！每 ${config.BINANCE_TRADE_MIN_INTERVAL_MIN || 120}-${config.BINANCE_TRADE_MAX_INTERVAL_MIN || 180} 分鐘隨機且獨立評估雙雄對決策略。`);
 
     setTimeout(async () => {
       if (!isShuttingDown) {
         await binanceMockTradeLoop(conservativeAgent);
+        await binanceMockTradeLoop(aggressiveAgent);
         scheduleNextBinanceTrade();
       }
     }, 10 * MS_IN_MINUTE);

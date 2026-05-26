@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const config = require('../../config');
 
-const binanceTradeStatePath = path.join(__dirname, '../../../config/binance_trade_state.json');
+function getBinanceTradeStatePath(agentMode) {
+  const suffix = agentMode === 'aggressive' ? '_zmac' : '_green';
+  return path.join(__dirname, `../../../config/binance_trade_state${suffix}.json`);
+}
 
 function getDefaultBinanceTradeState() {
   return {
@@ -14,10 +17,11 @@ function getDefaultBinanceTradeState() {
   };
 }
 
-function loadBinanceTradeState() {
+function loadBinanceTradeState(agentMode) {
+  const statePath = getBinanceTradeStatePath(agentMode);
   try {
-    if (fs.existsSync(binanceTradeStatePath)) {
-      const raw = JSON.parse(fs.readFileSync(binanceTradeStatePath, 'utf8'));
+    if (fs.existsSync(statePath)) {
+      const raw = JSON.parse(fs.readFileSync(statePath, 'utf8'));
       // Migrate legacy "positions" → "openPositions"
       if (raw.positions && !raw.openPositions) {
         raw.openPositions = raw.positions;
@@ -27,19 +31,20 @@ function loadBinanceTradeState() {
       return raw;
     }
   } catch (e) {
-    console.warn('[BinanceTrade] Failed to load state file, using defaults');
+    console.warn(`[BinanceTrade - ${agentMode}] Failed to load state file, using defaults`);
   }
   return getDefaultBinanceTradeState();
 }
 
 // Atomic write: write to temp file then rename (prevents partial writes)
-function saveBinanceTradeState(state) {
+function saveBinanceTradeState(state, agentMode) {
+  const statePath = getBinanceTradeStatePath(agentMode);
   try {
-    const tmp = binanceTradeStatePath + '.tmp';
+    const tmp = statePath + '.tmp';
     fs.writeFileSync(tmp, JSON.stringify(state, null, 2), 'utf8');
-    fs.renameSync(tmp, binanceTradeStatePath);
+    fs.renameSync(tmp, statePath);
   } catch (e) {
-    console.warn('[BinanceTrade] Failed to save state:', e.message);
+    console.warn(`[BinanceTrade - ${agentMode}] Failed to save state:`, e.message);
   }
 }
 

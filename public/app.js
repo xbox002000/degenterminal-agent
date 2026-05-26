@@ -1032,7 +1032,8 @@ function updateSmartMoneyRadar(audit) {
   
   if (totalScoreEl) {
     // Show actual continuous weighted score instead of binary / 5 分
-    totalScoreEl.innerText = `${audit.passedPillars.toFixed(1)} / 6.0 分`;
+    const threshold = (audit.requiredThreshold !== undefined) ? audit.requiredThreshold : 6.0;
+    totalScoreEl.innerText = `${audit.passedPillars.toFixed(1)} / ${threshold.toFixed(1)} 分`;
     totalScoreEl.style.color = audit.success ? 'var(--neon-green)' : 'var(--neon-red)';
   }
   

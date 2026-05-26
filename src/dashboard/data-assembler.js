@@ -24,7 +24,9 @@ class DataAssembler {
         unrealizedPnL: 0.00,
         positions: [],
         openOrders: []
-      }
+      },
+      green: null,
+      zmac: null
     };
     
     let smartMoneyAudit = null;
@@ -32,6 +34,11 @@ class DataAssembler {
     try {
       binance.spotBalance = await binanceTrader.getSpotBalance();
       binance.futures = await binanceTrader.getFuturesAccountInfo();
+      
+      // Load both Green and ZMAC state records for Binance Showdown
+      const { loadBinanceTradeState } = require('../trading/binance/state-manager');
+      binance.green = loadBinanceTradeState('conservative');
+      binance.zmac = loadBinanceTradeState('aggressive');
     } catch (binErr) {
       console.warn('[DegenTerminal] Error loading Binance Testnet details for dashboard:', binErr.message);
     }

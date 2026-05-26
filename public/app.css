@@ -270,6 +270,10 @@ body::after {
   background: linear-gradient(90deg, transparent, #a855f7, transparent);
 }
 
+.portfolio-badge.yield-lock::before {
+  background: linear-gradient(90deg, transparent, #facc15, transparent);
+}
+
 .portfolio-badge-label {
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -300,6 +304,28 @@ body::after {
   background: linear-gradient(90deg, #c084fc, #818cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.portfolio-badge.yield-lock .portfolio-badge-val {
+  background: linear-gradient(90deg, #fde68a, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.position-empty-detail {
+  display: block;
+  max-width: 620px;
+  margin: 8px auto 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.portfolio-lock-note {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 /* 6. Dashboard Grid Section */
@@ -997,9 +1023,9 @@ body::after {
 }
 
 .portfolio-badges-container.compact .portfolio-badge {
-  min-width: 140px;
+  min-width: 160px;
   padding: 10px 14px;
-  flex: 1;
+  flex: 1 1 160px;
 }
 
 .position-slots-label {
@@ -1169,4 +1195,3 @@ body::after {
   box-shadow: 0 0 15px rgba(240, 185, 11, 0.12), inset 0 0 10px rgba(240, 185, 11, 0.02) !important;
   transform: translateY(-2px);
 }
-

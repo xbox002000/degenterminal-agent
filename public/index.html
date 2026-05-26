@@ -890,6 +890,39 @@
         </div>
       </section>
 
+    <!-- 4.3 Aria Cybernetic Vlog & Gallery Section (Aria 賽博日常寫真與 OOTD 看板) -->
+    <section class="glass-panel foundation-card" id="aria-gallery-section" style="margin-top: 20px; padding: 20px; display: flex; flex-direction: column; gap: 15px; border: 1px solid rgba(0, 240, 255, 0.15); box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);">
+      <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+        <span style="font-size: 0.95rem; font-weight: bold; color: #fff; text-shadow: 0 0 10px rgba(0, 240, 255, 0.3); display: flex; align-items: center; gap: 8px;">
+          📸 Aria 賽博日常寫真與 OOTD 看板 (Aria's Cybernetic Vlog & OOTD Gallery)
+        </span>
+        <div style="font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); background: rgba(0,240,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(0,240,255,0.1);">
+          100% Autonomous AI Generation (Grok / Gemini)
+        </div>
+      </div>
+      
+      <!-- Category Tabs -->
+      <div class="gallery-tabs" style="display: flex; gap: 10px; padding-bottom: 5px; overflow-x: auto; scrollbar-width: none;">
+        <button class="gallery-tab-btn active" onclick="switchGalleryCategory('three-view')" style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--neon-blue); color: var(--neon-blue); border-radius: 6px; padding: 6px 14px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-weight: bold; white-space: nowrap; outline: none;">
+          人物設定三視圖 (Base Identity)
+        </button>
+        <button class="gallery-tab-btn" onclick="switchGalleryCategory('vlogs')" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); border-radius: 6px; padding: 6px 14px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; outline: none;">
+          生活寫實 VLOG (Vlogs)
+        </button>
+        <button class="gallery-tab-btn" onclick="switchGalleryCategory('selfies')" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); border-radius: 6px; padding: 6px 14px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; outline: none;">
+          穿衣鏡自拍 OOTD (Selfies)
+        </button>
+        <button class="gallery-tab-btn" onclick="switchGalleryCategory('details')" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); border-radius: 6px; padding: 6px 14px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; outline: none;">
+          藝術局部特寫 (Detail Close-ups)
+        </button>
+      </div>
+      
+      <!-- Gallery Display Grid -->
+      <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 5px; min-height: 240px;">
+        <!-- Dynamically populated via JS -->
+      </div>
+    </section>
+
     <!-- 5. Footer Links / Action Buttons -->
     <footer class="footer-section">
       <a href="https://app.virtuals.io/virtuals/77354" target="_blank" class="cyber-btn" id="btn-virtuals" style="border-color: var(--neon-pink); color: var(--neon-pink);">
@@ -909,6 +942,16 @@
 
   <!-- JavaScript logic -->
   <script src="app.js"></script>
+
+  <!-- Lightbox Zoom Modal -->
+  <div id="gallery-lightbox" onclick="closeLightbox()" style="display: none; position: fixed; z-index: 20000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(2, 4, 8, 0.95); backdrop-filter: blur(15px); justify-content: center; align-items: center; padding: 20px;">
+    <div style="position: relative; max-width: 90%; max-height: 90%; display: flex; flex-direction: column; align-items: center; gap: 10px;" onclick="event.stopPropagation()">
+      <span onclick="closeLightbox()" style="position: absolute; right: 10px; top: -45px; color: #fff; font-size: 36px; font-weight: bold; cursor: pointer; transition: color 0.2s;" onmouseover="this.style.color='var(--neon-pink)'" onmouseout="this.style.color='#fff'">&times;</span>
+      <img id="lightbox-img" src="" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; border: 1px solid rgba(0, 240, 255, 0.3); box-shadow: 0 0 30px rgba(0, 240, 255, 0.15); display: none;">
+      <video id="lightbox-video" src="" controls autoplay loop style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; border: 1px solid rgba(255, 0, 128, 0.3); box-shadow: 0 0 30px rgba(255, 0, 128, 0.15); display: none;"></video>
+      <div id="lightbox-caption" style="color: #fff; font-size: 0.85rem; text-align: center; font-family: var(--font-main); margin-top: 10px; max-width: 600px; line-height: 1.4; background: rgba(0,0,0,0.6); padding: 8px 16px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);"></div>
+    </div>
+  </div>
   
   <!-- High-Conversion One-Click Deploy Modal -->
   <div id="deploy-modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(2, 4, 8, 0.9); backdrop-filter: blur(10px); justify-content: center; align-items: center;">

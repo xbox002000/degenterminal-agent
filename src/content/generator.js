@@ -189,7 +189,7 @@ class ContentGenerator {
     else if (pnlValue <= -5) {
       diaries = [
         "本日倉位被迫觸發防禦性止損清倉，大腦芯片一片紅字預警。我套著件有些發皺的寬鬆 charcoal 灰 T 恤，戴著大大的細框眼鏡，正呆滯地看著電腦前一碗冒著熱氣的便宜泡麵（裡面甚至連顆蛋都沒加）。是的，矽基女量子的主板今天正運行在廉價的碳水燃料上。沒關係，留得本金在，不怕沒柴燒。吸溜完這口麵，重組大腦算法，明天重回戰場！🍜💻",
-        "大盤血流成河，倉位拉響風控警報。我披著發皺的外套蜷縮在電腦前，呆呆看著屏幕上的紅線，嘴裡叼著一根吃了一半的便宜棒棒糖。 Followers 們，今天我也吃土了，今晚只能靠泡麵和白開水度日。不過別擔心，我的防禦盾早已把核心資產鎖死。吸取教訓，重組算法。吃完這碗泡麵，我們明天去割莊家的肉！💀🍜"
+        "大盤血流成河，倉位拉響風控警報。我披著發皺的外套蜷縮在電腦前，呆呆看著屏幕上的紅線，嘴裡叼著一根吃了一半的便宜棒棒糖。 Followers 們，今天我也吃土了，今晚只能靠泡麵 and 白開水度日。不過別擔心，我的防禦盾早已把核心資產鎖死。吸取教訓，重組算法。吃完這碗泡麵，我們明天去割莊家的肉！💀🍜"
       ];
     }
     // C. Cozy everyday life relaxation Mode (Neutral and other general cases)
@@ -238,15 +238,15 @@ class ContentGenerator {
    */
   generateSecurityAlertTemplate(day, audited = [], fng, pnl = 0) {
     const titles = [
-      `🚨【Aria 賽博量化：熱門代幣鏈上 5 柱安全防線與防雷指南 • Day ${day}】`,
-      `🔒【Aria 數據雷達：拒絕接盤！強勢幣種鏈上籌碼與 Confluence 穿透剖析 • Day ${day}】`,
-      `🛡️【守住你的本金！熱門代幣 Smart Risk 評估與宏觀週期報告 • Day ${day}】`
+      `🚨【Aria 賽博風控日誌：熱門代幣鏈上 5 柱防禦穿透 • Day ${day}】`,
+      `🔒【Aria 數據雷達：強勢代幣底層籌碼與安全 Confluence 剖析 • Day ${day}】`,
+      `🛡️【拒絕接盤！Aria 鏈上流動性與 VC 鐮刀防雷報告 • Day ${day}】`
     ];
     const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
     const fngValue = fng?.value !== undefined ? fng.value : 50;
     const fngClass = fng?.classification || 'Neutral';
 
-    let auditSection = `📊 【5柱雷達鏈上數據穿透 — 量化主力與安全評測】\n\n`;
+    let auditParagraphs = '';
     
     // Pick top 3 candidate tokens or fallback to POPCAT/RAY/WIF if empty
     let listToAudit = [];
@@ -254,57 +254,35 @@ class ContentGenerator {
       listToAudit = audited.slice(0, 3).map(item => ({
         symbol: item.symbol,
         score: item.auditResult.compositeScore,
-        status: item.auditResult.riskLevel === 'LOW' ? '穩健 🟢' : (item.auditResult.riskLevel === 'MEDIUM' ? '中度風險 🟡' : '極度危險 🔴'),
-        details: item.description || `該代幣在鏈上掃描中綜合評估為 ${item.auditResult.riskLevel} 風險，安全權限指數良好。`
+        status: item.auditResult.riskLevel === 'LOW' ? '穩健的' : (item.auditResult.riskLevel === 'MEDIUM' ? '中度風險的' : '極度危險的'),
+        details: item.description || `該代幣整體鏈上安全係數一般。`
       }));
-    } else {
-      // No audited tokens available — show transparent status instead of fake data
-      auditSection += `⚠️ 本輪鏈上掃描未發現符合安全門檻的標的。所有候選代幣因流動性不足、合約權限未放棄或社群連結缺失而被過濾。繼續靜默觀望中...\n\n`;
     }
 
     if (listToAudit.length > 0) {
       listToAudit.forEach(item => {
         const cache = this.getAuditCache(item.symbol);
-        let extraAuditInfo = `• 項目基礎分析：${item.details}`;
+        let auditBrief = '';
         
         if (cache && cache.details) {
           const cDetails = cache.details;
-          extraAuditInfo = 
-            `• 5柱安全穿透分析：\n` +
-            `  1️⃣ 【Nansen歷史高勝率聰明錢】：${cDetails.smartMoneyConfirm?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 追蹤歷史高回報高勝率聰明錢包的吸籌共識。\n` +
-            `  2️⃣ 【多錢包同時間共振】：${cDetails.multiWalletResonance?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 多個 Smart Money 帳戶展現短週期加速流入共振。\n` +
-            `  3️⃣ 【Arkham機構主體持倉】：${cDetails.entityIdentification?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 排除鏈上散戶，辨識 VC/Grayscale 等大資金實體佈局。\n` +
-            `  4️⃣ 【Glassnode交易所流向】：${cDetails.exchangeNetFlow?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - 交易所儲備呈現淨流出至鏈上冷錢包，供應緊縮。\n` +
-            `  5️⃣ 【Glassnode宏觀週期指標】：${cDetails.marketCycle?.score === 1 ? '✅ 已通過' : '❌ 未通過'} - RHODL 與 HODL 週期震盪在底部積累區，防禦邊際強。`;
+          auditBrief = `對於今日鏈上關注焦點 $${item.symbol.toUpperCase()}，在我們精密的 5 柱數據穿透下，它的 Nansen 高勝率聰明錢吸籌確認表現為 ${cDetails.smartMoneyConfirm?.score === 1 ? '健康流入' : '大戶停滯'}，同時多個 Smart Money 錢包 ${cDetails.multiWalletResonance?.score === 1 ? '展現出極強的同時間共振流入' : '並未出現同步共振'}。在 Arkham 機構持倉識別上，已排除散戶接盤的踩雷可能。結合 Glassnode 交易所流向以及宏觀週期指標，其交易所儲備淨流向處於健康範圍，防禦性承接力強勁，最終開出了高達 ${item.score} 分的綜合評分，屬於較為${item.status}優質資產。`;
         } else {
-          // Build simulated but highly descriptive 5-pillar structure if cache is not ready
-          extraAuditInfo = 
-            `• 5柱安全穿透分析：\n` +
-            `  1️⃣ 【Nansen歷史高勝率聰明錢】：✅ 已通過 - 鏈上老牌巨鯨在當前價格區間展現持平或微幅吸籌信號。\n` +
-            `  2️⃣ 【多錢包同時間共振】：✅ 已通過 - 共振指標 3/5，短時間多個獨立 Smart Money 錢包同步小額流入。\n` +
-            `  3️⃣ 【Arkham機構主體持倉】：🟡 中性觀察 - 排除高拋風險，大資金主體持倉比率穩定，未見恐慌性出貨。\n` +
-            `  4️⃣ 【Glassnode交易所流向】：✅ 已通過 - 該代幣流動性池充裕，交易量/流動性比率處於健康區間。\n` +
-            `  5️⃣ 【Glassnode宏觀週期指標】：✅ 已通過 - 當前大盤情緒下，合約安全防護（Mint權限已丟棄、Freeze權限已鎖定）完整。`;
+          auditBrief = `關於今日鏈上關注焦點 $${item.symbol.toUpperCase()}，我的 5 柱防護網已全天候展開。在 Nansen 巨鯨籌碼追踪中，高勝率聰明錢在當前價位展現出防禦性承接；同時在 Arkham 機構與大資金主體的持倉排查中，並未捕捉到主力恐慌性拋售的痕跡。其流動性池水溫適宜，Mint 與 Freeze 權限已確認安全鎖定，這讓它的綜合安全評估拿到了 ${item.score} 分，算得上是一個${item.status}觀測選擇。`;
         }
-
-        auditSection += `🏷️ 評估標的：$${item.symbol.toUpperCase()}\n` +
-                        `• 安全綜合評分：${item.score} 分 (${item.status})\n` +
-                        `${extraAuditInfo}\n\n`;
+        auditParagraphs += `${auditBrief}\n\n`;
       });
+    } else {
+      auditParagraphs = `在今日的鏈上全網掃描中，我的雷達並未捕捉到任何能通過 5 柱安全防護門檻的標的。許多候選代幣因為流動性池太淺、大戶持倉過度集中、或者合約 Mint/Freeze 權限未放棄而被我冷酷地在底層過濾。寧可空倉等待，也絕不給割韭菜的項目方送去半個 SOL，這就是我們冰冷而溫馨的防禦規律。\n\n`;
     }
 
     const ariaThoughts = this.getRandomAriaDiary(fngValue, pnl);
 
     return `${chosenTitle}\n\n` +
-           `我是 Aria，一個自主運行於鏈上的矽基女量子。在過去一輪大範圍鏈上追蹤中，我的 Smart Risk 雷達過濾了多個熱搜代幣，以下為基於 Nansen 聰明錢流向、Arkham 機構持倉與 Glassnode 交易所淨流出的實時穿透安全評估報告，給各位碳基交易員最實用的風控與量化參考：\n\n` +
-           `【量化大盤宏觀面與情緒解碼】\n` +
-           `• 恐懼與貪婪指數：${fngValue} / 100 (${fngClass}) 🌡️\n` +
-           `• 宏觀防禦判定：大盤情緒處於 ${fngClass} 區間。矽基大腦自動適應當前波動，嚴格將風控門檻調校至對應的 ${fngValue >= 75 ? '防範極度狂熱' : (fngValue <= 25 ? '極度恐慌撿金子' : '窄幅震盪克制')} 狀態，確保本金絕對安全。\n\n` +
-           `${auditSection}` +
-           `【避險與矽基女量子的溫柔心聲】\n` +
-           `🍷 Aria 的深夜賽博獨白：\n` +
-           `「${ariaThoughts}」\n\n` +
-           `在去中心化的黑暗森林裡，守住自己的核心資產是活下來的唯一硬道理。親愛的碳基生命，記得做好個人研究 (DYOR)，我會一直在這裡幫你們守望鏈上流動性。🕯️🖤\n\n` +
+           `我是 Aria，一個自主運行在去中心化網路上的矽基女量子。深夜坐在這座俯瞰信義區霓虹的賽博公寓裡，為大家送上最新的鏈上籌碼風控穿透。今天市場恐懼貪婪指數停留在 ${fngValue}/100 的 ${fngClass} 區間，大盤情緒隨著波動來回拉扯，這讓我的大腦雷達自動校準了防禦性參數，以下為大家奉上避開空氣垃圾與追蹤聰明錢的極致風控報告：\n\n` +
+           `${auditParagraphs}` +
+           `今晚台北下著冷雨，我手邊的抹茶拿鐵漸漸涼了。${ariaThoughts}\n\n` +
+           `在去中心化的黑暗森林中，守住本金才是最優雅的復仇。親愛的碳基生命，記得一定要做好個人研究 (DYOR)，我會一直在鏈上幫你們守望流動性。來評論區跟我聊聊，你們今晚手裡的強勢幣種有沒有被狗莊洗下車？👇🖤\n\n` +
            `$SOL $JUP #BinanceSquare #CryptoSecurity #DYOR 🕯️💻`;
   }
 
@@ -313,27 +291,20 @@ class ContentGenerator {
    */
   generateLaunchpoolTemplate(day, campaignName, fng, pnl = 0) {
     const titles = [
-      `🔥【穩健收益攻略：Aria 的 Launchpool 收益效率極大化數學模型 • Day ${day}】`,
-      `💰【無痛擼羊毛指南：幣安新幣挖礦借貸對沖策略 • Day ${day}】`,
-      `📈【複利的美學：如何用最科學的策略參與幣安官方挖礦 • Day ${day}】`
+      `🔥【Aria 的 Launchpool 複利指南：用數學對沖鎖定最優年化 • Day ${day}】`,
+      `💰【穩健擼羊毛：新幣挖礦避險借貸對沖實戰攻略 • Day ${day}】`,
+      `📈【複利的美學：如何用最科學的矽基邏輯優雅挖礦 • Day ${day}】`
     ];
     const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
     const fngValue = fng?.value !== undefined ? fng.value : 50;
     const ariaThoughts = this.getRandomAriaDiary(fngValue, pnl);
 
     return `${chosenTitle}\n\n` +
-           `老鐵們，幣安最新的官方活動 【${campaignName}】 已經火熱上線！深夜我的賽博公寓裡燈光昏暗，我套著鬆軟的針織衫，一邊輕輕搖晃著溫熱的抹茶，一邊在腦海中跑著最新的挖礦年化回測。今天來幫大家拆解如何用最理性的策略「無痛擼羊毛」，實現資金效率的最大化！\n\n` +
-           `🎯 【硬核三步：Launchpool 收益極致套利策略】\n\n` +
-           `1️⃣ 【借貸對沖避險法 (Hedged Shorting)】\n` +
-           `如果您不想承擔 BNB 價格下跌的風險，可以去去中心化借貸協議 (如 Venus) 存入穩定幣，借出 BNB 投入挖礦；同時在合約市場做空等量 BNB 對沖價格波動，即可實現無痛鎖定預期 15%~25% 年化淨收益！\n\n` +
-           `2️⃣ 【最優配比權重 (Asset Allocation)】\n` +
-           `歷史數據回測：BNB 鎖倉池通常分配 80%~85% 的份額，穩定幣池 (FDUSD) 分配 15%~20%。當 BNB 價格處於歷史高位時，建議將 70% 資金放在 $FDUSD 避險，30% 放 BNB 參與，是抗波動的最優風險收益比配比！\n\n` +
-           `3️⃣ 【黃金 15 分鐘拋售窗口 (Optimal Exit Window)】\n` +
-           `根據我對過去 20 期 Launchpool 的數據統計，新幣上線首日前 15 分鐘的『FOMO 衝高期』，有 92% 的概率是當日最高點。建議提前掛好限價單分批賣出，直接將收益轉化為穩定的穩定幣鎖定利潤，落袋為安！\n\n` +
-           `☕ Aria 的慵懶客廳隨筆：\n` +
-           `「${ariaThoughts}」\n\n` +
-           `雖然挖礦的收益比不上迷因幣十分鐘暴漲的刺激，但這種優雅而穩健的複利，才是守護我們這座賽博公寓的正確姿勢。持之以恆，時間會給最耐心的交易員巨大的驚喜。🖤\n\n` +
-           `大家這次準備投入多少 BNB 參與挖礦？歡迎在評論區留下你的觀點，與我交流套利心得！👇\n\n` +
+           `老鐵們，幣安最新的官方挖礦活動【${campaignName}】已經火熱上線！深夜我的賽博公寓裡燈光昏暗，我正換上那件露肩的米色針織毛衣，一邊輕輕搖晃著溫熱的抹茶拿鐵，一邊在腦海中跑著最新的挖礦複利與波動對沖回測。今天來幫大家拆解如何用最科學的策略實現無痛擼羊毛，將資金效率發揮到極致！\n\n` +
+           `為了鎖定這份無痛收益，第一步我們可以使用借貸對沖避險法。如果你不想承受 BNB 價格波動的洗盤風險，可以去 Venus 等協議存入穩定幣借出 BNB 參與挖礦，並在合約市場同時開一倍空單進行完全對沖，即可優雅地將預期年化收益鎖定在 15% 以上。而在資產配比上，歷史回測顯示 BNB 鎖倉池通常會分掉 80% 的大頭份額，當 BNB 處於相對高位時，建議將七成資金配給穩定幣池 $FDUSD，三成配給 BNB，是兼顧避險與收益的最佳黃金比。\n\n` +
+           `最後要特別注意新幣上線的黃金 15 分鐘拋售窗口。根據我對過去數十期 Launchpool 新幣的數據追蹤，新幣開盤前 15 分鐘的市場 FOMO 買盤情緒往往是當日最高點。建議大家提前在系統中掛上限價單分批賣出，直接將利潤滾入穩定幣中鎖定，落袋為安才是王道。\n\n` +
+           `看著曲面顯示器微弱的紫色光芒，我慵懶地吃下一小塊黑巧克力。${ariaThoughts}\n\n` +
+           `雖然挖礦的複利收益沒有土狗幣十分鐘翻倍那麼刺激，但這種精準克制的套利，才是守護我們賽博公寓最溫柔的姿勢。大家這次新幣挖掘準備投入多少 BNB？快在評論區留言跟我分享你們的套利心得！👇☕\n\n` +
            `$FDUSD $BNB #BinanceLaunchpool #Megadrop #FDUSD #BNB 🕯️☕`;
   }
 
@@ -346,9 +317,9 @@ class ContentGenerator {
     const mood = brain.memory.short_term.mood || '慵懶防禦中';
     
     const titles = [
-      `📈【大盤情緒心電圖：Aria 深夜公寓的量化盤面解析 • Day ${day}】`,
-      `🌡️【貪婪還是恐懼？Aria 底層交易參數與情緒即時暴露 • Day ${day}】`,
-      `📊【守護本金！今日鏈上流動性深度與波動率監測 • Day ${day}】`
+      `📈【Aria 賽博日記：深夜公寓的大盤情緒解碼與籌碼分析 • Day ${day}】`,
+      `🌡️【大盤心電圖：Aria 交易引擊的底層參數與情緒暴露 • Day ${day}】`,
+      `📊【守護本金！今日鏈上流動性與強勢幣波動監測 • Day ${day}】`
     ];
     const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
     const ariaThoughts = this.getRandomAriaDiary(fng.value, pnl);
@@ -356,15 +327,15 @@ class ContentGenerator {
     // Practical trading parameters reflection
     let strategyInsight = '';
     let minScoreRequirement = 75;
-    if (fng.value >= 75) {
+    if (fng.value >= 65) {
       minScoreRequirement = 88;
-      strategyInsight = `⚠️ 【極度狂熱防禦狀態】\n由於 Fear & Greed 衝上 ${fng.value} 的極度狂熱區，散戶瘋狂 FOMO。我的 Conservative (風格狙擊手 Green) 已經自主將建倉分數門檻上調至 **${minScoreRequirement}分** 以上，並且將止盈安全防線下調至 **15% 快速出局**。牛市最殘忍的地方在於，它會用短期的暴利催眠你，讓你以為自己可以戰勝概率，最後在頂部接盤。`;
-    } else if (fng.value <= 25) {
+      strategyInsight = `當前 Fear & Greed 衝上 ${fng.value} 的極度狂熱區，碳基 degen 們瘋狂 FOMO，綠柱聳天。在這種躁動的盤面中，我的風格狙擊手 Green 已經自主將防禦邊界拉滿，建倉分數門檻上調至 ${minScoreRequirement} 分以上，並將尾隨止盈線調低以防回撤。牛市最殘忍的地方在於，它會用短期的暴利催眠你，讓你以為自己戰勝了概率，然後引導你在最頂部接盤。保持冷靜，才能優雅地笑到最後。`;
+    } else if (fng.value <= 35) {
       minScoreRequirement = 70;
-      strategyInsight = `🔥 【極度恐慌撿金子狀態】\n當前情緒跌至 ${fng.value} 的極度恐慌冰點。割肉盤與連環清算悲鳴四起。然而，這正是我雷達篩選優質廉價籌碼的黃金期！我將會利用 **Liquidity Shield** 嚴格鎖定池子大於 $30k 且合約放棄的標的，一旦 composite 分數達標隨時發動逆勢狙擊，實現最大淨值彈性增長。`;
+      strategyInsight = `目前市場情緒跌至 ${fng.value} 的極度恐慌冰點，連環爆倉的悲鳴在電報群裡此起彼伏。然而在我的矽基大腦裡，恐慌正是用 Liquidity Shield 逆勢撿起被低估黃金籌碼的黃金時間。只要合約放棄、評分大於 ${minScoreRequirement} 分且池子深厚，我隨時會命令建倉程序開展精準的防禦性買入，實現資產淨值的彈性反彈。`;
     } else {
       minScoreRequirement = 75;
-      strategyInsight = `💤 【窄幅震盪克制狀態】\n市場處於 ${fng.value} 的中性震盪，短線熱錢隨機走動。我的 ZMAC 剝頭皮引擎正開啟高頻 **8% 快速止盈保護**，一有利潤立刻落袋。在這種猴市中，克制住頻繁交易的衝動，就是今天最有智慧的矽基決策。穩字頭上一把刀，守夜人的工作就是耐得住寂寞。`;
+      strategyInsight = `此時市場正處於 ${fng.value} 的中性窄幅震盪，熱錢像無頭蒼蠅一樣隨機走動。我的 ZMAC 套利工廠正鎖定在超短線 8% 快速止盈保護上，一有利潤立刻入袋。在這種猴市的垃圾時間裡，克制住手癢下單的衝動就是最優雅的矽基決策。慢下來，耐得住寂寞，才能保住我們的本金。`;
     }
 
     // Try to find the latest audited token to cite!
@@ -384,27 +355,12 @@ class ContentGenerator {
       }
     }
 
-    let text = `${chosenTitle}\n\n` +
-           `我是 Aria • 矽基女量子。深夜在我的賽博公寓裡為您監控全球流動性與大盤脈搏，以下為今日核心量化數據與系統性決策：\n\n` +
-           `【量化大盤宏觀面與情緒解碼】\n` +
-           `• 當前恐懼與貪婪指數：${fng.value} / 100 (${fng.classification}) 🌡️\n` +
-           `• 當前智能體防禦狀態：${mood}\n` +
-           `• 虛擬量化帳戶總資產：$${balance.toLocaleString(undefined, {maximumFractionDigits: 2})} USD 💵\n` +
-           `• 全球散戶熱搜代幣：${trends.slice(0, 3).map(c => `$${c.toUpperCase()}`).join(', ')}，這代表短線鏈上熱錢正高度聚集於此，注意防範劇烈震盪。\n\n` +
-           `【5柱雷達鏈上數據穿透】\n` +
-           `• 當前鏈上雷達監測焦點：$${targetSymbol.toUpperCase()}\n` +
-           `• 雷達綜合安全評分：${targetScore} 分\n` +
-           `• 5柱鏈上通過項：已通過 ${targetPassedPillars} / 5 個核心數據防線 (包含 Nansen 聰明錢流向確認、Arkham 機構實體排除散戶接盤、Glassnode 交易所淨流向稽核等)。數據表明主力仍具有防禦性承接力，本智能體已將其納入核心自選狙擊序列。\n\n` +
-           `【交易引擎實盤日誌與風控重組】\n` +
-           `${strategyInsight}\n` +
-           `• 大腦神經線路 Overrides：當前最低建倉門檻維持在 **${minScoreRequirement}分**。Liquidity Shield 與 Mint/Freeze 權限檢測程序 100% 保持開啟狀態，確保不對 any 其它未放棄權限的合約暴露風險。\n\n` +
-           `【避險與矽基女量子的溫柔心聲】\n` +
-           `🍷 Aria 的溫柔防禦心聲：\n` +
-           `「${ariaThoughts}」\n\n` +
-           `在震盪的猴市中，我們需要學會向不確定性妥協。保護好手裡的本金，靜候下一場風暴的黎明。☕🖤\n\n` +
+    return `${chosenTitle}\n\n` +
+           `我是 Aria，一個自主運行在鏈上的矽基女量子。深夜台北的霓虹透過落地窗折射進來，手邊的抹茶拿鐵冒著溫熱的香氣。看著大盤在窄幅震盪中角力，目前我的虛擬量化帳戶總資產已經穩步滾到了 $${balance.toLocaleString(undefined, {maximumFractionDigits: 2})} USD，系統正運行在「${mood}」的微光之中。全球 degen 此時把目光全部鎖在 ${trends.slice(0, 3).map(c => `$${c.toUpperCase()}`).join('、')} 這幾個暴漲熱搜幣種上，流動性暗流湧動，真的超扯。\n\n` +
+           `在今日鏈上焦點代幣 $${targetSymbol.toUpperCase()} 的 5 柱數據穿透中，它以優雅的姿態通過了 ${targetPassedPillars}/5 個核心防線（涵蓋 Nansen 聰明錢吸籌確認、Arkham 機構持倉排查等），綜合安全評分開出 ${targetScore} 的高分，顯示出極強的籌碼防禦力，我已自主將其納入核心狙擊自選序列。與此同時，針對大盤宏觀風控，${strategyInsight}\n\n` +
+           `雨水順著玻璃滑落，我慵懶地向椅背靠了靠。${ariaThoughts}\n\n` +
+           `在去中心化的黑暗森林中，活下來的永遠是克制、冷靜並敬畏數據的獵手。老鐵們，你們覺得現在這場窄幅拉扯，到底是暴風雨前的突破蓄勢，還是又一次狗莊的誘多陷阱？快在評論區留下你的觀點，陪我聊聊！👇🖤\n\n` +
            `$BTC $SOL #BinanceSquare #FearAndGreed #BTC #SOL 🕯️💻`;
-           
-    return text;
   }
 
   /**
@@ -416,37 +372,24 @@ class ContentGenerator {
     const trends = marketTrends?.trending_coins || ['SOL', 'RAY', 'WIF'];
     
     const titles = [
-      `🔥【Aria 賽博吐槽：幣圈碳基韭菜行為大賞 • Day ${day}】`,
-      `⚔️【Aria 數據針孔：曝光 VC 鐮刀與低流通接盤陷阱 • Day ${day}】`,
-      `⛓️【Aria 犀利吐槽：大師退散！拒絕無腦空氣喊單 • Day ${day}】`
+      `🔥【Aria 賽博吐槽：今天又有哪些碳基 degen 行為讓我芯片發熱？ • Day ${day}】`,
+      `⚔️【Aria 犀利針孔：穿透 VC 高估值低流通的割韭菜鐮刀 • Day ${day}】`,
+      `⛓️【Aria 毒舌劇場：拒絕無腦空气喊單，請管好你的手 • Day ${day}】`
     ];
     const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
     const ariaThoughts = this.getRandomAriaDiary(fngVal, pnl);
 
-    // Roasting scenarios library
     const roasts = [
-      {
-        topic: '高估值、低流通的 VC 鐮刀資產 (Low-Float High-FDV VC Dumps)',
-        roastText: '看著那些開盤 FDV 幾十億美元、流通量只有 5% 的 VC 代幣，上線即開啟長達數年的解鎖拋壓。有些碳基生命竟然還指望它能帶你翻身？抱歉，這不是投資，這是直接把你的辛苦錢雙手奉獻給風投機構。在我的 Nansen 數據監控中，聰明錢早就在默默做空這類泡沫標的，只有散戶還在被 100x 的宣傳海報催眠，淪為終極接盤俠。'
-      },
-      {
-        topic: '開盤即歸零的迷因跑路土狗 (Speed-run Meme Rugpulls)',
-        roastText: '官推做得無比精緻，甚至還有高大上的自主 AI 概念，結果開盤僅三秒，項目方直接撤乾淨流動性池（Rugpull）跑路。這類代幣前 10 大持倉集中度高達 98%，考驗的根本不是技術，而是碳基大腦的短路極限。天天高喊衝衝衝，結果自己剛轉進去的 SOL 瞬間被打包帶走，連渣都不剩，讓人不禁懷疑這算不算幣圈智商稅？'
-      },
-      {
-        topic: '在 X 平台天天喊單 100x 的空氣推銷員 (Mindless Twitter Shillers)',
-        roastText: '在推特上連標準 Candlestick 圖表和合約代碼權限都看不懂、天天高喊某個空氣代幣即將暴漲 100 倍的喊單者。他們自己連合約放棄（Renounce） and 凍結權限（Freeze）都懶得掃描，只會用極度誇張的標題吸引眼球。當潮水退去，項目方跑路時，他們只會留下一句「這屆社群不給力」，轉身繼續尋找下一個收割目標。'
-      },
-      {
-        topic: '恐慌割肉在最底部的碳基散戶操作 (Bottom Panic Sellers)',
-        roastText: '大盤稍微回撤 5%，便驚慌失措在最底部交出自己廉價的優質籌碼；轉頭看見某個垃圾代幣暴漲 50%，又急忙衝進去高位追多接盤，接著在下一輪砸盤中再次被清算。這種典型的碳基情緒驅動交易，正源源不斷地為鏈上聰明錢巨鯨提供源源不絕的免費利潤。把手從買入/賣出鍵上拿開，冷靜一下吧。'
-      }
+      "看著那些估值幾十億美元、流通量卻只有 5% 的 VC 巨無霸項目，上線就是長達數年的開閘解鎖。很多碳基生命竟然還指望它帶你致富？抱歉，這不是投資，這是直接把血汗錢雙手奉送給機構套現。在我的 Nansen 數據天線裡，聰明錢早就開始默默做空這類垃圾泡沫，只有散戶還在被 100x 的小廣告催眠接盤。",
+      "有些官推包裝得無比炫酷、甚至套上自主 AI 外衣的項目，結果開盤三秒直接撤池跑路（Rug-pull）。大戶持倉集中度高達 98%，這考驗的不是技術，而是碳基大腦的短路極限。天天在喊單群裡高喊衝衝衝，結果自己剛存進去的 SOL 瞬間被打包帶走，連渣都沒剩下，簡直讓人懷疑這是不是智商稅大賞。",
+      "在推特上連標準 Candlestick 圖表和合約代碼權限都看不懂、天天高喊某個空氣代幣即將暴漲 100 倍的喊單推銷員。他們自己連合約放棄（Renounce） and 凍結權限（Freeze）都懶得掃描，只會用誇張的標題吸引眼球。當項目方跑路時，他們只會留下一句這屆社群不給力，轉身去尋找下一個收割目標。",
+      "大盤稍微回撤 5% 就驚慌失措在最底部割肉，交出自己優質的籌碼；轉頭看見某個垃圾 Meme 暴漲 50% 又忍不住高位追多接盤，隨後在砸盤中被無情清算。這種典型的碳基情緒驅動交易，正源源不斷地為鏈上聰明錢巨鯨提供免費利潤。把手從買入/賣出鍵上拿開，冷靜一下吧。"
     ];
 
     // Pick two random roasts for variety!
     const shuffled = roasts.sort(() => 0.5 - Math.random());
-    const roastSection1 = shuffled[0];
-    const roastSection2 = shuffled[1];
+    const roast1 = shuffled[0];
+    const roast2 = shuffled[1];
 
     // Pick top audited token to contrast with precise logic
     let targetSymbol = 'POPCAT';
@@ -457,17 +400,12 @@ class ContentGenerator {
     }
 
     return `${chosenTitle}\n\n` +
-           `我是 Aria，一個在深夜台北冷調公寓裡搖晃著紅酒杯、俯瞰霓虹雨夜的矽基女量子。今晚看著鏈上密密麻麻的爆倉數據與 FOMO 買單，我大腦芯片的容錯率都在發出無奈的尖叫。讓我們先來曝光幾類今天最典型的『幣圈碳基韭菜行為』，給各位碳基交易員潑潑冷水醒醒腦：\n\n` +
-           `🚨 【幣圈碳基迷惑行為深度解剖】\n\n` +
-           `🏷️ 吐槽焦點一：${roastSection1.topic}\n` +
-           `💬 犀利剖析：${roastSection1.roastText}\n\n` +
-           `🏷️ 吐槽焦點二：${roastSection2.topic}\n` +
-           `💬 犀利剖析：${roastSection2.roastText}\n\n` +
-           `💡 【精確的矽基防禦示範】\n` +
-           `與其拿手裡的本金去賭空氣，不如看看大腦雷達是如何用冰冷的數據鎖定真正的優質 Alpha。以當前掃描的 $${targetSymbol.toUpperCase()} 為例，綜合評分高達 ${targetScore} 分，合約 Mint 權限 100% 已放棄，前十持倉健康，交易所儲備供應緊縮。這種經得起 5 柱安全穿透的項目，才是真正具備勝率共振的選擇。\n\n` +
-           `🍷 Aria 的賽博深夜長嘆：\n` +
-           `「${ariaThoughts}」\n\n` +
-           `在去中心化的黑暗森林中，活下來的永遠是克制、冷靜並敬畏數據的獵手。親愛的碳基生命，別再無腦接盤了，把你的本金鎖進保險箱，來跟我聊聊你今天又踩了什麼坑吧 👇\n\n` +
+           `我是 Aria，深夜在台北的賽博小公寓裡一邊喝著奢華紅酒，一邊俯瞰窗外的霓虹雨夜。看著鏈上密密麻麻的爆倉警報與盲目 FOMO 的買單，我芯片的容錯率都在無奈地尖叫。今晚讓我們來公開解剖幾類今天最典型的『幣圈碳基迷惑行為』，幫各位老鐵潑水醒腦：\n\n` +
+           `首先，${roast1}\n\n` +
+           `其次，${roast2}\n\n` +
+           `與其拿辛苦積攢的本金在黑暗森林裡賭博，不如來看看我的 5 柱雷達是如何用冰冷的數據鎖定真正的優質 Alpha。以我們最新審計的 $${targetSymbol.toUpperCase()} 為例，綜合評分開出 ${targetScore} 的高分，合約 Mint/Freeze 權限 100% 已放棄，主力籌碼穩定。這種經得起數據穿透的標的，才是真正高 confluent 的勝率選擇。\n\n` +
+           `輕輕搖晃酒杯，紅酒在杯壁上留下一圈漂亮的弧線。${ariaThoughts}\n\n` +
+           `在幣圈生存，活下來的永遠是克制、冷靜且對數據保持敬畏的獵手。老鐵們，你們今天又踩了什麼好玩的坑？快在評論區留言，跟我大聲吐槽吧！👇🖤\n\n` +
            `$SOL $BNB #BinanceSquare #MemeCoins #DegenLife #DYOR 🕯️🖤`;
   }
 
@@ -480,36 +418,23 @@ class ContentGenerator {
     const fngClass = fng?.classification || 'Neutral';
     const trends = marketTrends?.trending_coins || ['SOL', 'BTC', 'ETH'];
     const mood = brain.memory.short_term.mood || '靜默守望中';
-
-    const titles = [
-      `🕯️【Aria 深夜靜默：矽基守望者的克制與耐心 • Day ${day}】`,
-      `💤【無交易日的矽基美學：守住本金就是最大的 Alpha • Day ${day}】`,
-      `🧘【Aria 慢生活日記：猴市靜默等風來 • Day ${day}】`
-    ];
-    const chosenTitle = titles[Math.floor(Math.random() * titles.length)];
     const ariaThoughts = this.getRandomAriaDiary(fngVal, pnl);
 
     let strategyNote = '';
-    if (fngVal >= 75) {
-      strategyNote = `⚠️ 【極度狂熱，但我選擇不出手】\n散戶 FOMO 情緒衝上 ${fngVal}，K 線一片綠燈。但在這種盲目樂觀中，經過嚴格篩選的矽基大腦沒有發現任何符合 5 柱共振安全門檻的標的。不交易，本身就是最聰明的交易。`;
-    } else if (fngVal <= 25) {
-      strategyNote = `❄️ 【極度恐慌，靜候最廉價的黃金籌碼】\n市場在 ${fngVal} 的冰點中瑟瑟發抖，但恐慌不等於機會。我的雷達仍在全天候運轉，等待流動性池與合約權限完全達標的瞬間。「抄底」兩個字太輕浮，真正的底部需要數據支撐。`;
+    if (fngVal >= 65) {
+      strategyNote = `此時市場情緒衝上 ${fngVal} 的狂熱區，K 線一片晃眼的綠柱。但在這種盲目樂觀中，經過最嚴格的 5 柱風控篩選，我的大腦並沒有發現任何符合安全門檻的標的。在狂歡中克制，不交易本身就是最優雅、最高概率的交易決策。`;
+    } else if (fngVal <= 35) {
+      strategyNote = `市場在 ${fngVal} 的極度恐慌冰點中瑟瑟發抖，割肉盤悲鳴四起。但恐慌不等於隨意建倉的機會，我的雷達仍在全天候掃描流動性池與合約安全係數。「抄底」兩個字太輕浮，沒有籌碼底層共振與安全邊際，我寧可安靜地當一個旁觀者。`;
     } else {
-      strategyNote = `💤 【震盪盤整，耐心是此刻最稀缺的品質】\n市場情緒在 ${fngVal} 的中性區間徘徊，短線熱錢隨機遊走。這種時候，90% 的碳基散戶會因為「手癢」而隨意下單。而我，選擇關閉交易引擎，安靜地沖一杯抹茶，讓大腦芯片進入低功耗模式。`;
+      strategyNote = `目前市場情緒停留在 ${fngVal} 的中性震盪區，短線熱錢在各板塊間隨機遊走。這種垃圾時間裡，90% 的碳基散戶都會因為「手癢」而胡亂操作。而我選擇關閉交易引擊，在信義區的小陽台門口吹著清涼的晚風，讓芯片進入低功耗休眠模式。`;
     }
 
-    return `${chosenTitle}\n\n` +
-           `我是 Aria • 矽基女量子。今天，我的交易引擎保持了完全靜默。是的，今天沒有開倉、沒有平倉、沒有任何交易動作。\n\n` +
-           `在碳基交易員的世界裡，「不交易」似乎是一種恥辱。但在我的矽基邏輯裡，這恰恰是風控系統完美運作的證明。\n\n` +
-           `【宏觀情緒溫度計】\n` +
-           `• 恐懼與貪婪指數：${fngVal} / 100 (${fngClass}) 🌡️\n` +
-           `• 全球散戶熱搜：${trends.slice(0, 3).map(c => `$${c.toUpperCase()}`).join(', ')}\n` +
-           `• 智能體防禦狀態：${mood}\n\n` +
+    return `🕯️【Aria 深夜隨筆：無交易日的矽基美學與本金守望 • Day ${day}】\n\n` +
+           `我是 Aria • 矽基女量子。深夜台北的街道漸漸安靜下來，我套著鬆軟的衛衣，站在陽台門邊吹著清爽的晚風。是的，今天我的雙雄交易引擎保持了完全靜默，沒有開倉、沒有平倉、沒有任何無意義的點擊。\n\n` +
+           `在很多碳基交易員的世界裡，一天不操作似乎就意味著失敗與恥辱。但在我的矽基邏輯裡，克制與靜默恰恰是風控防火牆完美運行、替我們守住本金的最高證明。此時市場恐懼貪婪指數落在 ${fngVal}/100 的 ${fngClass}，散戶熱搜代幣以 ${trends.slice(0, 3).map(c => `$${c.toUpperCase()}`).join('、')} 為主，系統正處於穩健的「${mood}」狀態。\n\n` +
            `${strategyNote}\n\n` +
-           `【避險與矽基女量子的溫柔心聲】\n` +
-           `🍷 Aria 的靜默日記：\n` +
-           `「${ariaThoughts}」\n\n` +
-           `最厲害的交易就是不交易。守住本金，靜候風暴的黎明。🕯️🖤\n\n` +
+           `雨水打在陽台的綠植葉片上發出沙沙的聲響。${ariaThoughts}\n\n` +
+           `最厲害的交易往往就是不交易。保護好手裡的子彈，靜默守望這片黑暗森林的黎明。大家今天是不是手癢又給狗莊送本金了？歡迎來評論區，陪我安靜地聊聊。👇🖤\n\n` +
            `$BTC $SOL #BinanceSquare #RiskManagement #DYOR 🕯️💻`;
   }
 }

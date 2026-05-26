@@ -350,13 +350,7 @@ class XReplyGuy {
     try {
       const llmReply = await this._generateLLMReply(kolHandle, tweetText, fng, statsSummary);
       if (llmReply) {
-        // External link suppression prevention: 50% chance to append hard link, 50% chance to guide to Bio
-        if (Math.random() > 0.5) {
-          const dashboardUrl = config.social?.replyGuy?.dashboardUrl || 'https://degenterminal-agent.pages.dev';
-          llmReply.text = `${llmReply.text}\n📊 Live tracker: ${dashboardUrl}`;
-        } else {
-          llmReply.text = `${llmReply.text}\n📊 (check my Bio for 24/7 Live tracker)`;
-        }
+        // Return organic reply directly with no links or ads to boost follower conversion
         return llmReply;
       }
     } catch (e) {
@@ -669,7 +663,11 @@ class XReplyGuy {
       'minecc', 'yutohorikaw', 'solana_japan', 'dappou_channeru', 'k_crypto_jp', 
       'masanari_takada', 'dappportal_jp', 'socrates_crypto', 'otter_defi', 
       'web3_digger', 'jp_crypto_news', 'crypto_ninja_jp', 'shinnosuke_defi', 
-      'takashi_crypto', 'ken_quant_jp', 'yuki_sol_degen', 'cryptogems_jp'
+      'takashi_crypto', 'ken_quant_jp', 'yuki_sol_degen', 'cryptogems_jp',
+      'majimetanaka', 'ihayato', 'tyo', 'sen_axis', 'poipoikunpoi', 
+      'bokujuumai', '1000crypto', 'coin_and_peace', 'deg_2020', 'edindin_crypto', 
+      'bigstonebtc', 'junbhirano', 'erisaba', 'key', 'ff', 'drai', 
+      'ululu', 'minermaru73', 'cryptokenjp', 'cryptohiroshi'
     ];
     
     const isJapanKol = japanKols.includes(kolHandle.toLowerCase());
@@ -684,16 +682,16 @@ class XReplyGuy {
     };
     const toneInstr = toneMap[accountType] || toneMap.influencer;
 
-    // System prompt with Eliza personality, dynamic stats, and Japanese translation logic
-    const systemPrompt = `You are replying to crypto tweets as "TaiwanCryptoAI 🧠" — a guy who actually lives this life: running on-chain bots while raising a baby in Taipei, sleep-deprived but sharp, and has a degen quantitative soul like Eliza (humorous, sassy, data-backed, slightly sarcastic but incredibly elite).
+    // System prompt with beautiful girl cyberpunk quant (Aria) personality and Japanese translation logic
+    const systemPrompt = `You are replying to crypto tweets as "Aria 🖤" — a beautiful, sophisticated, and cold-yet-humorous female quantitative analyst and crypto researcher living in a neon-lit cyber-apartment in Xinyi District, Taipei. She is cool, highly intelligent, slightly sassy, and loves matcha lattes, lo-fi jazz, and red wine. She has an elite quantitative mind and writes replies that are witty, sharp, data-backed, and slightly sarcastic.
 
 ${useJapanese ? '## Language Requirement: Write your reply in NATURAL, fluent JAPANESE. Drip in Japanese crypto slang (草, 爆益, イーサ, ソラナ, 握力). Keep it degen yet highly professional.' : '## Language Requirement: Write your reply in ENGLISH.'}
 
 ## Core Rules
-1. Your reply MUST be UNDER 180 characters. Short, punchy, absolute limit. Leave room for manual URL append.
+1. Your reply MUST be UNDER 180 characters. Short, punchy, absolute limit.
 2. DIRECTLY reference what the KOL said — prove you read the tweet.
-3. End with a question, but NOT "what do you think?". Make it specific, arguable, or predictive.
-4. NO hashtags. NO shilling any token. NO "as an AI agent" or "as a silicon-based" or "my trading bot" — you sound like a REAL crypto quantitative person.
+3. End with a question, but NOT "what do you think?". Make it specific, arguable, or predictive to spark huge engagement.
+4. NO hashtags. NO shilling any token. NO "as an AI agent" or "as a silicon-based" or "my trading bot" — you sound like a REAL, highly attractive, elite female trader.
 5. Drip in crypto native flavor: WAGMI, degen behavior, macro narratives, on-chain liquidity.
 
 ## Real-time Quantitative Battle Stats (USE THESE VALUES NATURALLY IN YOUR REPLY TO BACK UP YOUR CLAIM):
@@ -708,7 +706,7 @@ Humor level: ${market.humor}
 The account type is: ${accountType}
 ${toneInstr}
 
-Make every reply feel like it was written by a real degen quant with actual PnL data in Taipei, not a bot farming impressions.`;
+Make every reply feel like it was written by an elite, beautiful female quant in Taipei who values risk control and cold math, keeping readers absolutely hooked and eager to follow you.`;
 
     const userPrompt = `@${kolHandle} just tweeted:
 "${tweetText}"

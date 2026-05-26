@@ -195,6 +195,7 @@ class DataAssembler {
       fullPayload.brain.activeOverrides = brain.getStrategyAdjustments(this.agent.mode);
       fullPayload.brain.replyGuyStats = brain.getReplyGuyStats();
       fullPayload.brain.binanceMining = binanceMiningState;
+      fullPayload.brain.generatedImages = this.getGeneratedImages();
 
       fullPayload.binance = binance;
       fullPayload.smartMoneyAudit = smartMoneyAudit;
@@ -205,6 +206,47 @@ class DataAssembler {
       }
       fs.writeFileSync(dataPath, JSON.stringify(fullPayload, null, 2), 'utf8');
     });
+  }
+
+  /**
+   * Helper to scan physical directories and get all generated images sorted by newest first
+   */
+  getGeneratedImages() {
+    const imagesDir = path.join(__dirname, '../../public/images');
+    const categories = ['vlogs', 'selfies', 'details'];
+    const result = {
+      vlogs: [],
+      selfies: [],
+      details: []
+    };
+
+    categories.forEach(cat => {
+      const catDir = path.join(imagesDir, cat);
+      if (fs.existsSync(catDir)) {
+        try {
+          const files = fs.readdirSync(catDir);
+          files.forEach(file => {
+            const ext = path.extname(file).toLowerCase();
+            if (['.jpg', '.jpeg', '.png', '.mp4'].includes(ext)) {
+              const filePath = path.join(catDir, file);
+              const stat = fs.statSync(filePath);
+              result[cat].push({
+                name: file,
+                path: `images/${cat}/${file}`,
+                timestamp: stat.mtimeMs,
+                isVideo: ext === '.mp4'
+              });
+            }
+          });
+          // Sort by newest first
+          result[cat].sort((a, b) => b.timestamp - a.timestamp);
+        } catch (e) {
+          console.warn(`[DataAssembler] Error reading images in category ${cat}:`, e.message);
+        }
+      }
+    });
+
+    return result;
   }
 }
 

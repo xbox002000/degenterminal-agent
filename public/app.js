@@ -844,6 +844,12 @@ function updateBrainShared(brain, data) {
 
   // 5. Segment lessonsLearned to specific sides
   updateMistakeReflections(brain, data);
+
+  // 6. Update Dynamic Cybernetic Gallery
+  if (brain.generatedImages) {
+    allGeneratedImages = brain.generatedImages;
+    renderGalleryGrid();
+  }
 }
 
 /**
@@ -1111,3 +1117,187 @@ function updateSmartMoneyRadar(audit) {
     pillarsContainer.innerHTML = html;
   }
 }
+
+// ============================================================================
+// 📸 Aria Cybernetic Gallery & OOTD Vlog Controller
+// ============================================================================
+
+let currentGalleryCategory = 'three-view';
+let allGeneratedImages = {
+  vlogs: [],
+  selfies: [],
+  details: []
+};
+
+/**
+ * Switch gallery categories dynamically and toggle tab active states
+ */
+function switchGalleryCategory(cat) {
+  currentGalleryCategory = cat;
+  
+  // Find all category buttons
+  const buttons = document.querySelectorAll('.gallery-tab-btn');
+  buttons.forEach(btn => {
+    // Check if the button is the active one
+    if (btn.getAttribute('onclick').includes(`'${cat}'`)) {
+      btn.style.background = 'rgba(0, 240, 255, 0.08)';
+      btn.style.borderColor = 'var(--neon-blue)';
+      btn.style.color = 'var(--neon-blue)';
+      btn.style.fontWeight = 'bold';
+      btn.classList.add('active');
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      btn.style.color = 'var(--text-muted)';
+      btn.style.fontWeight = 'normal';
+      btn.classList.remove('active');
+    }
+  });
+  
+  renderGalleryGrid();
+}
+
+/**
+ * Render the gallery grid based on the active tab and data
+ */
+function renderGalleryGrid() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  
+  if (currentGalleryCategory === 'three-view') {
+    // Render default identity blueprints
+    grid.innerHTML = `
+      <div class="gallery-card" onclick="openLightbox('aria_three_view.png', 'Aria 官方視覺角色設定三視圖 (Aria Character Identity Three-View Blueprint) | 鎖定 IP 一致性特徵')" style="cursor: pointer; background: rgba(255,255,255,0.015); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--neon-blue)';" onmouseout="this.style.borderColor='rgba(0, 240, 255, 0.15)';">
+        <div style="width: 100%; aspect-ratio: 1; overflow: hidden; background: #000;">
+          <img src="aria_three_view.png" alt="Aria 三視圖" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="padding: 10px; font-size: 0.72rem; text-align: center; color: var(--text-muted);">
+          人物設定三視圖 (Aria Base Blueprint)
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openLightbox('aria_neutral.png', 'Aria 標準情緒日常寫真 (Aria Neutral Vlog Static) | 慵懶寫作氛圍')" style="cursor: pointer; background: rgba(255,255,255,0.015); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--neon-blue)';" onmouseout="this.style.borderColor='rgba(0, 240, 255, 0.15)';">
+        <div style="width: 100%; aspect-ratio: 1; overflow: hidden; background: #000;">
+          <img src="aria_neutral.png" alt="Aria 中性人設" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="padding: 10px; font-size: 0.72rem; text-align: center; color: var(--text-muted);">
+          標準情緒寫真 (Aria Neutral)
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openLightbox('aria_greed.png', 'Aria 狂熱亢奮狀態寫真 (Aria Greed Mode Static) | 獲利大捷慶功氛圍')" style="cursor: pointer; background: rgba(255,255,255,0.015); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--neon-blue)';" onmouseout="this.style.borderColor='rgba(0, 240, 255, 0.15)';">
+        <div style="width: 100%; aspect-ratio: 1; overflow: hidden; background: #000;">
+          <img src="aria_greed.png" alt="Aria 貪婪人設" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="padding: 10px; font-size: 0.72rem; text-align: center; color: var(--text-muted);">
+          貪婪情緒寫真 (Aria Greed)
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openLightbox('aria_fear.png', 'Aria 焦慮風控狀態寫真 (Aria Fear Mode Static) | 行情受挫自省氛圍')" style="cursor: pointer; background: rgba(255,255,255,0.015); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--neon-blue)';" onmouseout="this.style.borderColor='rgba(0, 240, 255, 0.15)';">
+        <div style="width: 100%; aspect-ratio: 1; overflow: hidden; background: #000;">
+          <img src="aria_fear.png" alt="Aria 恐懼人設" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div style="padding: 10px; font-size: 0.72rem; text-align: center; color: var(--text-muted);">
+          恐懼情緒寫真 (Aria Fear)
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  // Render generated lists
+  const list = allGeneratedImages[currentGalleryCategory] || [];
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); font-size: 0.82rem; text-align: center; background: rgba(255,255,255,0.005); border: 1px dashed rgba(255,255,255,0.05); border-radius: 8px;">
+        <span style="font-size: 1.2rem; margin-bottom: 8px;">🪐</span>
+        <span style="color: var(--text-secondary); font-weight: bold;">賽博大腦正在分析鏈上數據... 此分類暫無實時日常寫真</span>
+        <span style="font-size: 0.72rem; margin-top: 5px; color: var(--text-muted); max-width: 450px;">當智能體在 X.com 發表日常日記或交易戰報配圖時，生圖引擎會自動分類歸檔並在此同步。</span>
+      </div>
+    `;
+    return;
+  }
+  
+  let html = '';
+  list.forEach(img => {
+    const cardBorderColor = img.isVideo ? 'rgba(255, 0, 128, 0.2)' : 'rgba(255,255,255,0.03)';
+    const cardHoverColor = img.isVideo ? 'var(--neon-pink)' : 'var(--neon-blue)';
+    
+    // Parse time
+    const timeStr = new Date(img.timestamp).toLocaleString('zh-TW', { hour12: false });
+    
+    // Format descriptive title
+    const nameLabel = img.name
+      .replace(/aria_[a-z]+_/i, '')
+      .replace(/_[0-9]+\.(jpg|mp4)/i, '')
+      .replace(/_/g, ' ')
+      .toUpperCase();
+      
+    html += `
+      <div class="gallery-card" onclick="openLightbox('${img.path}', 'Aria 賽博日常 | ${nameLabel} | 記錄時間: ${timeStr}', ${img.isVideo})" style="cursor: pointer; background: rgba(255,255,255,0.015); border: 1px solid ${cardBorderColor}; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; transition: all 0.2s;" onmouseover="this.style.borderColor='${cardHoverColor}';" onmouseout="this.style.borderColor='${cardBorderColor}';">
+        <div style="width: 100%; aspect-ratio: 1; overflow: hidden; background: #000; position: relative;">
+          ${img.isVideo ? `
+            <video src="${img.path}" muted loop autoplay style="width: 100%; height: 100%; object-fit: cover;"></video>
+            <span style="position: absolute; top: 8px; right: 8px; background: var(--neon-pink); color: #fff; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-family: var(--font-mono); box-shadow: 0 0 8px rgba(255, 0, 128, 0.4); letter-spacing: 0.05em;">VIDEO</span>
+          ` : `
+            <img src="${img.path}" alt="${img.name}" style="width: 100%; height: 100%; object-fit: cover;">
+          `}
+        </div>
+        <div style="padding: 10px; font-size: 0.72rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px;">
+          <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap; color: #fff; font-weight: bold; font-size: 0.75rem; letter-spacing: 0.02em;">
+            ${nameLabel}
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted);">
+            ${timeStr}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+/**
+ * Open Lightbox Modal for zooming in on image or playing video
+ */
+function openLightbox(src, caption, isVideo = false) {
+  const lightbox = document.getElementById('gallery-lightbox');
+  const img = document.getElementById('lightbox-img');
+  const video = document.getElementById('lightbox-video');
+  const captionEl = document.getElementById('lightbox-caption');
+  
+  if (!lightbox) return;
+  
+  if (isVideo) {
+    img.style.display = 'none';
+    video.src = src;
+    video.style.display = 'block';
+  } else {
+    video.style.display = 'none';
+    img.src = src;
+    img.style.display = 'block';
+  }
+  
+  captionEl.innerText = caption;
+  lightbox.style.display = 'flex';
+}
+
+/**
+ * Close Lightbox Modal
+ */
+function closeLightbox() {
+  const lightbox = document.getElementById('gallery-lightbox');
+  const video = document.getElementById('lightbox-video');
+  if (lightbox) {
+    lightbox.style.display = 'none';
+  }
+  if (video) {
+    video.pause();
+    video.src = '';
+  }
+}
+
+// On document loaded, run initial rendering
+document.addEventListener('DOMContentLoaded', () => {
+  renderGalleryGrid();
+});

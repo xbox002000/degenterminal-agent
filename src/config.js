@@ -129,6 +129,26 @@ const config = {
     'takashi_crypto',    // 日本量化交易者
     'ken_quant_jp',      // 日本 AI/量化
     'yuki_sol_degen',    // 日本 Solana 獵手
+    'MajimeTanaka',      // 日本 KOL
+    'IHayato',           // 日本 KOL
+    'Tyo',               // 日本 KOL
+    'sen_axis',          // 日本 KOL
+    'poipoikunpoi',      // 日本 KOL
+    'bokujuumai',        // 日本 KOL
+    '1000crypto',        // 日本 KOL
+    'Coin_and_Peace',    // 日本 KOL
+    'DEG_2020',          // 日本 KOL
+    'edindin_crypto',    // 日本 KOL
+    'bigstonebtc',       // 日本 KOL
+    'junbhirano',        // 日本 KOL
+    'ERISABA',           // 日本 KOL
+    'key',               // 日本 KOL
+    'FF',                // 日本 KOL
+    'Drai',              // 日本 KOL
+    'ULULU',             // 日本 KOL
+    'MinerMaru73',       // 日本 KOL
+    'CryptoKenJP',       // 日本 KOL
+    'CryptoHiroshi',     // 日本 KOL
 
     // --- Tier 5: 中文與歐美活躍 Degen ---
     'sanyi_crypto',      // 三姨

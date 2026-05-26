@@ -170,7 +170,7 @@ class CrossPublisher {
       const twitterText = this.truncateForTwitter(squareContent, redirectUrl);
       console.log('🚀 [CrossPublisher] Cross-promoting to X (Twitter)...');
       
-      const xResult = await this.twitter.postTweet(twitterText);
+      const xResult = await this.twitter.postTweet(twitterText, imagePath);
       if (xResult) {
         result.xPosted = true;
       }

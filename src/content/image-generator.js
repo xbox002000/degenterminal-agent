@@ -62,8 +62,73 @@ class ImageGenerator {
         environment: "leaning over a physical paper notebook under a warm directional study lamp, surrounded by stacked engineering books and glowing tablets",
         activity: "using a stylus to write mathematical tokenomics equations and deflationary charts in a journal, looking deeply analytical and intelligent",
         fallback: 'aria_neutral.png'
+      },
+      // 6. Midnight convenience store run
+      'Convenience_Store_Midnight': {
+        name: '深夜超商隨筆 VLOG (Midnight Convenience Store)',
+        cameraAngle: "candid mid-shot camera angle",
+        clothing: "wearing warm, cozy charcoal gray fleece pajamas, hair casually clipped up in a claw clip with loose strands",
+        environment: "inside a brightly lit FamilyMart in Taipei at midnight, fluorescent white shelves stocked with Japanese snacks and green teas",
+        activity: "standing in front of a glass beverage fridge, casually deciding which matcha bottle to grab",
+        fallback: 'aria_neutral.png'
+      },
+      // 7. Gym workout / Yoga
+      'Gym_Yoga_Workout': {
+        name: '健康瑜珈日常 VLOG (Gym Yoga Workout)',
+        cameraAngle: "candid full-body VLOG snap",
+        clothing: "wearing a seamless slate-grey sports bra and matching high-waisted black yoga leggings, hair tied in a clean high ponytail, skin glowing with a light post-workout sheen",
+        environment: "in her sun-drenched home living room with morning light streaming through windows, a light grey yoga mat unrolled on the wood floor",
+        activity: "kneeling gracefully on the yoga mat, holding a sleek water bottle, looking at the camera with a fresh, radiant smile",
+        fallback: 'aria_neutral.png'
+      },
+      // 8. Bedroom Mirror Selfie OOTD
+      'Mirror_Selfie_OOTD': {
+        name: '穿衣鏡前 OOTD 自拍 (Mirror Selfie OOTD)',
+        cameraAngle: "mirror reflection smartphone selfie snap",
+        clothing: "wearing an oversized washed dark blazer, a simple white crop top revealing her waist, and green baggy cargo pants",
+        environment: "in front of a rustic wooden full-length dressing mirror in her modern minimalist bedroom, glowing gaming PC fans in the cozy background",
+        activity: "holding her iPhone with one hand to snap the mirror reflection of her OOTD, covering half of her face, capturing a stylish lifestyle record",
+        fallback: 'aria_neutral.png'
+      },
+      // 9. Macro details - keyboard & fingers (non-face close-up)
+      'Detail_Hands_Keyboard': {
+        name: '機械鍵盤與指尖 (Hands on Keyboard Detail)',
+        isDetail: true,
+        fallback: 'aria_neutral.png',
+        promptOverride: 'A beautiful extreme macro close-up photo of delicate, elegant female hands typing gently on a customized glowing mechanical keyboard, slender fingers with neat nails, warm desk light illuminating the keys, screen out-of-focus displaying green candlestick charts in the background, steam rising from a cup of matcha latte, highly aesthetic, shallow depth of field, raw photo.'
+      },
+      // 10. Macro details - feet on wool rug (non-face close-up)
+      'Detail_Cozy_Feet': {
+        name: '羊毛襪與暖爐 (Cozy Feet Detail)',
+        isDetail: true,
+        fallback: 'aria_neutral.png',
+        promptOverride: 'A cozy macro close-up photograph of a pair of feet wearing thick, soft white knitted wool socks, resting lazily on a fluffy beige carpet, in front of a warm orange-glowing cyber space heater, cozy night ambient lighting, cinematic, extremely realistic, raw feel.'
+      },
+      // 11. Macro details - cyber neck tattoo (non-face close-up)
+      'Detail_Neck_Tattoo': {
+        name: '後頸與賽博刺青 (Neck Cyber Tattoo Detail)',
+        isDetail: true,
+        fallback: 'aria_neutral.png',
+        promptOverride: 'An artistic close-up photograph from behind of a white-skinned female neck, hair gathered up into a messy bun with loose strands framing, showcasing a delicate and subtle glowing neon-blue neural circuitry tattoo on the back of her neck and behind her ear, dark cozy room backdrop, soft background bokeh of city rain and neon window lights, raw cinematic capture, f/1.8.'
       }
     };
+  }
+
+  /**
+   * Helper to get category and target physical directory based on sceneKey
+   */
+  getCategoryAndDir(sceneKey) {
+    let category = 'vlogs';
+    if (sceneKey.startsWith('Detail_')) {
+      category = 'details';
+    } else if (sceneKey === 'Mirror_Selfie_OOTD') {
+      category = 'selfies';
+    }
+    const targetDir = path.join(this.publicDir, 'images', category);
+    if (!fs.existsSync(targetDir)) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    return { category, targetDir };
   }
 
   /**
@@ -74,7 +139,9 @@ class ImageGenerator {
   selectVlogScene(postText, fngValue) {
     const text = postText || '';
     
-    // Sassy Roast keyword check for matching crop top / balcony champagne or wire frame facepalm
+    // 1. Strong Theme / Event Priority Check (強主題優先)
+    
+    // A. Sassy Roast check
     if (
       text.includes('吐槽') || 
       text.includes('韭菜') || 
@@ -84,16 +151,14 @@ class ImageGenerator {
       text.includes('空氣幣') || 
       text.includes('空氣資產')
     ) {
-      // Greed or high neutral: Sassy crop top balcony champagne celebration
       if (fngValue >= 50) {
         return 'Balcony_ATH_Celebration';
       } else {
-        // Fear or low neutral: Wire-frame readings glasses stressed facepalm roast
         return 'Desk_Stressed_Facepalm';
       }
     }
     
-    // A. Stressed / Outage / Loss / Rug / Alert check
+    // B. Stressed / Outage / Loss / Rug / Alert check
     if (
       text.includes('虧損') || 
       text.includes('犯了錯') || 
@@ -108,7 +173,7 @@ class ImageGenerator {
       return 'Desk_Stressed_Facepalm';
     }
     
-    // B. Launchpool / Mining / Staking / Formula check
+    // C. Launchpool / Mining / Staking / Formula check
     if (
       text.includes('Launchpool') || 
       text.includes('Megadrop') || 
@@ -121,7 +186,7 @@ class ImageGenerator {
       return 'Desk_Math_Study';
     }
     
-    // C. Big profit / ATH / Pumps check
+    // D. Big profit / ATH / Pumps check
     if (
       text.includes('獲利') || 
       text.includes('利潤') || 
@@ -135,7 +200,7 @@ class ImageGenerator {
       return 'Balcony_ATH_Celebration';
     }
     
-    // D. Flat / Quiet / Waiting / Monkey market check
+    // E. Flat / Quiet / Waiting / Monkey market check
     if (
       text.includes('靜默') || 
       text.includes('震盪') || 
@@ -149,20 +214,53 @@ class ImageGenerator {
       return 'Cafe_Golden_Hour';
     }
     
-    // E. Default fallback based on Fear & Greed value
-    if (fngValue <= 35) return 'Desk_Stressed_Facepalm';
-    if (fngValue >= 65) return 'Balcony_ATH_Celebration';
+    // 2. Dual Randomness Engine (雙重隨機分流引擎) for general daily narratives
+    const roll = Math.random() * 100;
     
-    // Default standard cozy desk
-    return 'Desk_Cozy_Matcha';
+    if (roll < 15) {
+      // 15% probability: Non-face macro close-up details
+      console.log('🎲 [VLOG Selector] 雙重隨機分流觸發: 15% 機率不露臉藝術感細節特寫 (No-Face Macro Close-up)');
+      const details = ['Detail_Hands_Keyboard', 'Detail_Cozy_Feet', 'Detail_Neck_Tattoo'];
+      return details[Math.floor(Math.random() * details.length)];
+    } else if (roll < 35) {
+      // 20% probability: Mirror Selfie OOTD
+      console.log('🎲 [VLOG Selector] 雙重隨機分流觸發: 20% 機率臥室穿衣鏡前 OOTD 自拍 (Mirror Selfie OOTD)');
+      return 'Mirror_Selfie_OOTD';
+    } else {
+      // 65% probability: Standard lifestyle Vlogs
+      console.log('🎲 [VLOG Selector] 雙重隨機分流觸發: 65% 機率人像與日常寫實 VLOG (Standard Lifestyle Vlog)');
+      const standardVlogs = [
+        'Desk_Cozy_Matcha', 
+        'Cafe_Golden_Hour', 
+        'Gym_Yoga_Workout', 
+        'Convenience_Store_Midnight', 
+        'Desk_Math_Study'
+      ];
+      return standardVlogs[Math.floor(Math.random() * standardVlogs.length)];
+    }
   }
 
-  /**
-   * Compile the VLOG-style prompt combining IP consistency and VLOG scene with Imperfect Realism camera styles
-   */
   compileVlogPrompt(sceneKey, diaryText = '') {
     const scene = this.vlogScenes[sceneKey] || this.vlogScenes['Desk_Cozy_Matcha'];
     
+    // If it's a detail shot (no face), use prompt override and bypass base character face/body details
+    if (scene.isDetail) {
+      console.log(`🎨 [VLOG Camera] 啟用 NO-FACE DETAIL CLOSE-UP (${scene.name})...`);
+      let prompt = scene.promptOverride;
+      
+      // Inject narrative token display if any
+      if (diaryText) {
+        const tickerMatch = diaryText.match(/\$[A-Z]+/);
+        if (tickerMatch) {
+          prompt += ` The screens or surrounding analytical devices show green/red charts of the token ${tickerMatch[0]}.`;
+        }
+      }
+      
+      // Still require photo realism and no-cartoon rule
+      prompt += " Ultra-realistic, photorealistic, cinematic raw capture, shallow depth of field, authentic daily life snap, f/1.8, 35mm lens, f/1.8. No cartoon, no anime.";
+      return prompt;
+    }
+
     // Imperfect Realism Camera System Dispatcher
     let cameraPrefix = "A raw, cinematic, high-fidelity lifestyle candid VLOG snapshot photo, 35mm lens, f/1.8. ";
     let cameraEffects = "Candid daily record, raw capture, organic lighting, extremely realistic, cinematic. ";
@@ -268,32 +366,43 @@ class ImageGenerator {
       }
     }
 
-    // 1. Try Gemini Imagen 3.0 API if key is present
+    // 1. Try Google AI Studio Imagen 4.0 API if key is present
     if (this.geminiApiKey) {
-      console.log(`🤖 [VLOG Generator] 正在呼叫 Google Gemini Imagen 3.0 生圖 API...`);
+      console.log(`🤖 [VLOG Generator] 正在呼叫 Google AI Studio Imagen 4.0 生圖 API...`);
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${this.geminiApiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${this.geminiApiKey}`;
         const response = await axios.post(url, {
-          prompt: prompt,
-          numberOfImages: 1,
-          outputMimeType: "image/jpeg",
-          aspectRatio: "1:1"
+          instances: [
+            { prompt: prompt }
+          ],
+          parameters: {
+            sampleCount: 1,
+            aspectRatio: "1:1",
+            outputMimeType: "image/jpeg"
+          }
         }, {
           headers: { 'Content-Type': 'application/json' },
           timeout: 45000
         });
 
-        if (response.data?.generatedImages?.[0]?.image?.imageBytes) {
-          const imageBytes = response.data.generatedImages[0].image.imageBytes;
-          const outputFilename = `aria_vlog_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
-          const outputPath = path.join(this.publicDir, outputFilename);
+        const predictions = response.data?.predictions || [];
+        if (predictions.length > 0) {
+          const firstPred = predictions[0];
+          const base64Bytes = firstPred.bytesBase64Encoded || firstPred.imageBytes || firstPred.image?.imageBytes;
           
-          fs.writeFileSync(outputPath, Buffer.from(imageBytes, 'base64'));
-          console.log(`✨ [VLOG Generator] Gemini VLOG 實時生圖成功！已儲存至: ${outputPath}`);
-          return outputPath;
+          if (base64Bytes) {
+            const { category, targetDir } = this.getCategoryAndDir(sceneKey);
+            const outputFilename = `aria_${category}_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
+            const outputPath = path.join(targetDir, outputFilename);
+            
+            fs.writeFileSync(outputPath, Buffer.from(base64Bytes, 'base64'));
+            console.log(`✨ [VLOG Generator] Google Imagen 4.0 實時生圖成功！已儲存至: ${outputPath}`);
+            return outputPath;
+          }
         }
+        console.warn(`⚠️ [VLOG Generator] Google Imagen 4.0 返回數據未包含有效圖像字節。`, response.data);
       } catch (err) {
-        console.error(`❌ [VLOG Generator Error] Gemini Imagen API 呼叫失敗:`, err.response?.data || err.message);
+        console.error(`❌ [VLOG Generator Error] Google Imagen 4.0 API 呼叫失敗:`, err.response?.data || err.message);
       }
     }
 
@@ -318,8 +427,9 @@ class ImageGenerator {
 
         if (response.data?.data?.[0]?.b64_json) {
           const b64Json = response.data.data[0].b64_json;
-          const outputFilename = `aria_vlog_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
-          const outputPath = path.join(this.publicDir, outputFilename);
+          const { category, targetDir } = this.getCategoryAndDir(sceneKey);
+          const outputFilename = `aria_${category}_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
+          const outputPath = path.join(targetDir, outputFilename);
           
           fs.writeFileSync(outputPath, Buffer.from(b64Json, 'base64'));
           console.log(`✨ [VLOG Generator] Grok VLOG 實時生圖成功！已儲存至: ${outputPath}`);
@@ -606,8 +716,9 @@ class ImageGenerator {
         }
       }
 
-      const outputFilename = `aria_vlog_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
-      const outputPath = path.join(this.publicDir, outputFilename);
+      const { category, targetDir } = this.getCategoryAndDir(sceneKey);
+      const outputFilename = `aria_${category}_${sceneKey.toLowerCase()}_${Date.now()}.jpg`;
+      const outputPath = path.join(targetDir, outputFilename);
       
       fs.writeFileSync(outputPath, Buffer.from(base64Data, 'base64'));
       console.log(`✨ [GrokWeb] 【階段一】實時生圖並下載成功！已保存至: ${outputPath}`);
@@ -711,8 +822,9 @@ class ImageGenerator {
           if (videoUrl && videoUrl !== targetImg.src) {
             console.log(`[GrokWeb] 成功定位動畫影片 URL: "${videoUrl.substring(0, 80)}..."`);
             try {
-              const videoFilename = `aria_vlog_animated_${sceneKey.toLowerCase()}_${Date.now()}.mp4`;
-              const videoOutputPath = path.join(this.publicDir, videoFilename);
+              const { category, targetDir } = this.getCategoryAndDir(sceneKey);
+              const videoFilename = `aria_${category}_animated_${sceneKey.toLowerCase()}_${Date.now()}.mp4`;
+              const videoOutputPath = path.join(targetDir, videoFilename);
               
               console.log(`[GrokWeb] 啟動瀏覽器內核 Cookie 穿透影片下載機制...`);
               let base64VideoData;

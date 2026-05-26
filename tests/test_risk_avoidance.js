@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const brain = require('./brain');
+const brain = require('../src/brain');
 
 const memoryPath = path.join(__dirname, '../config/memory.json');
 const backupPath = path.join(__dirname, '../config/memory.json.bak');
@@ -98,9 +98,9 @@ async function runTest() {
       tokenomics: text.includes('$PROFIT') && text.includes('ÈÄöÁ∏ÆÈ£õËº™') && text.includes('Survive First')
     };
 
-    console.log(` - Worldview fit: ${checks.worldview ? 'PASS ‚úÖ' : 'FAIL ‚ùå'}`);
-    console.log(` - Real-name Meme Roast: ${checks.roast ? 'PASS ‚úÖ' : 'FAIL ‚ùå'}`);
-    console.log(` - Tokenomics & Flyingwheel: ${checks.tokenomics ? 'PASS ‚úÖ' : 'FAIL ‚ùå'}`);
+    console.log(` - Worldview fit: ${checks.worldview ? 'PASS ‚ú? : 'FAIL ‚ù?}`);
+    console.log(` - Real-name Meme Roast: ${checks.roast ? 'PASS ‚ú? : 'FAIL ‚ù?}`);
+    console.log(` - Tokenomics & Flyingwheel: ${checks.tokenomics ? 'PASS ‚ú? : 'FAIL ‚ù?}`);
 
     if (!checks.worldview || !checks.roast || !checks.tokenomics) {
       throw new Error('Test 4 failed: Generated text did not meet structural/worldview standards.');
@@ -109,7 +109,7 @@ async function runTest() {
     console.log('\nüéâ All tests passed successfully!');
 
   } catch (error) {
-    console.error('\n‚ùå Test execution failed:', error.message);
+    console.error('\n‚ù?Test execution failed:', error.message);
   } finally {
     // 7. Restore memory.json from backup
     if (memoryBackup) {

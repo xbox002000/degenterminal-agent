@@ -36,6 +36,14 @@ async function pollDashboardData() {
     updateTerminal(data.logs || []);
     updateBrainShared(data.brain || {}, data);
     
+    // 5. Update Binance Mock Terminal & 5-Pillar Strategy Scorecard
+    if (data.binance) {
+      updateBinanceTerminal(data.binance);
+    }
+    if (data.smartMoneyAudit) {
+      updateSmartMoneyRadar(data.smartMoneyAudit);
+    }
+    
   } catch (error) {
     console.warn('[Arena Polling Console] Waiting for server/data sync...', error.message);
     showWaitingState();
@@ -714,7 +722,96 @@ function updateBrainShared(brain, data) {
     }
   }
 
-  // 3. Segment lessonsLearned to specific sides
+  // 3. Update Institutional Yield Engine UI
+  const yieldFarming = (data.conservative && data.conservative.yieldFarming) || {};
+  const jitoSolBalance = yieldFarming.jitoSolBalance !== undefined ? parseFloat(yieldFarming.jitoSolBalance) : 0;
+  const yieldUSD = yieldFarming.yieldUSD !== undefined ? parseFloat(yieldFarming.yieldUSD) : 0;
+  const totalAccruedYieldSol = yieldFarming.totalAccruedYieldSol !== undefined ? parseFloat(yieldFarming.totalAccruedYieldSol) : 0;
+  const totalYieldEarnedUSD = yieldFarming.totalYieldEarnedUSD !== undefined ? parseFloat(yieldFarming.totalYieldEarnedUSD) : 0;
+  const apy = yieldFarming.apy !== undefined ? (parseFloat(yieldFarming.apy) * 100).toFixed(1) : '7.5';
+  const lastAccrued = yieldFarming.lastAccruedTime || '剛剛';
+
+  const balanceValEl = document.getElementById('jitosol-balance-val');
+  const valueUsdEl = document.getElementById('jitosol-value-usd');
+  const accruedSolEl = document.getElementById('jitosol-accrued-sol');
+  const accruedUsdEl = document.getElementById('jitosol-accrued-usd');
+  const apyBadgeEl = document.getElementById('jitosol-apy-badge');
+  const statusEl = document.getElementById('jitosol-status');
+  const lastAccruedEl = document.getElementById('jitosol-last-accrued');
+
+  if (balanceValEl) balanceValEl.innerText = `${jitoSolBalance.toFixed(4)} SOL`;
+  if (valueUsdEl) valueUsdEl.innerText = `$${yieldUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (accruedSolEl) accruedSolEl.innerText = totalAccruedYieldSol.toFixed(6);
+  if (accruedUsdEl) accruedUsdEl.innerText = `$${totalYieldEarnedUSD.toFixed(4)}`;
+  if (apyBadgeEl) apyBadgeEl.innerText = `~${apy}% APY`;
+  if (lastAccruedEl) lastAccruedEl.innerText = lastAccrued;
+  if (statusEl) {
+    if (jitoSolBalance > 0) {
+      statusEl.innerText = '多策略保本滾動中';
+      statusEl.style.color = 'var(--neon-green)';
+    } else {
+      statusEl.innerText = '暫無理財本金';
+      statusEl.style.color = 'var(--text-muted)';
+    }
+  }
+
+  // Institutional Multi-Strategy Allocations UI
+  const inst = yieldFarming.institutional || {};
+  const jitoBal = inst.jitoSolBalance !== undefined ? parseFloat(inst.jitoSolBalance) : 0;
+  const kaminoBal = inst.kaminoBalance !== undefined ? parseFloat(inst.kaminoBalance) : 0;
+  const driftBal = inst.driftBalance !== undefined ? parseFloat(inst.driftBalance) : 0;
+  
+  const alloc = inst.allocation || { jitoSol: 0.20, kamino: 0.40, drift: 0.40 };
+  const jitoPct = alloc.jitoSol * 100;
+  const kaminoPct = alloc.kamino * 100;
+  const driftPct = alloc.drift * 100;
+
+  const approxSolPrice = 170.00;
+  const jitoUSD = jitoBal * approxSolPrice;
+  const kaminoUSD = kaminoBal * approxSolPrice;
+  const driftUSD = driftBal * approxSolPrice;
+
+  // DOM Elements for progress bars
+  const barJitoEl = document.getElementById('yield-bar-jito');
+  const barKaminoEl = document.getElementById('yield-bar-kamino');
+  const barDriftEl = document.getElementById('yield-bar-drift');
+
+  const valJitoEl = document.getElementById('yield-val-jito');
+  const valKaminoEl = document.getElementById('yield-val-kamino');
+  const valDriftEl = document.getElementById('yield-val-drift');
+
+  if (barJitoEl) barJitoEl.style.width = `${jitoPct}%`;
+  if (barKaminoEl) barKaminoEl.style.width = `${kaminoPct}%`;
+  if (barDriftEl) barDriftEl.style.width = `${driftPct}%`;
+
+  if (valJitoEl) valJitoEl.innerText = `${jitoPct.toFixed(0)}% ($${jitoUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })})`;
+  if (valKaminoEl) valKaminoEl.innerText = `${kaminoPct.toFixed(0)}% ($${kaminoUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })})`;
+  if (valDriftEl) valDriftEl.innerText = `${driftPct.toFixed(0)}% ($${driftUSD.toLocaleString(undefined, { maximumFractionDigits: 0 })})`;
+
+  // 4. Update Binance Square Content Mining Engine UI
+  const binanceMining = brain.binanceMining || {};
+  const totalArticlesPublished = binanceMining.totalArticlesPublished || 0;
+  const estimatedReferralClicks = binanceMining.estimatedReferralClicks || 0;
+  const estimatedCommissionsUSD = binanceMining.estimatedCommissionsUSD || 0;
+  const activeCashtags = binanceMining.activeCashtags || [];
+
+  const bPublishedEl = document.getElementById('binance-published-count');
+  const bClicksEl = document.getElementById('binance-clicks-count');
+  const bCommissionsEl = document.getElementById('binance-commissions-val');
+  const bTagsEl = document.getElementById('binance-active-tags');
+
+  if (bPublishedEl) bPublishedEl.innerText = `${totalArticlesPublished} 篇`;
+  if (bClicksEl) bClicksEl.innerText = `${estimatedReferralClicks} 次`;
+  if (bCommissionsEl) bCommissionsEl.innerText = `$${estimatedCommissionsUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  if (bTagsEl) {
+    if (activeCashtags.length > 0) {
+      bTagsEl.innerText = activeCashtags.join(' ');
+    } else {
+      bTagsEl.innerText = '無活躍 Cashtags';
+    }
+  }
+
+  // 5. Segment lessonsLearned to specific sides
   updateMistakeReflections(brain, data);
 }
 
@@ -760,3 +857,207 @@ pollDashboardData();
 setInterval(pollDashboardData, POLL_INTERVAL_MS);
 console.log('%cAntigravity 2.0 Dual Arena Real-Time Dashboard Controller Active.', 'color: #00ff7f; font-weight: bold;');
 console.log('%cGreen 🦞 Conservative Sniping vs ZMAC ⚡ Aggressive Scalping.', 'color: #ff007f; font-weight: bold;');
+
+/**
+ * Update the Binance mock terminal dashboard (Spot & Futures account balances, positions, orders)
+ */
+function updateBinanceTerminal(binance) {
+  const spotBalEl = document.getElementById('binance-spot-balance');
+  const futuresBalEl = document.getElementById('binance-futures-balance');
+  const futuresPnlEl = document.getElementById('binance-futures-pnl');
+  
+  if (spotBalEl) {
+    spotBalEl.innerText = `$${parseFloat(binance.spotBalance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USDT`;
+  }
+  
+  const futures = binance.futures || {};
+  if (futuresBalEl) {
+    futuresBalEl.innerText = `$${parseFloat(futures.balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USDT`;
+  }
+  
+  if (futuresPnlEl) {
+    const pnl = parseFloat(futures.unrealizedPnL || 0);
+    const sign = pnl >= 0 ? '+' : '';
+    futuresPnlEl.innerText = `${sign}${pnl.toFixed(2)} USDT`;
+    futuresPnlEl.className = pnl >= 0 ? 'text-green' : 'text-red';
+    futuresPnlEl.style.fontWeight = 'bold';
+    futuresPnlEl.style.fontFamily = 'var(--font-mono)';
+  }
+  
+  // Render Binance Positions Risk
+  const posContainer = document.getElementById('binance-positions-list');
+  if (posContainer) {
+    const activePositions = futures.positions || [];
+    if (activePositions.length === 0) {
+      posContainer.innerHTML = `
+        <div class="no-positions" style="padding: 20px 0; font-size: 0.85rem; color: var(--text-muted);">
+          🪐 暫無合約持倉（正在等待 5 柱信號共振觸發建倉）
+        </div>
+      `;
+    } else {
+      let html = `
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: left;">
+          <thead>
+            <tr style="color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 4px;">
+              <th style="padding: 4px 0;">合約交易對</th>
+              <th style="padding: 4px 0;">多空/槓桿</th>
+              <th style="padding: 4px 0;">開倉均價</th>
+              <th style="padding: 4px 0;">標記價格</th>
+              <th style="padding: 4px 0;">持倉數量</th>
+              <th style="padding: 4px 0; text-align: right;">未實現盈虧 (PnL)</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      activePositions.forEach(p => {
+        const amt = parseFloat(p.positionAmt);
+        const direction = amt > 0 ? 'LONG 🟢' : 'SHORT 🔴';
+        const dirColor = amt > 0 ? 'var(--neon-green)' : 'var(--neon-red)';
+        const pnl = parseFloat(p.unRealizedProfit || 0);
+        const pnlColor = pnl >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        
+        html += `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); height: 28px; font-family: var(--font-mono);">
+            <td style="color: #fff; font-weight: bold;">${p.symbol}</td>
+            <td style="color: ${dirColor}; font-weight: bold;">${direction} ${p.leverage}x</td>
+            <td>$${p.entryPrice.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td>$${p.markPrice.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+            <td>${Math.abs(amt)}</td>
+            <td style="color: ${pnlColor}; font-weight: bold; text-align: right;">${pnlSign}${pnl.toFixed(2)} USDT</td>
+          </tr>
+        `;
+      });
+      html += `
+          </tbody>
+        </table>
+      `;
+      posContainer.innerHTML = html;
+    }
+  }
+  
+  // Render Binance Open Orders
+  const ordContainer = document.getElementById('binance-orders-list');
+  if (ordContainer) {
+    const openOrders = futures.openOrders || [];
+    if (openOrders.length === 0) {
+      ordContainer.innerHTML = `
+        <div class="no-positions" style="padding: 10px 0; font-size: 0.8rem; color: var(--text-muted);">
+          🪐 暫無掛單活動
+        </div>
+      `;
+    } else {
+      let html = `
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.72rem; text-align: left;">
+          <thead>
+            <tr style="color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px;">
+              <th style="padding: 2px 0;">Symbol</th>
+              <th style="padding: 2px 0;">Side</th>
+              <th style="padding: 2px 0;">Type</th>
+              <th style="padding: 2px 0;">Price</th>
+              <th style="padding: 2px 0;">Qty</th>
+              <th style="padding: 2px 0; text-align: right;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      openOrders.forEach(o => {
+        const sideColor = o.side === 'BUY' ? 'var(--neon-green)' : 'var(--neon-red)';
+        html += `
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.02); height: 22px; font-family: var(--font-mono);">
+            <td style="color: #fff;">${o.symbol}</td>
+            <td style="color: ${sideColor}; font-weight: bold;">${o.side}</td>
+            <td>${o.type}</td>
+            <td>${o.price > 0 ? '$' + o.price.toLocaleString() : 'MARKET'}</td>
+            <td>${o.origQty}</td>
+            <td style="color: var(--neon-blue); text-align: right;">${o.status}</td>
+          </tr>
+        `;
+      });
+      html += `
+          </tbody>
+        </table>
+      `;
+      ordContainer.innerHTML = html;
+    }
+  }
+}
+
+/**
+ * Update the 5-Pillar scorecard Smart Money Radar
+ */
+function updateSmartMoneyRadar(audit) {
+  const targetTitleEl = document.getElementById('radar-target-title');
+  const totalScoreEl = document.getElementById('radar-total-score');
+  const actionDecisionEl = document.getElementById('radar-action-decision');
+  const radarBadgeEl = document.getElementById('q-radar-badge');
+  
+  if (targetTitleEl) {
+    targetTitleEl.innerText = `探測目標: $${audit.symbol}USDT`;
+  }
+  
+  if (totalScoreEl) {
+    totalScoreEl.innerText = `${audit.passedPillars} / 5 分`;
+    totalScoreEl.style.color = audit.success ? 'var(--neon-green)' : 'var(--neon-red)';
+  }
+  
+  if (radarBadgeEl) {
+    if (audit.success) {
+      radarBadgeEl.innerText = audit.passedPillars === 5 ? 'Elite Confluence' : 'Approved Signal';
+      radarBadgeEl.style.color = 'var(--neon-green)';
+      radarBadgeEl.style.borderColor = 'rgba(57, 255, 20, 0.3)';
+      radarBadgeEl.style.background = 'rgba(57, 255, 20, 0.08)';
+    } else {
+      radarBadgeEl.innerText = 'Risk Avoidance';
+      radarBadgeEl.style.color = 'var(--neon-red)';
+      radarBadgeEl.style.borderColor = 'rgba(255, 49, 49, 0.3)';
+      radarBadgeEl.style.background = 'rgba(255, 49, 49, 0.08)';
+    }
+  }
+  
+  if (actionDecisionEl) {
+    const decisionText = audit.success ? `🟢 ACTION: ${audit.action} (已核准下單)` : `🔴 ACTION: ${audit.action} (低信號風控攔截)`;
+    actionDecisionEl.innerText = decisionText;
+    actionDecisionEl.style.color = audit.success ? 'var(--neon-green)' : 'var(--neon-red)';
+    
+    const parentBox = actionDecisionEl.parentElement;
+    if (parentBox) {
+      if (audit.success) {
+        parentBox.style.background = 'rgba(0, 255, 127, 0.05)';
+        parentBox.style.borderColor = 'rgba(0, 255, 127, 0.15)';
+      } else {
+        parentBox.style.background = 'rgba(255, 49, 49, 0.05)';
+        parentBox.style.borderColor = 'rgba(255, 49, 49, 0.15)';
+      }
+    }
+  }
+  
+  const pillarsContainer = document.getElementById('radar-pillars-container');
+  if (pillarsContainer && audit.details) {
+    let html = '';
+    const details = audit.details;
+    
+    Object.keys(details).forEach(key => {
+      const p = details[key];
+      const passed = p.score === 1;
+      const statusText = passed ? 'PASSED ✅' : 'FAILED ❌';
+      const statusColor = passed ? 'var(--neon-green)' : 'var(--neon-red)';
+      const summaryText = p.text.length > 180 ? p.text.slice(0, 180) + '...' : p.text;
+      
+      html += `
+        <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.02); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+            <span style="font-weight: bold; color: #fff;">${p.name}</span>
+            <span style="font-family: var(--font-mono); font-weight: bold; color: ${statusColor}; font-size: 0.8rem;">${statusText}</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; border-left: 2px solid ${statusColor}; padding-left: 8px; margin-top: 2px;">
+            ${escapeHtml(summaryText)}
+          </p>
+        </div>
+      `;
+    });
+    
+    pillarsContainer.innerHTML = html;
+  }
+}
+

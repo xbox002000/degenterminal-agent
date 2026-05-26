@@ -2,6 +2,20 @@ require('dotenv').config();
 const DegenTerminalAgent = require('./index');
 const analytics = require('./analytics');
 const config = require('./config');
+const contentGenerator = require('./content_generator');
+const crossPublisher = require('./cross_publisher');
+const binanceSquare = require('./binance_square');
+const imageGenerator = require('./image_generator');
+const binanceTrader = require('./binance_trader');
+const browserManager = require('./browser_manager');
+const fs = require('fs');
+const path = require('path');
+
+// Binance sub-modules
+const {
+  checkAndCloseBinancePositions,
+  binanceMockTradeLoop
+} = require('./trading/binance/position-checker');
 
 const MS_IN_MINUTE = 60000;
 let isShuttingDown = false;
@@ -23,6 +37,11 @@ async function startScheduler() {
   console.log(`🚀 狀態: 雙線平行運行中...`);
   console.log('======================================================\n');
 
+  // Initialize shared Chrome browser (remote debugging mode)
+  browserManager.init().catch(err => {
+    console.warn(`[Scheduler] Browser auto-init deferred: ${err.message} — modules will fallback to standalone`);
+  });
+
   let iterationCount = 0;
   let lastDailySummaryDate = '';
 
@@ -39,15 +58,18 @@ async function startScheduler() {
       const conPositions = conservativeAgent.loadPositions();
       await conservativeAgent.checkPositionsAndSell(true);
       if (conPositions.length === 0) {
-        conservativeAgent.updateWebDashboard([]);
+        await conservativeAgent.updateWebDashboard([]);
       }
       
       // 2. Monitor & Sell for Aggressive Scalper
       const aggPositions = aggressiveAgent.loadPositions();
       await aggressiveAgent.checkPositionsAndSell(true);
       if (aggPositions.length === 0) {
-        aggressiveAgent.updateWebDashboard([]);
+        await aggressiveAgent.updateWebDashboard([]);
       }
+
+      // 3. Check Binance open positions for TP/SL/max-hold
+      await checkAndCloseBinancePositions(conservativeAgent);
     } catch (err) {
       console.error(`[Fast Monitor] Error:`, err.message);
     }
@@ -124,6 +146,72 @@ async function startScheduler() {
     }
   };
 
+  /**
+   * Binance Square & Cross-Platform Content Writing Loop
+   */
+  const binancePublishLoop = async () => {
+    if (isShuttingDown) return;
+    
+    if (!binanceSquare.isConfigured()) {
+      console.log('ℹ️ [BinancePublishLoop] Binance Square API Key is not configured in .env. Skipping publish tick.');
+      return;
+    }
+
+    console.log(`\n✍️ [${new Date().toLocaleTimeString()}] 啟動自動幣安寫作與流量跨平台發布輪詢...`);
+    try {
+      // 1. Ingest dynamic data context from agents
+      const marketTrends = conservativeAgent.brain?.memory?.analytics_feedback?.market_trends || {};
+      const auditedTokens = conservativeAgent.scanner?.lastAuditedTokens || [];
+      
+      // Cycle through template types
+      const types = ['MARKET_TRENDS', 'SECURITY_ALERT', 'LAUNCHPOOL_CAMPAIGN'];
+      const chosenType = types[Math.floor(Math.random() * types.length)];
+      
+      const campaignName = marketTrends.trending_coins && marketTrends.trending_coins.length > 0 ? 
+        `#${marketTrends.trending_coins[0].toUpperCase()} Launchpool 新幣挖礦` : 
+        'Binance Launchpool 收益最大化指南';
+
+      const context = {
+        marketTrends,
+        auditedTokens,
+        campaignName,
+        balance: conservativeAgent.virtualPortfolio ? conservativeAgent.virtualPortfolio.balanceUSD : 100000
+      };
+
+      // 2. Generate customized content
+      const generatedContent = contentGenerator.generateContent(chosenType, context);
+
+      // 2.5 Generate an Aria portrait to attach to the Square article
+      let articleImagePath = null;
+      try {
+        const fngVal = conservativeAgent.brain?.memory?.analytics_feedback?.market_trends?.fng?.value || 50;
+        articleImagePath = await imageGenerator.generatePortrait(fngVal, generatedContent);
+        if (articleImagePath) {
+          console.log(`🖼️ [BinancePublishLoop] Aria 圖片已生成: ${articleImagePath}`);
+        }
+      } catch (imgGenErr) {
+        console.warn('[BinancePublishLoop] 圖片生成失敗，繼續純文字發布:', imgGenErr.message);
+      }
+
+      // 3. Orchestrate cross-platform publishing (pass image to Square)
+      console.log(`🚀 [BinancePublishLoop] Generated compliant Square article of type: "${chosenType}". Publishing...`);
+      const pubResult = await crossPublisher.orchestratePublish(generatedContent, chosenType, articleImagePath);
+      
+      console.log('📊 [BinancePublishLoop] Publishing results:', pubResult);
+      
+      // Log to web dashboard
+      if (pubResult.squarePosted) {
+        conservativeAgent.logToWeb('Square', 'SUCCESS', `Published Square ${chosenType} article and cross-promoted successfully.`);
+      } else {
+        conservativeAgent.logToWeb('Square', 'WARNING', `Binance Square publish check skipped or failed.`);
+      }
+
+    } catch (err) {
+      console.error(`❌ [BinancePublishLoop] Error during writing sweep:`, err.message);
+      conservativeAgent.logToWeb('Square', 'ERROR', `Publishing loop encountered error: ${err.message}`);
+    }
+  };
+
   // Execute full scan immediately
   await executeIteration();
 
@@ -136,6 +224,7 @@ async function startScheduler() {
 
   // Start reply guy dynamic timeout recursion if enabled
   let replyGuyTimeout;
+  let binancePublishTimeout;
   
   const scheduleNextReplyGuy = () => {
     if (isShuttingDown) return;
@@ -155,6 +244,24 @@ async function startScheduler() {
     }, delayMs);
   };
 
+  const scheduleNextBinancePublish = () => {
+    if (isShuttingDown) return;
+    
+    const minMins = config.BINANCE_PUBLISH_MIN_INTERVAL_MIN || 240;
+    const maxMins = config.BINANCE_PUBLISH_MAX_INTERVAL_MIN || 360;
+    const randomMins = minMins + Math.random() * (maxMins - minMins);
+    const delayMs = Math.floor(randomMins * MS_IN_MINUTE);
+    
+    console.log(`✍️ [ANTI-BOT] Next Binance Square publishing interval calibrated to: ${randomMins.toFixed(2)} minutes.`);
+    
+    binancePublishTimeout = setTimeout(async () => {
+      if (!isShuttingDown) {
+        await binancePublishLoop();
+        scheduleNextBinancePublish();
+      }
+    }, delayMs);
+  };
+
   if (config.REPLY_GUY_ENABLED) {
     console.log(`💬 X Ads Revenue 流量衝刺功能已開啟！將每 ${config.REPLY_GUY_MIN_INTERVAL_MIN}-${config.REPLY_GUY_MAX_INTERVAL_MIN} 分鐘隨機且不規律地對 KOL 搶沙發回覆。`);
     
@@ -166,12 +273,59 @@ async function startScheduler() {
     }, 3 * MS_IN_MINUTE);
   }
 
+  // Start Binance Square publish loop if configured
+  if (binanceSquare.isConfigured()) {
+    console.log(`✍️ 幣安自動寫文章與跨平台推廣系統已開啟！預設每 ${config.BINANCE_PUBLISH_MIN_INTERVAL_MIN || 240}-${config.BINANCE_PUBLISH_MAX_INTERVAL_MIN || 360} 分鐘隨機且不規律地發布專業分析文章。`);
+    
+    setTimeout(async () => {
+      if (!isShuttingDown) {
+        await binancePublishLoop();
+        scheduleNextBinancePublish();
+      }
+    }, 5 * MS_IN_MINUTE);
+  }
+
+  // Start Binance mock trading loop if enabled
+  let binanceTradeTimeout;
+
+  const scheduleNextBinanceTrade = () => {
+    if (isShuttingDown) return;
+
+    const minMins = config.BINANCE_TRADE_MIN_INTERVAL_MIN || 120;
+    const maxMins = config.BINANCE_TRADE_MAX_INTERVAL_MIN || 180;
+    const randomMins = minMins + Math.random() * (maxMins - minMins);
+    const delayMs = Math.floor(randomMins * MS_IN_MINUTE);
+
+    console.log(`💰 [ANTI-BOT] Next Binance mock trade interval calibrated to: ${randomMins.toFixed(2)} minutes.`);
+
+    binanceTradeTimeout = setTimeout(async () => {
+      if (!isShuttingDown) {
+        await binanceMockTradeLoop(conservativeAgent);
+        scheduleNextBinanceTrade();
+      }
+    }, delayMs);
+  };
+
+  if (config.BINANCE_TRADE_ENABLED !== false && binanceTrader.isConfigured()) {
+    console.log(`💰 幣安 Testnet 模擬交易實戰終端已開啟！每 ${config.BINANCE_TRADE_MIN_INTERVAL_MIN || 120}-${config.BINANCE_TRADE_MAX_INTERVAL_MIN || 180} 分鐘隨機執行 5 柱策略評估與下單。`);
+
+    setTimeout(async () => {
+      if (!isShuttingDown) {
+        await binanceMockTradeLoop(conservativeAgent);
+        scheduleNextBinanceTrade();
+      }
+    }, 10 * MS_IN_MINUTE);
+  }
+
   // Graceful shutdown
   const shutdown = (signal) => {
     console.log(`\n🛑 [Scheduler] 收到 ${signal} 信號，正在優雅退出...`);
     isShuttingDown = true;
     clearInterval(fastMonitorInterval);
     if (replyGuyTimeout) clearTimeout(replyGuyTimeout);
+    if (binancePublishTimeout) clearTimeout(binancePublishTimeout);
+    if (binanceTradeTimeout) clearTimeout(binanceTradeTimeout);
+    browserManager.shutdown();
     
     console.log('\n📊 [對決終場分析結算]');
     console.log(`🟢 Green: 餘額 $${conservativeAgent.virtualPortfolio.balanceUSD.toFixed(2)} USD | 收益 $${conservativeAgent.virtualPortfolio.totalProfitUSD.toFixed(2)} USD`);

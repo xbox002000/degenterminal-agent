@@ -24,3 +24,12 @@ src/*.png
 # OS Metadata
 .DS_Store
 Thumbs.db
+
+# VS Code settings (team-shared, .vscode/ can contain workspace config)
+.vscode/
+
+# 自動生成的 cache/data 檔案（避免 VS Code 卡頓）
+data/
+config/replied_tweets.json
+config/posted_tweets_lock.json
+*.lock.json

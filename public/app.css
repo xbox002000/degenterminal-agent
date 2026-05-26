@@ -1152,3 +1152,21 @@ body::after {
 #replies-feed-container::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 240, 255, 0.3);
 }
+
+/* 🌾 JitoSOL & ✍️ Binance Square Dual Engine Visual Optimizations */
+.engine-neon-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+#engine-card-jitosol:hover {
+  border-color: rgba(0, 255, 128, 0.45) !important;
+  box-shadow: 0 0 15px rgba(0, 255, 128, 0.12), inset 0 0 10px rgba(0, 255, 128, 0.02) !important;
+  transform: translateY(-2px);
+}
+
+#engine-card-binance:hover {
+  border-color: rgba(240, 185, 11, 0.45) !important;
+  box-shadow: 0 0 15px rgba(240, 185, 11, 0.12), inset 0 0 10px rgba(240, 185, 11, 0.02) !important;
+  transform: translateY(-2px);
+}
+
